@@ -67,7 +67,6 @@ class FiqhLearning_Admin {
 
         $book_url = get_post_meta($post->ID, '_fiqh_course_book_url', true);
         $duration = get_post_meta($post->ID, '_fiqh_course_duration', true);
-        $level = get_post_meta($post->ID, '_fiqh_course_level', true);
         $teacher_id = get_post_meta($post->ID, '_fiqh_course_teacher_id', true);
 
         ?>
@@ -85,15 +84,6 @@ class FiqhLearning_Admin {
             </p>
 
             <p>
-                <label for="fiqh_course_level"><strong><?php _e('مستوى المقرر', 'fiqh-lms'); ?></strong></label><br>
-                <select id="fiqh_course_level" name="fiqh_course_level">
-                    <option value="beginner" <?php selected($level, 'beginner'); ?>><?php _e('مبتدئ', 'fiqh-lms'); ?></option>
-                    <option value="intermediate" <?php selected($level, 'intermediate'); ?>><?php _e('متوسط', 'fiqh-lms'); ?></option>
-                    <option value="advanced" <?php selected($level, 'advanced'); ?>><?php _e('متقدم', 'fiqh-lms'); ?></option>
-                </select>
-            </p>
-
-            <p>
                 <label for="fiqh_course_teacher_id"><strong><?php _e('المعلم', 'fiqh-lms'); ?></strong></label><br>
                 <select id="fiqh_course_teacher_id" name="fiqh_course_teacher_id">
                     <option value=""><?php _e('-- اختر المعلم --', 'fiqh-lms'); ?></option>
@@ -105,6 +95,32 @@ class FiqhLearning_Admin {
                     ?>
                 </select>
             </p>
+
+            <hr style="margin: 20px 0;">
+
+            <h3><?php _e('الطلاب المسجلون', 'fiqh-lms'); ?></h3>
+            <p class="description"><?php _e('قم بتسجيل الطلاب في هذا المقرر من صفحة المقررات > التسجيل', 'fiqh-lms'); ?></p>
+
+            <?php
+            // عرض الطلاب المسجلين
+            if ($post->ID) {
+                $enrolled_students = FiqhLearning_Enrollments::get_course_students($post->ID);
+                if ($enrolled_students) {
+                    echo '<table class="wp-list-table widefat striped" style="margin-top: 15px;">';
+                    echo '<thead><tr><th>' . __('الطالب', 'fiqh-lms') . '</th><th>' . __('تاريخ التسجيل', 'fiqh-lms') . '</th></tr></thead>';
+                    echo '<tbody>';
+                    foreach ($enrolled_students as $enrollment) {
+                        $user = get_userdata($enrollment->user_id);
+                        if ($user) {
+                            echo '<tr><td>' . esc_html($user->display_name) . '</td><td>' . esc_html($enrollment->enrolled_at) . '</td></tr>';
+                        }
+                    }
+                    echo '</tbody></table>';
+                } else {
+                    echo '<p>' . __('لا يوجد طلاب مسجلون في هذا المقرر بعد', 'fiqh-lms') . '</p>';
+                }
+            }
+            ?>
         </div>
         <?php
     }
@@ -121,6 +137,7 @@ class FiqhLearning_Admin {
         $pdf_url = get_post_meta($post->ID, '_fiqh_lesson_pdf_url', true);
         $duration = get_post_meta($post->ID, '_fiqh_lesson_duration', true);
         $order = get_post_meta($post->ID, '_fiqh_lesson_order', true);
+        $exercises = get_post_meta($post->ID, '_fiqh_lesson_exercises', true);
 
         ?>
         <div class="fiqh-meta-box">
@@ -166,6 +183,22 @@ class FiqhLearning_Admin {
                 <input type="number" id="fiqh_lesson_order" name="fiqh_lesson_order" value="<?php echo esc_attr($order); ?>" min="1">
                 <span class="description"><?php _e('ترتيب الدرس في المقرر', 'fiqh-lms'); ?></span>
             </p>
+
+            <hr style="margin: 20px 0;">
+
+            <p>
+                <label for="fiqh_lesson_exercises"><strong><?php _e('التمارين', 'fiqh-lms'); ?></strong></label><br>
+                <?php
+                wp_editor($exercises, 'fiqh_lesson_exercises', array(
+                    'textarea_name' => 'fiqh_lesson_exercises',
+                    'textarea_rows' => 10,
+                    'media_buttons' => false,
+                    'teeny' => true,
+                    'quicktags' => true,
+                ));
+                ?>
+                <span class="description"><?php _e('أضف التمارين والتطبيقات للدرس', 'fiqh-lms'); ?></span>
+            </p>
         </div>
         <?php
     }
@@ -192,10 +225,6 @@ class FiqhLearning_Admin {
 
         if (isset($_POST['fiqh_course_duration'])) {
             update_post_meta($post_id, '_fiqh_course_duration', sanitize_text_field($_POST['fiqh_course_duration']));
-        }
-
-        if (isset($_POST['fiqh_course_level'])) {
-            update_post_meta($post_id, '_fiqh_course_level', sanitize_text_field($_POST['fiqh_course_level']));
         }
 
         if (isset($_POST['fiqh_course_teacher_id'])) {
@@ -241,6 +270,10 @@ class FiqhLearning_Admin {
 
         if (isset($_POST['fiqh_lesson_order'])) {
             update_post_meta($post_id, '_fiqh_lesson_order', intval($_POST['fiqh_lesson_order']));
+        }
+
+        if (isset($_POST['fiqh_lesson_exercises'])) {
+            update_post_meta($post_id, '_fiqh_lesson_exercises', wp_kses_post($_POST['fiqh_lesson_exercises']));
         }
     }
 

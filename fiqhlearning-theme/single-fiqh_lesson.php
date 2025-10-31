@@ -120,6 +120,13 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                 <?php if ($pdf_url) : ?>
                     <button class="lesson-tab" data-tab="attachments"><?php _e('المرفقات', 'fiqhlearning'); ?></button>
                 <?php endif; ?>
+                <?php
+                $exercises = get_post_meta(get_the_ID(), '_fiqh_lesson_exercises', true);
+                if ($exercises) :
+                ?>
+                    <button class="lesson-tab" data-tab="exercises"><?php _e('التمارين', 'fiqhlearning'); ?></button>
+                <?php endif; ?>
+                <button class="lesson-tab" data-tab="questions"><?php _e('الأسئلة', 'fiqhlearning'); ?></button>
                 <button class="lesson-tab" data-tab="my-notes"><?php _e('ملاحظتي', 'fiqhlearning'); ?></button>
             </div>
 
@@ -150,6 +157,113 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                     </div>
                 <?php endif; ?>
 
+                <!-- تبويب التمارين -->
+                <?php if ($exercises) : ?>
+                    <div class="tab-pane" id="exercises-pane">
+                        <div class="exercises-section">
+                            <div class="lesson-content">
+                                <?php echo wp_kses_post($exercises); ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <!-- تبويب الأسئلة -->
+                <div class="tab-pane" id="questions-pane">
+                    <div class="questions-section">
+
+                        <!-- إضافة سؤال جديد -->
+                        <?php if (is_user_logged_in()) : ?>
+                            <div class="add-question-form card">
+                                <h4><?php _e('اطرح سؤالك', 'fiqhlearning'); ?></h4>
+                                <form id="add-lesson-question-form">
+                                    <textarea
+                                        name="question_content"
+                                        id="question-content"
+                                        rows="4"
+                                        placeholder="<?php _e('اكتب سؤالك هنا...', 'fiqhlearning'); ?>"
+                                        required
+                                    ></textarea>
+                                    <button type="submit" class="btn btn-primary">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                        </svg>
+                                        <?php _e('إرسال السؤال', 'fiqhlearning'); ?>
+                                    </button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- قائمة الأسئلة والأجوبة -->
+                        <div class="questions-list">
+                            <?php
+                            global $wpdb;
+                            $table_name = $wpdb->prefix . 'fiqh_questions';
+
+                            $questions = $wpdb->get_results($wpdb->prepare(
+                                "SELECT * FROM $table_name WHERE lesson_id = %d ORDER BY created_at DESC",
+                                get_the_ID()
+                            ));
+
+                            if ($questions) :
+                                foreach ($questions as $question) :
+                                    $question_user = get_userdata($question->user_id);
+                                    $can_answer = current_user_can('administrator') || current_user_can('teacher');
+                                    ?>
+                                    <div class="question-item card" data-question-id="<?php echo $question->id; ?>">
+                                        <div class="question-header">
+                                            <div class="question-author">
+                                                <strong><?php echo esc_html($question_user->display_name); ?></strong>
+                                                <span class="question-date"><?php echo human_time_diff(strtotime($question->created_at), current_time('timestamp')) . ' ' . __('مضت', 'fiqhlearning'); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="question-content">
+                                            <?php echo wp_kses_post(nl2br($question->question)); ?>
+                                        </div>
+
+                                        <!-- الإجابة -->
+                                        <?php if ($question->answer) : ?>
+                                            <div class="question-answer">
+                                                <div class="answer-header">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polyline points="9 11 12 14 22 4"></polyline>
+                                                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                                    </svg>
+                                                    <strong><?php _e('إجابة المشرف', 'fiqhlearning'); ?></strong>
+                                                </div>
+                                                <div class="answer-content">
+                                                    <?php echo wp_kses_post(nl2br($question->answer)); ?>
+                                                </div>
+                                            </div>
+                                        <?php elseif ($can_answer) : ?>
+                                            <div class="answer-form">
+                                                <form class="add-answer-form" data-question-id="<?php echo $question->id; ?>">
+                                                    <textarea
+                                                        name="answer_content"
+                                                        rows="3"
+                                                        placeholder="<?php _e('اكتب الإجابة هنا...', 'fiqhlearning'); ?>"
+                                                        required
+                                                    ></textarea>
+                                                    <button type="submit" class="btn btn-primary btn-sm">
+                                                        <?php _e('إرسال الإجابة', 'fiqhlearning'); ?>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <?php
+                                endforeach;
+                            else :
+                                ?>
+                                <div class="no-questions">
+                                    <p><?php _e('لا توجد أسئلة بعد. كن أول من يطرح سؤالاً!', 'fiqhlearning'); ?></p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- تبويب ملاحظتي -->
                 <div class="tab-pane" id="my-notes-pane">
                     <div class="my-notes-section">
@@ -172,10 +286,15 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
 
             </div>
 
+        </div>
+
+        <!-- الشريط الجانبي -->
+        <aside class="lesson-sidebar">
+
             <!-- زر إكمال الدرس -->
             <?php if (!$is_completed && !current_user_can('administrator') && !current_user_can('teacher')) : ?>
-                <div class="lesson-actions">
-                    <button class="btn btn-primary btn-lg complete-lesson-btn">
+                <div class="sidebar-widget card">
+                    <button class="btn btn-primary btn-lg complete-lesson-btn" style="width: 100%;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
@@ -184,11 +303,6 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                     </button>
                 </div>
             <?php endif; ?>
-
-        </div>
-
-        <!-- الشريط الجانبي -->
-        <aside class="lesson-sidebar">
 
             <!-- مشغل الصوت -->
             <?php if ($audio_url) : ?>
@@ -307,6 +421,99 @@ jQuery(document).ready(function($) {
                 }
             }
         });
+    });
+
+    // إضافة سؤال جديد
+    $('#add-lesson-question-form').on('submit', function(e) {
+        e.preventDefault();
+        var $btn = $(this).find('button[type="submit"]');
+        var originalText = $btn.html();
+        $btn.prop('disabled', true).text('<?php _e('جاري الإرسال...', 'fiqhlearning'); ?>');
+
+        $.ajax({
+            url: fiqhData.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'fiqh_add_lesson_question',
+                nonce: fiqhData.nonce,
+                lesson_id: <?php echo get_the_ID(); ?>,
+                question: $('#question-content').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('<?php _e('تم إرسال السؤال بنجاح', 'fiqhlearning'); ?>');
+                    location.reload();
+                } else {
+                    alert(response.data || '<?php _e('حدث خطأ أثناء إرسال السؤال', 'fiqhlearning'); ?>');
+                }
+                $btn.prop('disabled', false).html(originalText);
+            },
+            error: function() {
+                alert('<?php _e('حدث خطأ أثناء إرسال السؤال', 'fiqhlearning'); ?>');
+                $btn.prop('disabled', false).html(originalText);
+            }
+        });
+    });
+
+    // إضافة إجابة على سؤال
+    $(document).on('submit', '.add-answer-form', function(e) {
+        e.preventDefault();
+        var $form = $(this);
+        var $btn = $form.find('button[type="submit"]');
+        var questionId = $form.data('question-id');
+        var originalText = $btn.text();
+        $btn.prop('disabled', true).text('<?php _e('جاري الإرسال...', 'fiqhlearning'); ?>');
+
+        $.ajax({
+            url: fiqhData.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'fiqh_add_lesson_answer',
+                nonce: fiqhData.nonce,
+                question_id: questionId,
+                answer: $form.find('textarea[name="answer_content"]').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('<?php _e('تم إرسال الإجابة بنجاح', 'fiqhlearning'); ?>');
+                    location.reload();
+                } else {
+                    alert(response.data || '<?php _e('حدث خطأ أثناء إرسال الإجابة', 'fiqhlearning'); ?>');
+                }
+                $btn.prop('disabled', false).text(originalText);
+            },
+            error: function() {
+                alert('<?php _e('حدث خطأ أثناء إرسال الإجابة', 'fiqhlearning'); ?>');
+                $btn.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+    // زر إتمام الدرس
+    $('.complete-lesson-btn').on('click', function() {
+        var $btn = $(this);
+        if (confirm('<?php _e('هل أنت متأكد من إتمام هذا الدرس؟', 'fiqhlearning'); ?>')) {
+            $btn.prop('disabled', true).text('<?php _e('جاري الحفظ...', 'fiqhlearning'); ?>');
+
+            $.ajax({
+                url: fiqhData.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'fiqh_complete_lesson',
+                    nonce: fiqhData.nonce,
+                    lesson_id: <?php echo get_the_ID(); ?>,
+                    course_id: <?php echo $course_id; ?>
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('<?php _e('حدث خطأ، حاول مرة أخرى', 'fiqhlearning'); ?>');
+                        $btn.prop('disabled', false).html('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> <?php _e('تمييز كمكتمل', 'fiqhlearning'); ?>');
+                    }
+                }
+            });
+        }
     });
 });
 </script>

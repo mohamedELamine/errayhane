@@ -15,8 +15,41 @@ class FiqhLearning_Taxonomies {
      * تسجيل جميع Taxonomies
      */
     public static function register_taxonomies() {
+        self::register_course_science();
         self::register_course_category();
         self::register_course_year();
+    }
+
+    /**
+     * تصنيف العلوم
+     */
+    private static function register_course_science() {
+        $labels = array(
+            'name' => __('العلوم', 'fiqh-lms'),
+            'singular_name' => __('علم', 'fiqh-lms'),
+            'menu_name' => __('العلوم', 'fiqh-lms'),
+            'all_items' => __('جميع العلوم', 'fiqh-lms'),
+            'edit_item' => __('تعديل العلم', 'fiqh-lms'),
+            'view_item' => __('عرض العلم', 'fiqh-lms'),
+            'update_item' => __('تحديث العلم', 'fiqh-lms'),
+            'add_new_item' => __('إضافة علم جديد', 'fiqh-lms'),
+            'new_item_name' => __('اسم العلم الجديد', 'fiqh-lms'),
+            'search_items' => __('بحث في العلوم', 'fiqh-lms'),
+        );
+
+        $args = array(
+            'labels' => $labels,
+            'hierarchical' => true,
+            'public' => true,
+            'show_ui' => true,
+            'show_admin_column' => true,
+            'show_in_nav_menus' => true,
+            'show_tagcloud' => false,
+            'rewrite' => array('slug' => 'science'),
+            'show_in_rest' => true,
+        );
+
+        register_taxonomy('fiqh_course_science', array('fiqh_course'), $args);
     }
 
     /**
