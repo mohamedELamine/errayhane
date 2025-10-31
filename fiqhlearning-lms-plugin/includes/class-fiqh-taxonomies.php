@@ -17,8 +17,6 @@ class FiqhLearning_Taxonomies {
     public static function register_taxonomies() {
         self::register_course_category();
         self::register_course_year();
-        self::register_course_semester();
-        self::register_course_type();
     }
 
     /**
@@ -81,65 +79,5 @@ class FiqhLearning_Taxonomies {
         );
 
         register_taxonomy('fiqh_course_year', array('fiqh_course'), $args);
-    }
-
-    /**
-     * تصنيف الفصول الدراسية
-     */
-    private static function register_course_semester() {
-        $labels = array(
-            'name' => __('الفصول الدراسية', 'fiqh-lms'),
-            'singular_name' => __('فصل دراسي', 'fiqh-lms'),
-            'menu_name' => __('الفصول', 'fiqh-lms'),
-            'all_items' => __('جميع الفصول', 'fiqh-lms'),
-            'edit_item' => __('تعديل الفصل', 'fiqh-lms'),
-            'update_item' => __('تحديث الفصل', 'fiqh-lms'),
-            'add_new_item' => __('إضافة فصل جديد', 'fiqh-lms'),
-            'new_item_name' => __('اسم الفصل الجديد', 'fiqh-lms'),
-        );
-
-        $args = array(
-            'labels' => $labels,
-            'hierarchical' => true,
-            'public' => true,
-            'show_ui' => true,
-            'show_admin_column' => true,
-            'show_in_nav_menus' => false,
-            'show_tagcloud' => false,
-            'rewrite' => array('slug' => 'semester'),
-            'show_in_rest' => true,
-        );
-
-        register_taxonomy('fiqh_course_semester', array('fiqh_course'), $args);
-    }
-
-    /**
-     * تصنيف أنواع المقررات
-     */
-    private static function register_course_type() {
-        $labels = array(
-            'name' => __('أنواع المقررات', 'fiqh-lms'),
-            'singular_name' => __('نوع المقرر', 'fiqh-lms'),
-            'menu_name' => __('الأنواع', 'fiqh-lms'),
-            'all_items' => __('جميع الأنواع', 'fiqh-lms'),
-            'edit_item' => __('تعديل النوع', 'fiqh-lms'),
-            'update_item' => __('تحديث النوع', 'fiqh-lms'),
-            'add_new_item' => __('إضافة نوع جديد', 'fiqh-lms'),
-            'new_item_name' => __('اسم النوع الجديد', 'fiqh-lms'),
-        );
-
-        $args = array(
-            'labels' => $labels,
-            'hierarchical' => true,
-            'public' => true,
-            'show_ui' => true,
-            'show_admin_column' => true,
-            'show_in_nav_menus' => false,
-            'show_tagcloud' => false,
-            'rewrite' => array('slug' => 'course-type'),
-            'show_in_rest' => true,
-        );
-
-        register_taxonomy('fiqh_course_type', array('fiqh_course'), $args);
     }
 }
