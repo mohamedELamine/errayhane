@@ -1,0 +1,95 @@
+/**
+ * الأنماط الاستجابية - FiqhLearning Theme
+ */
+
+/* Tablet - 1024px */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 var(--spacing-lg);
+    }
+
+    .hero-title {
+        font-size: var(--text-3xl);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile - 768px */
+@media (max-width: 768px) {
+    :root {
+        --text-4xl: 1.75rem;
+        --text-3xl: 1.5rem;
+        --text-2xl: 1.25rem;
+    }
+
+    .header-content {
+        flex-wrap: wrap;
+    }
+
+    .main-navigation {
+        order: 3;
+        width: 100%;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding: var(--spacing-md) 0;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lesson-page {
+        grid-template-columns: 1fr;
+    }
+
+    .questions-page {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-widgets-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-bottom-content {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+}
+
+/* Small Mobile - 480px */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
+    .hero-section {
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: var(--spacing-lg);
+    }
+}

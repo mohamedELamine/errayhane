@@ -1,0 +1,615 @@
+/**
+ * الأنماط الرئيسية - FiqhLearning Theme
+ * الإصدار: 1.0.0
+ */
+
+/* ==========================================================================
+   الهيدر والتنقل
+   ========================================================================== */
+
+.top-bar {
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    padding: var(--spacing-sm) 0;
+    font-size: var(--text-sm);
+}
+
+.top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-link {
+    color: var(--color-white);
+    margin-left: var(--spacing-md);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.top-link:hover {
+    color: var(--color-accent-light);
+}
+
+.main-header {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) 0;
+}
+
+.site-branding {
+    flex: 0 0 auto;
+}
+
+.site-title {
+    font-size: var(--text-2xl);
+    margin: 0;
+}
+
+.site-title a {
+    color: var(--color-primary);
+}
+
+.main-navigation {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+.nav-menu li a {
+    color: var(--color-dark);
+    font-weight: 600;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-base);
+    transition: all var(--transition-fast);
+}
+
+.nav-menu li a:hover {
+    background-color: var(--color-light);
+    color: var(--color-primary);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.search-toggle,
+.dark-mode-toggle,
+.user-menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-base);
+    transition: background-color var(--transition-fast);
+}
+
+.search-toggle:hover,
+.dark-mode-toggle:hover,
+.user-menu-toggle:hover {
+    background-color: var(--color-light);
+}
+
+.user-menu-wrapper {
+    position: relative;
+}
+
+.user-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+    min-width: 200px;
+    display: none;
+}
+
+.user-menu-wrapper:hover .user-dropdown {
+    display: block;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-base);
+    transition: background-color var(--transition-fast);
+}
+
+.dropdown-item:hover {
+    background-color: var(--color-light);
+}
+
+/* مربع البحث */
+.search-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-modal-content {
+    background-color: var(--color-white);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+}
+
+.search-modal-close {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.search-form {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.search-field {
+    flex: 1;
+    padding: var(--spacing-md);
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--radius-base);
+    font-size: var(--text-lg);
+}
+
+.search-submit {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-base);
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   الفوتر
+   ========================================================================== */
+
+.site-footer {
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    margin-top: var(--spacing-3xl);
+}
+
+.footer-widgets {
+    padding: var(--spacing-3xl) 0;
+}
+
+.footer-widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-2xl);
+}
+
+.footer-widget-column {
+    color: var(--color-light);
+}
+
+.footer-widget h4 {
+    color: var(--color-white);
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-bottom {
+    background-color: var(--color-black);
+    padding: var(--spacing-lg) 0;
+}
+
+.footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-menu {
+    list-style: none;
+    display: flex;
+    gap: var(--spacing-lg);
+    margin: 0;
+    padding: 0;
+}
+
+.footer-menu a {
+    color: var(--color-light);
+}
+
+.footer-social {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.social-link {
+    color: var(--color-light);
+    transition: color var(--transition-fast);
+}
+
+.social-link:hover {
+    color: var(--color-accent);
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: var(--spacing-xl);
+    left: var(--spacing-xl);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-fast);
+}
+
+.back-to-top:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-4px);
+}
+
+/* ==========================================================================
+   الصفحة الرئيسية
+   ========================================================================== */
+
+.hero-section {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    color: var(--color-white);
+    padding: var(--spacing-3xl) 0;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.hero-description {
+    font-size: var(--text-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+.stats-section {
+    background-color: var(--color-white);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    margin: calc(-1 * var(--spacing-2xl)) var(--spacing-lg) var(--spacing-2xl);
+    position: relative;
+    z-index: 2;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+    color: var(--color-dark-gray);
+}
+
+/* ==========================================================================
+   المقررات
+   ========================================================================== */
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.course-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.course-card:hover .course-hover-actions {
+    opacity: 1;
+    visibility: visible;
+}
+
+.course-thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.course-content {
+    padding: var(--spacing-lg);
+}
+
+.course-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--spacing-sm);
+}
+
+.course-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+    margin-bottom: var(--spacing-md);
+}
+
+.course-hover-actions {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+}
+
+.course-hover-actions .btn {
+    box-shadow: var(--shadow-lg);
+}
+
+/* ==========================================================================
+   الدروس
+   ========================================================================== */
+
+.lesson-page {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: var(--spacing-xl);
+}
+
+.lesson-main-content {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-base);
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.lesson-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--color-light-gray);
+    margin-bottom: var(--spacing-lg);
+}
+
+.lesson-tab {
+    padding: var(--spacing-md) var(--spacing-lg);
+    cursor: pointer;
+    border: none;
+    background: none;
+    transition: all var(--transition-fast);
+}
+
+.lesson-tab.active {
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    margin-bottom: -2px;
+}
+
+.lesson-sidebar {
+    position: sticky;
+    top: 80px;
+}
+
+.lessons-list {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-base);
+}
+
+.lesson-item {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-base);
+    margin-bottom: var(--spacing-sm);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.lesson-item:hover {
+    background-color: var(--color-light);
+}
+
+.lesson-item.completed {
+    opacity: 0.6;
+}
+
+.lesson-item.active {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* ==========================================================================
+   الأسئلة
+   ========================================================================== */
+
+.questions-page {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    gap: var(--spacing-xl);
+}
+
+.questions-filters,
+.questions-sidebar {
+    position: sticky;
+    top: 80px;
+}
+
+.filter-group {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-base);
+    margin-bottom: var(--spacing-lg);
+}
+
+.filter-group h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.question-card {
+    margin-bottom: var(--spacing-lg);
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: var(--spacing-md);
+}
+
+.question-author {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.question-content {
+    margin-bottom: var(--spacing-md);
+}
+
+.question-footer {
+    display: flex;
+    gap: var(--spacing-md);
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+}
+
+.answers-list {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-light-gray);
+}
+
+.answer-card {
+    padding: var(--spacing-lg);
+    background-color: var(--color-light);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.answer-card.best-answer {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+/* ==========================================================================
+   استجابة الشاشات
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .lesson-page {
+        grid-template-columns: 1fr;
+    }
+
+    .lesson-sidebar {
+        position: static;
+    }
+
+    .questions-page {
+        grid-template-columns: 1fr;
+    }
+
+    .questions-filters,
+    .questions-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-wrap: wrap;
+    }
+
+    .main-navigation {
+        order: 3;
+        width: 100%;
+        margin-top: var(--spacing-md);
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .footer-widgets-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-bottom-content {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+
+    .courses-grid {
+        grid-template-columns: 1fr;
+    }
+}

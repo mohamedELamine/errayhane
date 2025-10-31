@@ -1,0 +1,150 @@
+/**
+ * مكونات مخصصة - FiqhLearning Theme
+ */
+
+/* Progress Bar */
+.progress-bar-wrapper {
+    margin: var(--spacing-md) 0;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--text-sm);
+}
+
+.progress-bar {
+    background-color: var(--color-light-gray);
+    height: 8px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: var(--color-white);
+    margin: 5% auto;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-close {
+    float: left;
+    font-size: var(--text-2xl);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Notifications */
+.notification {
+    position: fixed;
+    top: var(--spacing-xl);
+    right: var(--spacing-xl);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 10000;
+    display: none;
+}
+
+.notification-success {
+    background-color: var(--color-success);
+    color: var(--color-white);
+}
+
+.notification-error {
+    background-color: var(--color-error);
+    color: var(--color-white);
+}
+
+/* Audio Player */
+.audio-player {
+    background-color: var(--color-light);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.audio-player-controls button {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+}
+
+.audio-player-progress {
+    flex: 1;
+    background-color: var(--color-gray);
+    height: 4px;
+    border-radius: var(--radius-full);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    padding: var(--spacing-md) 0;
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+}
+
+.breadcrumb a {
+    color: var(--color-primary);
+}
+
+.breadcrumb span {
+    color: var(--color-dark);
+}
+
+/* Tabs */
+.tabs {
+    border-bottom: 2px solid var(--color-light-gray);
+    margin-bottom: var(--spacing-lg);
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all var(--transition-fast);
+}
+
+.tab-button.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}

@@ -1,0 +1,254 @@
+/*
+Theme Name: FiqhLearning
+Theme URI: https://fiqhlearning.com
+Author: FiqhLearning Team
+Author URI: https://fiqhlearning.com
+Description: قالب WordPress احترافي لمنصة تعليمية إلكترونية لفهم الفقه المالكي. يدعم RTL كاملاً، بألوان خضراء إسلامية، ومصمم خصيصاً لإدارة المقررات والدروس والطلاب بدون إضافات خارجية.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: fiqhlearning
+Tags: rtl-language-support, education, lms, arabic, islamic, two-columns, custom-colors, custom-menu, featured-images, threaded-comments, translation-ready
+*/
+
+/* ==========================================================================
+   متغيرات CSS - نظام الألوان الأخضر الإسلامي
+   ========================================================================== */
+
+:root {
+    /* الألوان الأساسية - درجات الأخضر */
+    --color-primary: #0B5E3B;
+    --color-primary-dark: #084229;
+    --color-primary-light: #0E7A4D;
+    --color-primary-lighter: #10965F;
+    --color-accent: #14B171;
+    --color-accent-light: #2DCE89;
+
+    /* الألوان المحايدة */
+    --color-white: #FFFFFF;
+    --color-light: #F7FAFC;
+    --color-light-gray: #EDF2F7;
+    --color-gray: #A0AEC0;
+    --color-dark-gray: #4A5568;
+    --color-dark: #1A202C;
+    --color-black: #000000;
+
+    /* ألوان الحالات */
+    --color-success: #14B171;
+    --color-warning: #F6AD55;
+    --color-error: #F56565;
+    --color-info: #4299E1;
+
+    /* الخطوط */
+    --font-primary: 'Cairo', 'Noto Naskh Arabic', 'Segoe UI', Tahoma, sans-serif;
+    --font-heading: 'Cairo', 'Noto Naskh Arabic', serif;
+
+    /* أحجام الخطوط */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+
+    /* المسافات */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+
+    /* الانتقالات */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 300ms ease-in-out;
+    --transition-slow: 500ms ease-in-out;
+
+    /* الظلال */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* الشعاع */
+    --radius-sm: 0.25rem;
+    --radius-base: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+}
+
+/* وضع الظلام */
+body.dark-mode {
+    --color-white: #1A202C;
+    --color-light: #2D3748;
+    --color-light-gray: #4A5568;
+    --color-gray: #718096;
+    --color-dark-gray: #CBD5E0;
+    --color-dark: #E2E8F0;
+    --color-black: #FFFFFF;
+}
+
+/* ==========================================================================
+   إعادة تعيين وأساسيات
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-dark);
+    background-color: var(--color-light);
+    direction: rtl;
+    text-align: right;
+}
+
+/* ==========================================================================
+   الطباعة
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-dark);
+}
+
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-base); }
+
+p {
+    margin-bottom: var(--spacing-md);
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-primary-light);
+}
+
+/* ==========================================================================
+   تصميم عام
+   ========================================================================== */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+.container-wide {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+.section {
+    padding: var(--spacing-3xl) 0;
+}
+
+/* الأزرار */
+.btn {
+    display: inline-block;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--text-base);
+    font-weight: 600;
+    text-align: center;
+    border-radius: var(--radius-base);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* البطاقات */
+.card {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-base);
+    transition: all var(--transition-base);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+/* ==========================================================================
+   استجابة الشاشات
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    :root {
+        --text-4xl: 1.75rem;
+        --text-3xl: 1.5rem;
+        --text-2xl: 1.25rem;
+    }
+
+    .container,
+    .container-wide {
+        padding: 0 var(--spacing-md);
+    }
+
+    .section {
+        padding: var(--spacing-2xl) 0;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --text-4xl: 1.5rem;
+        --text-3xl: 1.25rem;
+    }
+}
