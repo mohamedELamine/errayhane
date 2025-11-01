@@ -244,6 +244,23 @@ class FiqhLearning_Database {
         ) $charset_collate;";
         dbDelta($sql_notifications);
 
+        // جدول ملاحظات الدروس (Lesson Notes)
+        $table_notes = $wpdb->prefix . 'fiqh_lesson_notes';
+        $sql_notes = "CREATE TABLE IF NOT EXISTS $table_notes (
+            id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            user_id bigint(20) UNSIGNED NOT NULL,
+            lesson_id bigint(20) UNSIGNED NOT NULL,
+            course_id bigint(20) UNSIGNED NOT NULL,
+            note_text text NOT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY user_id (user_id),
+            KEY lesson_id (lesson_id),
+            KEY course_id (course_id)
+        ) $charset_collate;";
+        dbDelta($sql_notes);
+
         // تحديث رقم إصدار قاعدة البيانات
         update_option('fiqh_lms_db_version', '1.0.0');
     }

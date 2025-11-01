@@ -189,3 +189,125 @@ function fiqh_complete_lesson() {
     }
 }
 add_action('wp_ajax_fiqh_complete_lesson', 'fiqh_complete_lesson');
+
+/**
+ * إضافة ملاحظة جديدة
+ */
+function fiqh_add_note() {
+    check_ajax_referer('fiqh-ajax-nonce', 'nonce');
+
+    if (!is_user_logged_in()) {
+        wp_send_json_error(__('يجب تسجيل الدخول', 'fiqhlearning'));
+    }
+
+    $user_id = get_current_user_id();
+    $lesson_id = isset($_POST['lesson_id']) ? intval($_POST['lesson_id']) : 0;
+    $course_id = isset($_POST['course_id']) ? intval($_POST['course_id']) : 0;
+    $note_text = isset($_POST['note_text']) ? wp_kses_post($_POST['note_text']) : '';
+
+    if (!$lesson_id || !$course_id || empty($note_text)) {
+        wp_send_json_error(__('البيانات غير مكتملة', 'fiqhlearning'));
+    }
+
+    // التحقق من إمكانية الوصول للدرس
+    if (!fiqh_can_access_lesson($lesson_id, $user_id)) {
+        wp_send_json_error(__('ليس لديك صلاحية للوصول', 'fiqhlearning'));
+    }
+
+    $note_id = FiqhLearning_Notes::add_note($user_id, $lesson_id, $course_id, $note_text);
+
+    if (is_wp_error($note_id)) {
+        wp_send_json_error($note_id->get_error_message());
+    }
+
+    $note = FiqhLearning_Notes::get_note($note_id);
+
+    wp_send_json_success(array(
+        'message' => __('تم إضافة الملاحظة بنجاح', 'fiqhlearning'),
+        'note' => $note
+    ));
+}
+add_action('wp_ajax_fiqh_add_note', 'fiqh_add_note');
+
+/**
+ * تحديث ملاحظة
+ */
+function fiqh_update_note() {
+    check_ajax_referer('fiqh-ajax-nonce', 'nonce');
+
+    if (!is_user_logged_in()) {
+        wp_send_json_error(__('يجب تسجيل الدخول', 'fiqhlearning'));
+    }
+
+    $user_id = get_current_user_id();
+    $note_id = isset($_POST['note_id']) ? intval($_POST['note_id']) : 0;
+    $note_text = isset($_POST['note_text']) ? wp_kses_post($_POST['note_text']) : '';
+
+    if (!$note_id || empty($note_text)) {
+        wp_send_json_error(__('البيانات غير مكتملة', 'fiqhlearning'));
+    }
+
+    $result = FiqhLearning_Notes::update_note($note_id, $user_id, $note_text);
+
+    if (is_wp_error($result)) {
+        wp_send_json_error($result->get_error_message());
+    }
+
+    $note = FiqhLearning_Notes::get_note($note_id);
+
+    wp_send_json_success(array(
+        'message' => __('تم تحديث الملاحظة بنجاح', 'fiqhlearning'),
+        'note' => $note
+    ));
+}
+add_action('wp_ajax_fiqh_update_note', 'fiqh_update_note');
+
+/**
+ * حذف ملاحظة
+ */
+function fiqh_delete_note() {
+    check_ajax_referer('fiqh-ajax-nonce', 'nonce');
+
+    if (!is_user_logged_in()) {
+        wp_send_json_error(__('يجب تسجيل الدخول', 'fiqhlearning'));
+    }
+
+    $user_id = get_current_user_id();
+    $note_id = isset($_POST['note_id']) ? intval($_POST['note_id']) : 0;
+
+    if (!$note_id) {
+        wp_send_json_error(__('البيانات غير مكتملة', 'fiqhlearning'));
+    }
+
+    $result = FiqhLearning_Notes::delete_note($note_id, $user_id);
+
+    if (is_wp_error($result)) {
+        wp_send_json_error($result->get_error_message());
+    }
+
+    wp_send_json_success(__('تم حذف الملاحظة بنجاح', 'fiqhlearning'));
+}
+add_action('wp_ajax_fiqh_delete_note', 'fiqh_delete_note');
+
+/**
+ * الحصول على ملاحظات الدرس
+ */
+function fiqh_get_lesson_notes() {
+    check_ajax_referer('fiqh-ajax-nonce', 'nonce');
+
+    if (!is_user_logged_in()) {
+        wp_send_json_error(__('يجب تسجيل الدخول', 'fiqhlearning'));
+    }
+
+    $user_id = get_current_user_id();
+    $lesson_id = isset($_POST['lesson_id']) ? intval($_POST['lesson_id']) : 0;
+
+    if (!$lesson_id) {
+        wp_send_json_error(__('البيانات غير مكتملة', 'fiqhlearning'));
+    }
+
+    $notes = FiqhLearning_Notes::get_lesson_notes($user_id, $lesson_id);
+
+    wp_send_json_success(array('notes' => $notes));
+}
+add_action('wp_ajax_fiqh_get_lesson_notes', 'fiqh_get_lesson_notes');
