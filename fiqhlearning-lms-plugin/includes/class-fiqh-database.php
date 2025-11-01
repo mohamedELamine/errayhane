@@ -89,14 +89,17 @@ class FiqhLearning_Database {
         ) $charset_collate;";
         dbDelta($sql_progress);
 
-        // جدول الأسئلة (Questions)
+        // جدول الأسئلة (Questions) - نظام مبسط مع الإجابة في نفس الجدول
         $table_questions = $wpdb->prefix . 'fiqh_questions';
         $sql_questions = "CREATE TABLE IF NOT EXISTS $table_questions (
             id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             user_id bigint(20) UNSIGNED NOT NULL,
             course_id bigint(20) UNSIGNED,
             lesson_id bigint(20) UNSIGNED,
-            question_text text NOT NULL,
+            question text NOT NULL,
+            answer text,
+            answered_by bigint(20) UNSIGNED,
+            answered_at datetime,
             is_anonymous tinyint(1) DEFAULT 0,
             status varchar(20) DEFAULT 'pending',
             is_featured tinyint(1) DEFAULT 0,
@@ -107,28 +110,11 @@ class FiqhLearning_Database {
             KEY user_id (user_id),
             KEY course_id (course_id),
             KEY lesson_id (lesson_id),
+            KEY answered_by (answered_by),
             KEY status (status),
             KEY is_featured (is_featured)
         ) $charset_collate;";
         dbDelta($sql_questions);
-
-        // جدول الإجابات (Answers)
-        $table_answers = $wpdb->prefix . 'fiqh_answers';
-        $sql_answers = "CREATE TABLE IF NOT EXISTS $table_answers (
-            id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            question_id bigint(20) UNSIGNED NOT NULL,
-            user_id bigint(20) UNSIGNED NOT NULL,
-            answer_text text NOT NULL,
-            is_approved tinyint(1) DEFAULT 0,
-            is_best_answer tinyint(1) DEFAULT 0,
-            created_at datetime DEFAULT CURRENT_TIMESTAMP,
-            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            PRIMARY KEY (id),
-            KEY question_id (question_id),
-            KEY user_id (user_id),
-            KEY is_approved (is_approved)
-        ) $charset_collate;";
-        dbDelta($sql_answers);
 
         // جدول الاختبارات (Quizzes)
         $table_quizzes = $wpdb->prefix . 'fiqh_quizzes';
