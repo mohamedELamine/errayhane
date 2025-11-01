@@ -26,10 +26,10 @@ get_header();
                     <input type="text" name="s" placeholder="<?php _e('ابحث عن مقرر...', 'fiqhlearning'); ?>" value="<?php echo get_search_query(); ?>" class="filter-search">
                 </div>
 
-                <!-- فلتر المادة -->
+                <!-- فلتر العلوم -->
                 <?php
                 $categories = get_terms(array(
-                    'taxonomy' => 'fiqh_course_category',
+                    'taxonomy' => 'fiqh_course_science',
                     'hide_empty' => true,
                 ));
 
@@ -37,7 +37,7 @@ get_header();
                 ?>
                     <div class="filter-group">
                         <select name="course_category" class="filter-select">
-                            <option value=""><?php _e('جميع المواد', 'fiqhlearning'); ?></option>
+                            <option value=""><?php _e('جميع العلوم', 'fiqhlearning'); ?></option>
                             <?php foreach ($categories as $category) : ?>
                                 <option value="<?php echo esc_attr($category->slug); ?>" <?php selected(get_query_var('course_category'), $category->slug); ?>>
                                     <?php echo esc_html($category->name); ?>
@@ -139,7 +139,7 @@ get_header();
 
                                 <!-- التصنيفات -->
                                 <?php
-                                $terms = get_the_terms(get_the_ID(), 'fiqh_course_category');
+                                $terms = get_the_terms(get_the_ID(), 'fiqh_course_science');
                                 if ($terms && !is_wp_error($terms)) :
                                     ?>
                                     <div class="course-categories">

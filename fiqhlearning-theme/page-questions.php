@@ -49,11 +49,11 @@ if (!is_user_logged_in()) {
 
             <!-- فلتر المادة -->
             <div class="filter-group card">
-                <h3><?php _e('المادة', 'fiqhlearning'); ?></h3>
+                <h3><?php _e('العلم', 'fiqhlearning'); ?></h3>
                 <select id="filter-category" class="filter-select">
-                    <option value=""><?php _e('جميع المواد', 'fiqhlearning'); ?></option>
+                    <option value=""><?php _e('جميع العلوم', 'fiqhlearning'); ?></option>
                     <?php
-                    $categories = get_terms(array('taxonomy' => 'fiqh_course_category', 'hide_empty' => true));
+                    $categories = get_terms(array('taxonomy' => 'fiqh_course_science', 'hide_empty' => true));
                     if ($categories && !is_wp_error($categories)) :
                         foreach ($categories as $category) :
                             ?>

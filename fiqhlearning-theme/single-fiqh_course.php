@@ -85,7 +85,7 @@ $can_access = is_user_logged_in() && (
 
                         <!-- التصنيفات -->
                         <?php
-                        $terms = get_the_terms(get_the_ID(), 'fiqh_course_category');
+                        $terms = get_the_terms(get_the_ID(), 'fiqh_course_science');
                         if ($terms && !is_wp_error($terms)) :
                             foreach ($terms as $term) :
                                 ?>
