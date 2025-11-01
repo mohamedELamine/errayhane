@@ -63,6 +63,7 @@ class FiqhLearning_LMS {
         require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-progress.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-questions.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-ajax.php';
+        require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-rest-api.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-admin.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-admin-menus.php';
     }
