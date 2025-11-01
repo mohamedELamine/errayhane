@@ -141,18 +141,99 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                 </div>
 
                 <!-- تبويب المرفقات -->
-                <?php if ($pdf_url) : ?>
+                <?php
+                // الحصول على المرفقات المخزنة
+                $attachments = get_post_meta(get_the_ID(), '_fiqh_lesson_attachments', true);
+                $has_attachments = !empty($attachments) && is_array($attachments);
+
+                // للتوافق مع النظام القديم - التحقق من وجود PDF قديم
+                if (!$has_attachments && $pdf_url) {
+                    $attachments = array(
+                        array(
+                            'type' => 'pdf',
+                            'title' => 'كتاب الدرس',
+                            'content' => $pdf_url
+                        )
+                    );
+                    $has_attachments = true;
+                }
+                ?>
+                <?php if ($has_attachments) : ?>
                     <div class="tab-pane" id="attachments-pane">
                         <div class="attachments-section">
-                            <button class="btn btn-primary view-pdf-btn" data-pdf-url="<?php echo esc_url($pdf_url); ?>" data-pdf-title="<?php the_title(); ?>">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                </svg>
-                                <?php _e('عرض PDF', 'fiqhlearning'); ?>
-                            </button>
+                            <div class="attachments-list">
+                                <?php foreach ($attachments as $index => $attachment) :
+                                    $type = isset($attachment['type']) ? $attachment['type'] : 'text';
+                                    $title = isset($attachment['title']) ? $attachment['title'] : '';
+                                    $content = isset($attachment['content']) ? $attachment['content'] : '';
+                                    ?>
+                                    <div class="attachment-item card" data-type="<?php echo esc_attr($type); ?>">
+                                        <div class="attachment-header">
+                                            <?php if ($type === 'pdf') : ?>
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                </svg>
+                                            <?php elseif ($type === 'link') : ?>
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                                </svg>
+                                            <?php else : ?>
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                </svg>
+                                            <?php endif; ?>
+                                            <h4 class="attachment-title"><?php echo esc_html($title); ?></h4>
+                                        </div>
+
+                                        <div class="attachment-content">
+                                            <?php if ($type === 'text') : ?>
+                                                <div class="attachment-text">
+                                                    <?php echo wpautop(wp_kses_post($content)); ?>
+                                                </div>
+                                            <?php elseif ($type === 'link') : ?>
+                                                <div class="attachment-link">
+                                                    <a href="<?php echo esc_url($content); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                                                        </svg>
+                                                        <?php _e('فتح الرابط', 'fiqhlearning'); ?>
+                                                    </a>
+                                                    <p class="link-url"><?php echo esc_url($content); ?></p>
+                                                </div>
+                                            <?php elseif ($type === 'pdf') : ?>
+                                                <div class="attachment-pdf">
+                                                    <button class="btn btn-primary view-pdf-btn" data-pdf-url="<?php echo esc_url($content); ?>" data-pdf-title="<?php echo esc_attr($title); ?>">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                                        </svg>
+                                                        <?php _e('عرض PDF', 'fiqhlearning'); ?>
+                                                    </button>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="attachment-type-badge">
+                                            <?php
+                                            if ($type === 'pdf') {
+                                                _e('ملف PDF', 'fiqhlearning');
+                                            } elseif ($type === 'link') {
+                                                _e('رابط خارجي', 'fiqhlearning');
+                                            } else {
+                                                _e('نص', 'fiqhlearning');
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
