@@ -86,31 +86,37 @@ Tags: rtl-language-support, education, lms, arabic, islamic, two-columns, custom
     --radius-full: 9999px;
 }
 
-/* وضع الظلام */
+/* وضع الظلام - ألوان محسنة */
 body.dark-mode {
     /* الخلفيات */
     --color-white: #1a1f2e;
-    --color-light: #252b3b;
-    --color-light-gray: #2d3548;
+    --color-light: #242936;
+    --color-light-gray: #2d3444;
 
     /* النصوص */
-    --color-black: #FFFFFF;
-    --color-dark: #e8eaf0;
-    --color-dark-gray: #b4b9c7;
-    --color-gray: #8892a6;
+    --color-black: #f0f2f5;
+    --color-dark: #e4e6eb;
+    --color-dark-gray: #b0b3b8;
+    --color-gray: #8a8d91;
 
-    /* الألوان الأساسية - تبقى كما هي */
-    --color-primary: #14B171;
-    --color-primary-dark: #10965F;
-    --color-primary-light: #2DCE89;
-    --color-accent: #2DCE89;
+    /* الألوان الأساسية - أفتح قليلاً للوضع الليلي */
+    --color-primary: #1ec97e;
+    --color-primary-dark: #14B171;
+    --color-primary-light: #35d48f;
+    --color-accent: #35d48f;
 
-    /* الظلال في الوضع الليلي */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+    /* ألوان الحالات */
+    --color-success: #1ec97e;
+    --color-warning: #ffb84d;
+    --color-error: #ff6b6b;
+    --color-info: #5dade2;
+
+    /* الظلال في الوضع الليلي - أكثر وضوحًا */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.6);
 }
 
 body.dark-mode .card {
@@ -126,6 +132,13 @@ body.dark-mode select {
     border-color: var(--color-gray);
 }
 
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    border-color: var(--color-primary);
+    background-color: var(--color-light);
+}
+
 body.dark-mode .main-header {
     background-color: var(--color-white);
     border-bottom: 1px solid var(--color-light-gray);
@@ -134,6 +147,68 @@ body.dark-mode .main-header {
 body.dark-mode .site-footer {
     background-color: #15191f;
     border-top: 1px solid var(--color-light-gray);
+}
+
+/* تحسينات الوضع الليلي للأسئلة والأجوبة */
+body.dark-mode .lesson-tab {
+    color: var(--color-dark-gray);
+}
+
+body.dark-mode .lesson-tab.active {
+    color: var(--color-primary);
+}
+
+body.dark-mode .lesson-tabs {
+    border-bottom-color: var(--color-light-gray);
+}
+
+body.dark-mode .video-container {
+    background-color: #000;
+}
+
+body.dark-mode .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+body.dark-mode .btn-primary:hover {
+    background-color: var(--color-primary-light);
+}
+
+body.dark-mode .lesson-course-link,
+body.dark-mode .lesson-duration {
+    color: var(--color-dark-gray);
+}
+
+body.dark-mode .lesson-status-completed {
+    color: var(--color-success);
+}
+
+body.dark-mode .lesson-item-sidebar:hover {
+    background-color: var(--color-light-gray);
+}
+
+body.dark-mode .lesson-item-sidebar.active {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+body.dark-mode .modal-content {
+    background-color: var(--color-light);
+}
+
+body.dark-mode .search-modal-content {
+    background-color: var(--color-light);
+}
+
+body.dark-mode code {
+    background-color: var(--color-light-gray);
+    color: var(--color-primary-light);
+}
+
+body.dark-mode .user-dropdown {
+    background-color: var(--color-light);
+    border: 1px solid var(--color-light-gray);
 }
 
 /* ==========================================================================
