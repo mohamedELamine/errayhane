@@ -116,7 +116,7 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
 
             <!-- التبويبات -->
             <div class="lesson-tabs">
-                <button class="lesson-tab active" data-tab="notes"><?php _e('الملاحظات', 'fiqhlearning'); ?></button>
+                <button class="lesson-tab active" data-tab="notes"><?php _e('الوصف', 'fiqhlearning'); ?></button>
                 <?php if ($pdf_url) : ?>
                     <button class="lesson-tab" data-tab="attachments"><?php _e('المرفقات', 'fiqhlearning'); ?></button>
                 <?php endif; ?>
@@ -141,18 +141,99 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                 </div>
 
                 <!-- تبويب المرفقات -->
-                <?php if ($pdf_url) : ?>
+                <?php
+                // الحصول على المرفقات المخزنة
+                $attachments = get_post_meta(get_the_ID(), '_fiqh_lesson_attachments', true);
+                $has_attachments = !empty($attachments) && is_array($attachments);
+
+                // للتوافق مع النظام القديم - التحقق من وجود PDF قديم
+                if (!$has_attachments && $pdf_url) {
+                    $attachments = array(
+                        array(
+                            'type' => 'pdf',
+                            'title' => 'كتاب الدرس',
+                            'content' => $pdf_url
+                        )
+                    );
+                    $has_attachments = true;
+                }
+                ?>
+                <?php if ($has_attachments) : ?>
                     <div class="tab-pane" id="attachments-pane">
                         <div class="attachments-section">
-                            <button class="btn btn-primary view-pdf-btn" data-pdf-url="<?php echo esc_url($pdf_url); ?>" data-pdf-title="<?php the_title(); ?>">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                </svg>
-                                <?php _e('عرض PDF', 'fiqhlearning'); ?>
-                            </button>
+                            <div class="attachments-list">
+                                <?php foreach ($attachments as $index => $attachment) :
+                                    $type = isset($attachment['type']) ? $attachment['type'] : 'text';
+                                    $title = isset($attachment['title']) ? $attachment['title'] : '';
+                                    $content = isset($attachment['content']) ? $attachment['content'] : '';
+                                    ?>
+                                    <div class="attachment-item card" data-type="<?php echo esc_attr($type); ?>">
+                                        <div class="attachment-header">
+                                            <?php if ($type === 'pdf') : ?>
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                </svg>
+                                            <?php elseif ($type === 'link') : ?>
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                                </svg>
+                                            <?php else : ?>
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                </svg>
+                                            <?php endif; ?>
+                                            <h4 class="attachment-title"><?php echo esc_html($title); ?></h4>
+                                        </div>
+
+                                        <div class="attachment-content">
+                                            <?php if ($type === 'text') : ?>
+                                                <div class="attachment-text">
+                                                    <?php echo wpautop(wp_kses_post($content)); ?>
+                                                </div>
+                                            <?php elseif ($type === 'link') : ?>
+                                                <div class="attachment-link">
+                                                    <a href="<?php echo esc_url($content); ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                                                        </svg>
+                                                        <?php _e('فتح الرابط', 'fiqhlearning'); ?>
+                                                    </a>
+                                                    <p class="link-url"><?php echo esc_url($content); ?></p>
+                                                </div>
+                                            <?php elseif ($type === 'pdf') : ?>
+                                                <div class="attachment-pdf">
+                                                    <button class="btn btn-primary view-pdf-btn" data-pdf-url="<?php echo esc_url($content); ?>" data-pdf-title="<?php echo esc_attr($title); ?>">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                                        </svg>
+                                                        <?php _e('عرض PDF', 'fiqhlearning'); ?>
+                                                    </button>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="attachment-type-badge">
+                                            <?php
+                                            if ($type === 'pdf') {
+                                                _e('ملف PDF', 'fiqhlearning');
+                                            } elseif ($type === 'link') {
+                                                _e('رابط خارجي', 'fiqhlearning');
+                                            } else {
+                                                _e('نص', 'fiqhlearning');
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -267,20 +348,91 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                 <!-- تبويب ملاحظتي -->
                 <div class="tab-pane" id="my-notes-pane">
                     <div class="my-notes-section">
-                        <?php
-                        $user_notes = get_user_meta(get_current_user_id(), '_fiqh_lesson_notes_' . get_the_ID(), true);
-                        ?>
-                        <form id="save-notes-form" class="notes-form">
-                            <textarea
-                                name="lesson_notes"
-                                id="lesson-notes"
-                                rows="10"
-                                placeholder="<?php _e('اكتب ملاحظاتك الخاصة هنا...', 'fiqhlearning'); ?>"
-                            ><?php echo esc_textarea($user_notes); ?></textarea>
-                            <button type="submit" class="btn btn-primary">
-                                <?php _e('حفظ الملاحظات', 'fiqhlearning'); ?>
-                            </button>
-                        </form>
+
+                        <!-- نموذج إضافة ملاحظة جديدة -->
+                        <div class="add-note-form-container card">
+                            <h3><?php _e('إضافة ملاحظة جديدة', 'fiqhlearning'); ?></h3>
+                            <form id="add-note-form" class="notes-form">
+                                <textarea
+                                    name="note_text"
+                                    id="new-note-text"
+                                    rows="4"
+                                    placeholder="<?php _e('اكتب ملاحظتك هنا...', 'fiqhlearning'); ?>"
+                                    required
+                                ></textarea>
+                                <button type="submit" class="btn btn-primary">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    <?php _e('إضافة ملاحظة', 'fiqhlearning'); ?>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- قائمة الملاحظات -->
+                        <div class="notes-list" id="notes-list">
+                            <?php
+                            $notes = FiqhLearning_Notes::get_lesson_notes(get_current_user_id(), get_the_ID());
+
+                            if ($notes && count($notes) > 0) :
+                                foreach ($notes as $note) :
+                                    ?>
+                                    <div class="note-item card" data-note-id="<?php echo esc_attr($note->id); ?>">
+                                        <div class="note-header">
+                                            <span class="note-date"><?php echo fiqh_format_date($note->created_at); ?></span>
+                                            <div class="note-actions">
+                                                <button class="note-menu-toggle" aria-label="خيارات">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <circle cx="12" cy="12" r="1"></circle>
+                                                        <circle cx="12" cy="5" r="1"></circle>
+                                                        <circle cx="12" cy="19" r="1"></circle>
+                                                    </svg>
+                                                </button>
+                                                <div class="note-dropdown-menu" style="display: none;">
+                                                    <button class="edit-note-btn" data-note-id="<?php echo esc_attr($note->id); ?>">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                                        </svg>
+                                                        <?php _e('تعديل', 'fiqhlearning'); ?>
+                                                    </button>
+                                                    <button class="delete-note-btn" data-note-id="<?php echo esc_attr($note->id); ?>">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                        </svg>
+                                                        <?php _e('حذف', 'fiqhlearning'); ?>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="note-content">
+                                            <div class="note-text"><?php echo wp_kses_post($note->note_text); ?></div>
+                                            <form class="note-edit-form" style="display: none;">
+                                                <textarea rows="4" required><?php echo esc_textarea($note->note_text); ?></textarea>
+                                                <div class="note-edit-actions">
+                                                    <button type="submit" class="btn btn-sm btn-primary"><?php _e('حفظ', 'fiqhlearning'); ?></button>
+                                                    <button type="button" class="btn btn-sm btn-secondary cancel-edit-btn"><?php _e('إلغاء', 'fiqhlearning'); ?></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <?php
+                                endforeach;
+                            else :
+                                ?>
+                                <div class="no-notes">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="12" y1="18" x2="12" y2="12"></line>
+                                        <line x1="9" y1="15" x2="15" y2="15"></line>
+                                    </svg>
+                                    <p><?php _e('لا توجد ملاحظات حتى الآن. أضف ملاحظتك الأولى!', 'fiqhlearning'); ?></p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
 
@@ -313,6 +465,14 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                             <source src="<?php echo esc_url($audio_url); ?>" type="audio/mpeg">
                             <?php _e('متصفحك لا يدعم تشغيل الملفات الصوتية', 'fiqhlearning'); ?>
                         </audio>
+                        <a href="<?php echo esc_url($audio_url); ?>" download class="btn btn-outline btn-sm" style="width: 100%; margin-top: 10px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <?php _e('تحميل الدرس الصوتي', 'fiqhlearning'); ?>
+                        </a>
                     </div>
                 </div>
             <?php endif; ?>
@@ -402,23 +562,135 @@ jQuery(document).ready(function($) {
         $('#' + tabId).addClass('active');
     });
 
-    // حفظ الملاحظات
-    $('#save-notes-form').on('submit', function(e) {
+    // إدارة الملاحظات
+    const lessonId = <?php echo get_the_ID(); ?>;
+    const courseId = <?php echo get_post_meta(get_the_ID(), '_fiqh_lesson_course_id', true); ?>;
+
+    // toggle قائمة النقاط الثلاثة
+    $(document).on('click', '.note-menu-toggle', function(e) {
+        e.stopPropagation();
+        const menu = $(this).siblings('.note-dropdown-menu');
+        $('.note-dropdown-menu').not(menu).hide();
+        menu.toggle();
+    });
+
+    // إغلاق القائمة عند النقر خارجها
+    $(document).on('click', function() {
+        $('.note-dropdown-menu').hide();
+    });
+
+    // إضافة ملاحظة جديدة
+    $('#add-note-form').on('submit', function(e) {
         e.preventDefault();
+        const noteText = $('#new-note-text').val().trim();
+
+        if (!noteText) return;
 
         $.ajax({
             url: fiqhData.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'fiqh_save_lesson_notes',
+                action: 'fiqh_add_note',
                 nonce: fiqhData.nonce,
-                lesson_id: <?php echo get_the_ID(); ?>,
-                notes: $('#lesson-notes').val()
+                lesson_id: lessonId,
+                course_id: courseId,
+                note_text: noteText
             },
             success: function(response) {
                 if (response.success) {
-                    alert('<?php _e('تم حفظ الملاحظات بنجاح', 'fiqhlearning'); ?>');
+                    location.reload(); // إعادة تحميل الصفحة لعرض الملاحظة الجديدة
+                } else {
+                    alert(response.data || '<?php _e('حدث خطأ', 'fiqhlearning'); ?>');
                 }
+            },
+            error: function() {
+                alert('<?php _e('حدث خطأ في الاتصال', 'fiqhlearning'); ?>');
+            }
+        });
+    });
+
+    // تعديل ملاحظة
+    $(document).on('click', '.edit-note-btn', function(e) {
+        e.preventDefault();
+        const noteItem = $(this).closest('.note-item');
+        noteItem.find('.note-text').hide();
+        noteItem.find('.note-edit-form').show();
+        $('.note-dropdown-menu').hide();
+    });
+
+    // إلغاء التعديل
+    $(document).on('click', '.cancel-edit-btn', function(e) {
+        e.preventDefault();
+        const noteItem = $(this).closest('.note-item');
+        noteItem.find('.note-edit-form').hide();
+        noteItem.find('.note-text').show();
+    });
+
+    // حفظ التعديل
+    $(document).on('submit', '.note-edit-form', function(e) {
+        e.preventDefault();
+        const noteItem = $(this).closest('.note-item');
+        const noteId = noteItem.data('note-id');
+        const noteText = $(this).find('textarea').val().trim();
+
+        if (!noteText) return;
+
+        $.ajax({
+            url: fiqhData.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'fiqh_update_note',
+                nonce: fiqhData.nonce,
+                note_id: noteId,
+                note_text: noteText
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert(response.data || '<?php _e('حدث خطأ', 'fiqhlearning'); ?>');
+                }
+            },
+            error: function() {
+                alert('<?php _e('حدث خطأ في الاتصال', 'fiqhlearning'); ?>');
+            }
+        });
+    });
+
+    // حذف ملاحظة
+    $(document).on('click', '.delete-note-btn', function(e) {
+        e.preventDefault();
+
+        if (!confirm('<?php _e('هل أنت متأكد من حذف هذه الملاحظة؟', 'fiqhlearning'); ?>')) {
+            return;
+        }
+
+        const noteItem = $(this).closest('.note-item');
+        const noteId = noteItem.data('note-id');
+
+        $.ajax({
+            url: fiqhData.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'fiqh_delete_note',
+                nonce: fiqhData.nonce,
+                note_id: noteId
+            },
+            success: function(response) {
+                if (response.success) {
+                    noteItem.fadeOut(300, function() {
+                        $(this).remove();
+                        // إذا لم يبق ملاحظات، عرض رسالة "لا توجد ملاحظات"
+                        if ($('.note-item').length === 0) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    alert(response.data || '<?php _e('حدث خطأ', 'fiqhlearning'); ?>');
+                }
+            },
+            error: function() {
+                alert('<?php _e('حدث خطأ في الاتصال', 'fiqhlearning'); ?>');
             }
         });
     });

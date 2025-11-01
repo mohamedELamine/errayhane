@@ -1,46 +1,94 @@
 <?php
 /**
- * قالب أرشيف المقررات
+ * قالب عرض العلوم (Sciences Taxonomy)
  *
  * @package FiqhLearning
  */
 
 get_header();
+
+// Get current term
+$current_term = get_queried_object();
 ?>
 
 <main id="primary" class="site-main">
     <div class="container">
 
-        <!-- عنوان الصفحة -->
-        <header class="page-header">
-            <h1 class="page-title"><?php _e('المقررات الدراسية', 'fiqhlearning'); ?></h1>
+        <!-- رأس الصفحة -->
+        <header class="taxonomy-header">
+            <div class="taxonomy-hero">
+                <div class="taxonomy-title-wrapper">
+                    <h1 class="taxonomy-title">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-left: 10px;">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                        <?php echo esc_html($current_term->name); ?>
+                    </h1>
+
+                    <?php if ($current_term->description) : ?>
+                        <p class="taxonomy-description"><?php echo esc_html($current_term->description); ?></p>
+                    <?php endif; ?>
+
+                    <div class="taxonomy-meta">
+                        <span class="course-count">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                            <?php echo $current_term->count; ?> <?php _e('مقرر', 'fiqhlearning'); ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <?php fiqh_breadcrumb(); ?>
         </header>
 
         <!-- فلاتر البحث -->
         <div class="courses-filters">
-            <form method="get" action="<?php echo esc_url(get_post_type_archive_link('fiqh_course')); ?>" class="filters-form">
-
+            <form method="get" class="filters-form">
                 <!-- بحث بالاسم -->
                 <div class="filter-group">
-                    <input type="text" name="s" placeholder="<?php _e('ابحث عن مقرر...', 'fiqhlearning'); ?>" value="<?php echo get_search_query(); ?>" class="filter-search">
+                    <input type="text" name="s" placeholder="<?php _e('ابحث عن مقرر في هذا العلم...', 'fiqhlearning'); ?>" value="<?php echo get_search_query(); ?>" class="filter-search">
                 </div>
 
-                <!-- فلتر العلوم -->
+                <!-- فلتر الفصل الدراسي -->
                 <?php
-                $categories = get_terms(array(
-                    'taxonomy' => 'fiqh_course_science',
+                $semesters = get_terms(array(
+                    'taxonomy' => 'fiqh_course_semester',
                     'hide_empty' => true,
                 ));
 
-                if ($categories && !is_wp_error($categories)) :
+                if ($semesters && !is_wp_error($semesters)) :
                 ?>
                     <div class="filter-group">
-                        <select name="course_category" class="filter-select">
-                            <option value=""><?php _e('جميع العلوم', 'fiqhlearning'); ?></option>
-                            <?php foreach ($categories as $category) : ?>
-                                <option value="<?php echo esc_attr($category->slug); ?>" <?php selected(get_query_var('course_category'), $category->slug); ?>>
-                                    <?php echo esc_html($category->name); ?>
+                        <select name="semester" class="filter-select">
+                            <option value=""><?php _e('جميع الفصول', 'fiqhlearning'); ?></option>
+                            <?php foreach ($semesters as $semester) : ?>
+                                <option value="<?php echo esc_attr($semester->slug); ?>" <?php selected(isset($_GET['semester']) ? $_GET['semester'] : '', $semester->slug); ?>>
+                                    <?php echo esc_html($semester->name); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                <?php endif; ?>
+
+                <!-- فلتر نوع المقرر -->
+                <?php
+                $types = get_terms(array(
+                    'taxonomy' => 'fiqh_course_type',
+                    'hide_empty' => true,
+                ));
+
+                if ($types && !is_wp_error($types)) :
+                ?>
+                    <div class="filter-group">
+                        <select name="type" class="filter-select">
+                            <option value=""><?php _e('جميع الأنواع', 'fiqhlearning'); ?></option>
+                            <?php foreach ($types as $type) : ?>
+                                <option value="<?php echo esc_attr($type->slug); ?>" <?php selected(isset($_GET['type']) ? $_GET['type'] : '', $type->slug); ?>>
+                                    <?php echo esc_html($type->name); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -116,17 +164,26 @@ get_header();
                                     ?>
                                 </div>
 
-                                <!-- التصنيفات -->
-                                <?php
-                                $terms = get_the_terms(get_the_ID(), 'fiqh_course_science');
-                                if ($terms && !is_wp_error($terms)) :
+                                <!-- التصنيفات الإضافية -->
+                                <div class="course-categories">
+                                    <?php
+                                    // عرض الفصل الدراسي
+                                    $semester_terms = get_the_terms(get_the_ID(), 'fiqh_course_semester');
+                                    if ($semester_terms && !is_wp_error($semester_terms)) {
+                                        foreach ($semester_terms as $term) {
+                                            echo '<span class="category-badge badge-semester">' . esc_html($term->name) . '</span>';
+                                        }
+                                    }
+
+                                    // عرض نوع المقرر
+                                    $type_terms = get_the_terms(get_the_ID(), 'fiqh_course_type');
+                                    if ($type_terms && !is_wp_error($type_terms)) {
+                                        foreach ($type_terms as $term) {
+                                            echo '<span class="category-badge badge-type">' . esc_html($term->name) . '</span>';
+                                        }
+                                    }
                                     ?>
-                                    <div class="course-categories">
-                                        <?php foreach ($terms as $term) : ?>
-                                            <span class="category-badge"><?php echo esc_html($term->name); ?></span>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endif; ?>
+                                </div>
 
                                 <div class="course-excerpt">
                                     <?php echo wp_trim_words(get_the_excerpt(), 15); ?>
@@ -140,7 +197,7 @@ get_header();
                                     ?>
                                 <?php endif; ?>
 
-                                <a href="<?php the_permalink(); ?>" class="btn btn-primary">
+                                <a href="<?php the_permalink(); ?>" class="btn btn-primary" style="margin-top: auto;">
                                     <?php _e('عرض المقرر', 'fiqhlearning'); ?>
                                 </a>
                             </div>
@@ -188,7 +245,7 @@ get_header();
                         <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
                     <h2><?php _e('لا توجد مقررات', 'fiqhlearning'); ?></h2>
-                    <p><?php _e('لم يتم العثور على مقررات تطابق معايير البحث', 'fiqhlearning'); ?></p>
+                    <p><?php _e('لم يتم العثور على مقررات في هذا العلم', 'fiqhlearning'); ?></p>
                 </div>
             <?php endif; ?>
         </div>

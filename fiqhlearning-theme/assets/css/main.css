@@ -342,18 +342,141 @@
 }
 
 /* ==========================================================================
+   صفحة العلوم (Taxonomy)
+   ========================================================================== */
+
+.taxonomy-header {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.taxonomy-hero {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    color: var(--color-white);
+    padding: var(--spacing-3xl) var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.taxonomy-title-wrapper {
+    max-width: 800px;
+}
+
+.taxonomy-title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+}
+
+.taxonomy-description {
+    font-size: var(--text-lg);
+    opacity: 0.95;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-lg);
+}
+
+.taxonomy-meta {
+    display: flex;
+    gap: var(--spacing-xl);
+    align-items: center;
+}
+
+.taxonomy-meta .course-count {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.badge-semester {
+    background-color: var(--color-info);
+    color: var(--color-white);
+}
+
+.badge-type {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+/* ==========================================================================
    المقررات
    ========================================================================== */
 
+/* فلاتر البحث */
+.courses-filters {
+    background: var(--color-white);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-base);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.filters-form {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filters-form .filter-group {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.filter-search,
+.filter-select {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    background-color: var(--color-light);
+    color: var(--color-dark);
+    transition: all var(--transition-fast);
+}
+
+.filter-search:focus,
+.filter-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 3px rgba(11, 94, 59, 0.1);
+}
+
+.filter-search::placeholder {
+    color: var(--color-gray);
+}
+
+.filters-form .btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* شبكة المقررات */
 .courses-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: var(--spacing-xl);
 }
 
 .course-card {
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .course-card:hover .course-hover-actions {
@@ -361,15 +484,31 @@
     visibility: visible;
 }
 
-.course-thumbnail {
+.course-thumbnail,
+.course-thumbnail-placeholder {
     width: 100%;
-    height: 200px;
+    height: 220px;
+    flex-shrink: 0;
     object-fit: cover;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
+.course-thumbnail-placeholder {
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.course-thumbnail-placeholder svg {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 .course-content {
     padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .course-title {
@@ -1112,4 +1251,362 @@
 .search-form-questions {
     display: flex;
     gap: var(--spacing-xs);
+}
+
+/* ==========================================================================
+   نظام الملاحظات المحسّن
+   ========================================================================== */
+
+.add-note-form-container {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+}
+
+.add-note-form-container h3 {
+    margin-bottom: var(--spacing-md);
+    font-size: var(--text-lg);
+}
+
+.notes-form textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--color-light-gray);
+    border-radius: var(--radius-md);
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    resize: vertical;
+    transition: all var(--transition-fast);
+}
+
+.notes-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(11, 94, 59, 0.1);
+}
+
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.note-item {
+    padding: var(--spacing-lg);
+    position: relative;
+    transition: all var(--transition-base);
+}
+
+.note-item:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-light-gray);
+}
+
+.note-date {
+    font-size: var(--text-sm);
+    color: var(--color-gray);
+}
+
+.note-actions {
+    position: relative;
+}
+
+.note-menu-toggle {
+    background: none;
+    border: none;
+    padding: var(--spacing-xs);
+    cursor: pointer;
+    color: var(--color-gray);
+    border-radius: var(--radius-base);
+    transition: all var(--transition-fast);
+}
+
+.note-menu-toggle:hover {
+    background-color: var(--color-light);
+    color: var(--color-primary);
+}
+
+.note-dropdown-menu {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 150px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.note-dropdown-menu button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: none;
+    border: none;
+    text-align: right;
+    cursor: pointer;
+    font-size: var(--text-sm);
+    transition: all var(--transition-fast);
+}
+
+.note-dropdown-menu button:hover {
+    background-color: var(--color-light);
+}
+
+.note-dropdown-menu .edit-note-btn:hover {
+    color: var(--color-primary);
+}
+
+.note-dropdown-menu .delete-note-btn {
+    color: var(--color-error);
+}
+
+.note-dropdown-menu .delete-note-btn:hover {
+    background-color: rgba(245, 101, 101, 0.1);
+}
+
+.note-content {
+    color: var(--color-dark);
+    line-height: 1.7;
+}
+
+.note-text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.note-edit-form textarea {
+    margin-bottom: var(--spacing-sm);
+}
+
+.note-edit-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.no-notes {
+    text-align: center;
+    padding: var(--spacing-3xl) var(--spacing-lg);
+    color: var(--color-gray);
+}
+
+.no-notes svg {
+    margin: 0 auto var(--spacing-lg);
+    color: var(--color-light-gray);
+}
+
+.no-notes p {
+    font-size: var(--text-lg);
+    margin: 0;
+}
+
+/* Dark mode للملاحظات */
+body.dark-mode .note-item {
+    background-color: var(--color-light);
+}
+
+body.dark-mode .note-dropdown-menu {
+    background-color: var(--color-light);
+    border-color: var(--color-light-gray);
+}
+
+body.dark-mode .note-dropdown-menu button:hover {
+    background-color: var(--color-light-gray);
+}
+
+/* ==========================================================================
+   نظام المرفقات المحسّن
+   ========================================================================== */
+
+.attachments-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.attachment-item {
+    padding: var(--spacing-lg);
+    position: relative;
+    transition: all var(--transition-base);
+    overflow: hidden;
+}
+
+.attachment-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.attachment-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-light-gray);
+}
+
+.attachment-header svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.attachment-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-dark);
+    margin: 0;
+    flex: 1;
+}
+
+.attachment-content {
+    margin-bottom: var(--spacing-md);
+}
+
+.attachment-text {
+    color: var(--color-dark);
+    line-height: 1.7;
+    font-size: var(--text-base);
+}
+
+.attachment-text p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.attachment-text p:last-child {
+    margin-bottom: 0;
+}
+
+.attachment-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.attachment-link .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    align-self: flex-start;
+}
+
+.link-url {
+    font-size: var(--text-sm);
+    color: var(--color-gray);
+    word-break: break-all;
+    background-color: var(--color-light);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-base);
+    margin: 0;
+}
+
+.attachment-pdf {
+    text-align: center;
+}
+
+.attachment-pdf .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.attachment-type-badge {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+}
+
+.attachment-type-badge {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+/* أنواع مختلفة من المرفقات - ألوان مميزة */
+.attachment-item[data-type="text"] .attachment-type-badge {
+    background-color: var(--color-info);
+}
+
+.attachment-item[data-type="link"] .attachment-type-badge {
+    background-color: var(--color-accent);
+}
+
+.attachment-item[data-type="pdf"] .attachment-type-badge {
+    background-color: var(--color-error);
+}
+
+/* رسالة عدم وجود مرفقات */
+.no-attachments {
+    text-align: center;
+    padding: var(--spacing-3xl) var(--spacing-lg);
+    color: var(--color-gray);
+}
+
+.no-attachments svg {
+    margin: 0 auto var(--spacing-lg);
+    color: var(--color-light-gray);
+}
+
+.no-attachments p {
+    font-size: var(--text-lg);
+    margin: 0;
+}
+
+/* Dark mode للمرفقات */
+body.dark-mode .attachment-item {
+    background-color: var(--color-light);
+}
+
+body.dark-mode .attachment-header {
+    border-bottom-color: var(--color-light-gray);
+}
+
+body.dark-mode .attachment-title {
+    color: var(--color-white);
+}
+
+body.dark-mode .attachment-text {
+    color: var(--color-light);
+}
+
+body.dark-mode .link-url {
+    background-color: var(--color-dark);
+    color: var(--color-light-gray);
+}
+
+/* استجابة الشاشات للمرفقات */
+@media (max-width: 768px) {
+    .attachments-list {
+        gap: var(--spacing-md);
+    }
+
+    .attachment-item {
+        padding: var(--spacing-md);
+    }
+
+    .attachment-header {
+        flex-wrap: wrap;
+    }
+
+    .attachment-type-badge {
+        position: static;
+        margin-top: var(--spacing-sm);
+    }
 }

@@ -62,11 +62,14 @@ class FiqhLearning_LMS {
         require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-enrollments.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-progress.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-questions.php';
+        require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-notes.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-ajax.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'includes/class-fiqh-rest-api.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-admin.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-admin-menus.php';
-        require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-batches-admin.php';
+        require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-levels-admin.php';
+        require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-course-meta.php';
+        require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-user-meta.php';
 
         // تحميل سكريبت المحتوى التجريبي
         require_once FIQH_LMS_PLUGIN_DIR . 'demo-content.php';
