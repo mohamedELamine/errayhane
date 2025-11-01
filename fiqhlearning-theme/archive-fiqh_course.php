@@ -47,27 +47,6 @@ get_header();
                     </div>
                 <?php endif; ?>
 
-                <!-- فلتر السنة -->
-                <?php
-                $years = get_terms(array(
-                    'taxonomy' => 'fiqh_course_year',
-                    'hide_empty' => true,
-                ));
-
-                if ($years && !is_wp_error($years)) :
-                ?>
-                    <div class="filter-group">
-                        <select name="course_year" class="filter-select">
-                            <option value=""><?php _e('جميع السنوات', 'fiqhlearning'); ?></option>
-                            <?php foreach ($years as $year) : ?>
-                                <option value="<?php echo esc_attr($year->slug); ?>" <?php selected(get_query_var('course_year'), $year->slug); ?>>
-                                    <?php echo esc_html($year->name); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                <?php endif; ?>
-
                 <button type="submit" class="btn btn-primary">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>

@@ -371,6 +371,24 @@ function fiqh_format_date($date) {
 }
 
 /**
+ * تخصيص عدد المقررات والعلوم المعروضة في كل صفحة
+ */
+function fiqh_custom_posts_per_page($query) {
+    if (!is_admin() && $query->is_main_query()) {
+        // صفحة أرشيف المقررات: 10 مقررات في الصفحة
+        if (is_post_type_archive('fiqh_course')) {
+            $query->set('posts_per_page', 10);
+        }
+
+        // صفحة أرشيف العلوم (taxonomy): 10 مقررات في الصفحة
+        if (is_tax('fiqh_course_science')) {
+            $query->set('posts_per_page', 10);
+        }
+    }
+}
+add_action('pre_get_posts', 'fiqh_custom_posts_per_page');
+
+/**
  * تضمين ملفات إضافية
  */
 require_once FIQH_THEME_DIR . '/inc/customizer.php';
