@@ -30,32 +30,22 @@ function fiqh_create_demo_content() {
     // 1. إنشاء Taxonomies
     echo '<h2>1. إنشاء التصنيفات</h2>';
 
-    // المواد
-    $subjects = array('الفقه', 'الحديث', 'التفسير', 'العقيدة', 'اللغة العربية');
-    foreach ($subjects as $subject) {
-        $term = term_exists($subject, 'fiqh_subject');
+    // العلوم
+    $sciences = array('الفقه', 'الحديث', 'التفسير', 'العقيدة', 'اللغة العربية');
+    foreach ($sciences as $science) {
+        $term = term_exists($science, 'fiqh_course_science');
         if (!$term) {
-            wp_insert_term($subject, 'fiqh_subject');
-            echo '<p>✓ تم إنشاء مادة: ' . $subject . '</p>';
-        }
-    }
-
-    // السنوات
-    $years = array('السنة الأولى', 'السنة الثانية', 'السنة الثالثة', 'السنة الرابعة');
-    foreach ($years as $year) {
-        $term = term_exists($year, 'fiqh_year');
-        if (!$term) {
-            wp_insert_term($year, 'fiqh_year');
-            echo '<p>✓ تم إنشاء سنة: ' . $year . '</p>';
+            wp_insert_term($science, 'fiqh_course_science');
+            echo '<p>✓ تم إنشاء علم: ' . $science . '</p>';
         }
     }
 
     // الفصول
     $semesters = array('الفصل الأول', 'الفصل الثاني');
     foreach ($semesters as $semester) {
-        $term = term_exists($semester, 'fiqh_semester');
+        $term = term_exists($semester, 'fiqh_course_semester');
         if (!$term) {
-            wp_insert_term($semester, 'fiqh_semester');
+            wp_insert_term($semester, 'fiqh_course_semester');
             echo '<p>✓ تم إنشاء فصل: ' . $semester . '</p>';
         }
     }
@@ -70,18 +60,18 @@ function fiqh_create_demo_content() {
         }
     }
 
-    // 2. إنشاء دفعة تجريبية
-    echo '<h2>2. إنشاء دفعة تجريبية</h2>';
+    // 2. إنشاء مستوى تجريبي
+    echo '<h2>2. إنشاء مستوى تجريبي</h2>';
     $batch_data = array(
-        'name' => 'دفعة 2024-2025',
-        'description' => 'دفعة تجريبية للعام الدراسي 2024-2025',
+        'name' => 'مستوى 2024-2025',
+        'description' => 'مستوى تجريبي للعام الدراسي 2024-2025',
         'start_date' => '2024-09-01',
         'end_date' => '2025-06-30',
         'status' => 'active',
     );
     $wpdb->insert($wpdb->prefix . 'fiqh_batches', $batch_data);
     $batch_id = $wpdb->insert_id;
-    echo '<p>✓ تم إنشاء دفعة: ' . $batch_data['name'] . ' (ID: ' . $batch_id . ')</p>';
+    echo '<p>✓ تم إنشاء مستوى: ' . $batch_data['name'] . ' (ID: ' . $batch_id . ')</p>';
 
     // 3. إنشاء مقرر تجريبي
     echo '<h2>3. إنشاء مقرر تجريبي</h2>';
@@ -108,9 +98,8 @@ function fiqh_create_demo_content() {
     update_post_meta($course_id, '_fiqh_course_teacher_id', 1);
 
     // إضافة التصنيفات
-    wp_set_object_terms($course_id, 'الفقه', 'fiqh_subject');
-    wp_set_object_terms($course_id, 'السنة الأولى', 'fiqh_year');
-    wp_set_object_terms($course_id, 'الفصل الأول', 'fiqh_semester');
+    wp_set_object_terms($course_id, 'الفقه', 'fiqh_course_science');
+    wp_set_object_terms($course_id, 'الفصل الأول', 'fiqh_course_semester');
     wp_set_object_terms($course_id, 'أساسي', 'fiqh_course_type');
 
     echo '<p>✓ تم إنشاء مقرر: فقه العبادات (ID: ' . $course_id . ')</p>';
@@ -254,11 +243,10 @@ function fiqh_create_demo_content() {
 
     echo '<h3>ملخص المحتوى المُنشأ:</h3>';
     echo '<ul>';
-    echo '<li>✓ 5 مواد دراسية</li>';
-    echo '<li>✓ 4 سنوات دراسية</li>';
-    echo '<li>✓ 2 فصول دراسية</li>';
-    echo '<li>✓ 3 أنواع مقررات</li>';
-    echo '<li>✓ 1 دفعة (2024-2025)</li>';
+    echo '<li>✓ 5 علوم (الفقه، الحديث، التفسير، العقيدة، اللغة العربية)</li>';
+    echo '<li>✓ 2 فصول دراسية (الأول والثاني)</li>';
+    echo '<li>✓ 3 أنواع مقررات (أساسي، تكميلي، إثرائي)</li>';
+    echo '<li>✓ 1 مستوى (2024-2025)</li>';
     echo '<li>✓ 1 مقرر (فقه العبادات)</li>';
     echo '<li>✓ 5 دروس</li>';
     echo '<li>✓ 1 طالب (student_demo / demo123)</li>';

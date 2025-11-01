@@ -38,16 +38,6 @@ class FiqhLearning_Admin_Menus {
             array($this, 'enrollments_page')
         );
 
-        // قائمة الدفعات
-        add_submenu_page(
-            'edit.php?post_type=fiqh_course',
-            __('الدفعات', 'fiqh-lms'),
-            __('الدفعات', 'fiqh-lms'),
-            'manage_options',
-            'fiqh-batches',
-            array($this, 'batches_page')
-        );
-
         // قائمة الأسئلة والإجابات
         add_submenu_page(
             'edit.php?post_type=fiqh_course',
@@ -182,18 +172,6 @@ class FiqhLearning_Admin_Menus {
                     ?>
                 </tbody>
             </table>
-        </div>
-        <?php
-    }
-
-    /**
-     * صفحة الدفعات
-     */
-    public function batches_page() {
-        ?>
-        <div class="wrap">
-            <h1><?php _e('إدارة الدفعات', 'fiqh-lms'); ?></h1>
-            <p><?php _e('صفحة إدارة الدفعات قيد التطوير', 'fiqh-lms'); ?></p>
         </div>
         <?php
     }
