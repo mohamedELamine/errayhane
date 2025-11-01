@@ -12,7 +12,7 @@ $course_id = get_post_meta(get_the_ID(), '_fiqh_lesson_course_id', true);
 $course = get_post($course_id);
 
 // التحقق من صلاحية الوصول
-$can_access = fiqh_user_can_access(get_the_ID(), get_current_user_id());
+$can_access = fiqh_can_access_lesson(get_the_ID(), get_current_user_id());
 
 if (!$can_access) {
     ?>
