@@ -103,8 +103,9 @@ class FiqhLearning_Levels_Admin {
                             <th><?php _e('تاريخ البداية', 'fiqh-lms'); ?></th>
                             <th><?php _e('تاريخ النهاية', 'fiqh-lms'); ?></th>
                             <th><?php _e('الحالة', 'fiqh-lms'); ?></th>
+                            <th><?php _e('عدد المقررات', 'fiqh-lms'); ?></th>
                             <th><?php _e('عدد الطلاب', 'fiqh-lms'); ?></th>
-                            <th style="width: 150px;"><?php _e('الإجراءات', 'fiqh-lms'); ?></th>
+                            <th style="width: 180px;"><?php _e('الإجراءات', 'fiqh-lms'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,6 +115,16 @@ class FiqhLearning_Levels_Admin {
                                 "SELECT COUNT(DISTINCT user_id) FROM {$wpdb->prefix}fiqh_enrollments WHERE level_id = %d",
                                 $level->id
                             ));
+
+                            // عدد المقررات المرتبطة بالمستوى
+                            $courses_count = 0;
+                            $all_courses = get_posts(array('post_type' => 'fiqh_course', 'posts_per_page' => -1, 'fields' => 'ids'));
+                            foreach ($all_courses as $course_id) {
+                                $course_levels = get_post_meta($course_id, '_fiqh_course_levels', true);
+                                if (is_array($course_levels) && in_array($level->id, $course_levels)) {
+                                    $courses_count++;
+                                }
+                            }
                             ?>
                             <tr>
                                 <td><?php echo $level->id; ?></td>
@@ -131,8 +142,12 @@ class FiqhLearning_Levels_Admin {
                                     echo $status_labels[$level->status] ?? $level->status;
                                     ?>
                                 </td>
+                                <td><strong><?php echo $courses_count; ?></strong> <?php _e('مقرر', 'fiqh-lms'); ?></td>
                                 <td><?php echo $students_count; ?> <?php _e('طالب', 'fiqh-lms'); ?></td>
                                 <td>
+                                    <a href="<?php echo admin_url('edit.php?post_type=fiqh_course&page=fiqh-levels&action=view&level_id=' . $level->id); ?>" class="button button-small button-primary">
+                                        <?php _e('عرض', 'fiqh-lms'); ?>
+                                    </a>
                                     <a href="<?php echo admin_url('edit.php?post_type=fiqh_course&page=fiqh-levels&action=edit&level_id=' . $level->id); ?>" class="button button-small">
                                         <?php _e('تعديل', 'fiqh-lms'); ?>
                                     </a>
