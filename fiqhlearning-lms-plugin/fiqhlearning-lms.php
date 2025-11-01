@@ -69,6 +69,7 @@ class FiqhLearning_LMS {
         require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-admin-menus.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-levels-admin.php';
         require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-course-meta.php';
+        require_once FIQH_LMS_PLUGIN_DIR . 'admin/class-fiqh-user-meta.php';
 
         // تحميل سكريبت المحتوى التجريبي
         require_once FIQH_LMS_PLUGIN_DIR . 'demo-content.php';
