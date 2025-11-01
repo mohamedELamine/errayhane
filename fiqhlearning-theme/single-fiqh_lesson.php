@@ -116,7 +116,7 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
 
             <!-- التبويبات -->
             <div class="lesson-tabs">
-                <button class="lesson-tab active" data-tab="notes"><?php _e('الملاحظات', 'fiqhlearning'); ?></button>
+                <button class="lesson-tab active" data-tab="notes"><?php _e('الوصف', 'fiqhlearning'); ?></button>
                 <?php if ($pdf_url) : ?>
                     <button class="lesson-tab" data-tab="attachments"><?php _e('المرفقات', 'fiqhlearning'); ?></button>
                 <?php endif; ?>
@@ -313,6 +313,14 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                             <source src="<?php echo esc_url($audio_url); ?>" type="audio/mpeg">
                             <?php _e('متصفحك لا يدعم تشغيل الملفات الصوتية', 'fiqhlearning'); ?>
                         </audio>
+                        <a href="<?php echo esc_url($audio_url); ?>" download class="btn btn-outline btn-sm" style="width: 100%; margin-top: 10px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <?php _e('تحميل الدرس الصوتي', 'fiqhlearning'); ?>
+                        </a>
                     </div>
                 </div>
             <?php endif; ?>

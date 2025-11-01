@@ -85,7 +85,7 @@ function fiqh_add_lesson_question() {
     }
 
     // التحقق من إمكانية الوصول للدرس
-    if (!fiqh_user_can_access($lesson_id, $user_id)) {
+    if (!fiqh_can_access_lesson($lesson_id, $user_id)) {
         wp_send_json_error(__('ليس لديك صلاحية للوصول', 'fiqhlearning'));
     }
 
@@ -175,7 +175,7 @@ function fiqh_complete_lesson() {
     }
 
     // التحقق من إمكانية الوصول للدرس
-    if (!fiqh_user_can_access($lesson_id, $user_id)) {
+    if (!fiqh_can_access_lesson($lesson_id, $user_id)) {
         wp_send_json_error(__('ليس لديك صلاحية للوصول', 'fiqhlearning'));
     }
 
