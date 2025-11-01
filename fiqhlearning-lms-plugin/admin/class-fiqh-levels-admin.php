@@ -56,6 +56,8 @@ class FiqhLearning_Levels_Admin {
             $this->render_add_level_form();
         } elseif ($action === 'edit' && $level_id) {
             $this->render_edit_level_form($level_id);
+        } elseif ($action === 'view' && $level_id) {
+            $this->render_view_level($level_id);
         } else {
             $this->render_levels_list();
         }
@@ -419,6 +421,251 @@ class FiqhLearning_Levels_Admin {
 
         wp_redirect(admin_url('edit.php?post_type=fiqh_course&page=fiqh-levels&message=deleted'));
         exit;
+    }
+
+    /**
+     * عرض تفاصيل المستوى
+     */
+    private function render_view_level($level_id) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'fiqh_batches';
+
+        // جلب معلومات المستوى
+        $level = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $level_id));
+
+        if (!$level) {
+            echo '<div class="wrap"><div class="notice notice-error"><p>' . __('المستوى غير موجود', 'fiqh-lms') . '</p></div></div>';
+            return;
+        }
+
+        // جلب المقررات المرتبطة
+        $courses = array();
+        $all_courses = get_posts(array('post_type' => 'fiqh_course', 'posts_per_page' => -1));
+        foreach ($all_courses as $course) {
+            $course_levels = get_post_meta($course->ID, '_fiqh_course_levels', true);
+            if (is_array($course_levels) && in_array($level_id, $course_levels)) {
+                $courses[] = $course;
+            }
+        }
+
+        // جلب الطلاب المسجلين في المستوى
+        $students_query = $wpdb->prepare(
+            "SELECT DISTINCT e.user_id, e.enrolled_at
+            FROM {$wpdb->prefix}fiqh_enrollments e
+            WHERE e.batch_id = %d
+            ORDER BY e.enrolled_at DESC",
+            $level_id
+        );
+        $enrolled_students = $wpdb->get_results($students_query);
+
+        ?>
+        <div class="wrap">
+            <h1 class="wp-heading-inline"><?php echo esc_html($level->name); ?></h1>
+            <a href="<?php echo admin_url('edit.php?post_type=fiqh_course&page=fiqh-levels'); ?>" class="page-title-action">
+                &larr; <?php _e('العودة إلى القائمة', 'fiqh-lms'); ?>
+            </a>
+            <a href="<?php echo admin_url('edit.php?post_type=fiqh_course&page=fiqh-levels&action=edit&level_id=' . $level_id); ?>" class="page-title-action">
+                <?php _e('تعديل', 'fiqh-lms'); ?>
+            </a>
+            <hr class="wp-header-end">
+
+            <!-- معلومات المستوى -->
+            <div class="postbox" style="margin-top: 20px;">
+                <div class="postbox-header">
+                    <h2><?php _e('معلومات المستوى', 'fiqh-lms'); ?></h2>
+                </div>
+                <div class="inside">
+                    <table class="form-table" role="presentation">
+                        <tr>
+                            <th scope="row"><?php _e('الاسم', 'fiqh-lms'); ?></th>
+                            <td><strong><?php echo esc_html($level->name); ?></strong></td>
+                        </tr>
+                        <?php if ($level->description) : ?>
+                        <tr>
+                            <th scope="row"><?php _e('الوصف', 'fiqh-lms'); ?></th>
+                            <td><?php echo nl2br(esc_html($level->description)); ?></td>
+                        </tr>
+                        <?php endif; ?>
+                        <tr>
+                            <th scope="row"><?php _e('تاريخ البداية', 'fiqh-lms'); ?></th>
+                            <td><?php echo $level->start_date ? date_i18n('Y-m-d', strtotime($level->start_date)) : '-'; ?></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php _e('تاريخ النهاية', 'fiqh-lms'); ?></th>
+                            <td><?php echo $level->end_date ? date_i18n('Y-m-d', strtotime($level->end_date)) : '-'; ?></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php _e('الحالة', 'fiqh-lms'); ?></th>
+                            <td>
+                                <?php
+                                $status_labels = array(
+                                    'active' => '<span style="color: #10B981; font-weight: bold;">● نشطة</span>',
+                                    'completed' => '<span style="color: #6B7280;">● منتهية</span>',
+                                    'upcoming' => '<span style="color: #3B82F6;">● قادمة</span>',
+                                );
+                                echo $status_labels[$level->status] ?? $level->status;
+                                ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- المقررات المرتبطة -->
+            <div class="postbox" style="margin-top: 20px;">
+                <div class="postbox-header">
+                    <h2><?php _e('المقررات المرتبطة', 'fiqh-lms'); ?> (<?php echo count($courses); ?>)</h2>
+                </div>
+                <div class="inside">
+                    <?php if (!empty($courses)) : ?>
+                        <table class="wp-list-table widefat fixed striped">
+                            <thead>
+                                <tr>
+                                    <th><?php _e('اسم المقرر', 'fiqh-lms'); ?></th>
+                                    <th><?php _e('المعلم', 'fiqh-lms'); ?></th>
+                                    <th><?php _e('المدة', 'fiqh-lms'); ?></th>
+                                    <th><?php _e('عدد الدروس', 'fiqh-lms'); ?></th>
+                                    <th><?php _e('الإجراءات', 'fiqh-lms'); ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($courses as $course) :
+                                    $teacher_id = get_post_meta($course->ID, '_fiqh_course_teacher_id', true);
+                                    $teacher = $teacher_id ? get_post($teacher_id) : null;
+                                    $duration = get_post_meta($course->ID, '_fiqh_course_duration', true);
+
+                                    // عدد الدروس
+                                    $lessons_count = $wpdb->get_var($wpdb->prepare(
+                                        "SELECT COUNT(*) FROM {$wpdb->posts} p
+                                        INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+                                        WHERE p.post_type = 'fiqh_lesson' AND p.post_status = 'publish'
+                                        AND pm.meta_key = '_fiqh_lesson_course_id' AND pm.meta_value = %d",
+                                        $course->ID
+                                    ));
+                                    ?>
+                                    <tr>
+                                        <td><strong><?php echo esc_html($course->post_title); ?></strong></td>
+                                        <td><?php echo $teacher ? esc_html($teacher->post_title) : '-'; ?></td>
+                                        <td><?php echo $duration ? esc_html($duration) : '-'; ?></td>
+                                        <td><?php echo $lessons_count; ?> <?php _e('درس', 'fiqh-lms'); ?></td>
+                                        <td>
+                                            <a href="<?php echo get_permalink($course->ID); ?>" class="button button-small" target="_blank">
+                                                <?php _e('عرض', 'fiqh-lms'); ?>
+                                            </a>
+                                            <a href="<?php echo get_edit_post_link($course->ID); ?>" class="button button-small">
+                                                <?php _e('تعديل', 'fiqh-lms'); ?>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else : ?>
+                        <p style="padding: 20px;"><?php _e('لا توجد مقررات مرتبطة بهذا المستوى بعد.', 'fiqh-lms'); ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- الطلاب المسجلون -->
+            <div class="postbox" style="margin-top: 20px;">
+                <div class="postbox-header">
+                    <h2><?php _e('الطلاب المسجلون', 'fiqh-lms'); ?> (<?php echo count($enrolled_students); ?>)</h2>
+                </div>
+                <div class="inside">
+                    <?php if (!empty($enrolled_students)) : ?>
+                        <table class="wp-list-table widefat fixed striped">
+                            <thead>
+                                <tr>
+                                    <th><?php _e('الاسم', 'fiqh-lms'); ?></th>
+                                    <th><?php _e('البريد الإلكتروني', 'fiqh-lms'); ?></th>
+                                    <th><?php _e('تاريخ التسجيل', 'fiqh-lms'); ?></th>
+                                    <th><?php _e('التقدم الإجمالي', 'fiqh-lms'); ?></th>
+                                    <th><?php _e('الإجراءات', 'fiqh-lms'); ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($enrolled_students as $enrollment) :
+                                    $user = get_userdata($enrollment->user_id);
+                                    if (!$user) continue;
+
+                                    // حساب التقدم الإجمالي للطالب في جميع مقررات المستوى
+                                    $total_progress = 0;
+                                    $completed_courses = 0;
+                                    if (!empty($courses)) {
+                                        foreach ($courses as $course) {
+                                            // التحقق من تسجيل الطالب في المقرر
+                                            $is_enrolled = $wpdb->get_var($wpdb->prepare(
+                                                "SELECT id FROM {$wpdb->prefix}fiqh_enrollments
+                                                WHERE user_id = %d AND course_id = %d",
+                                                $user->ID, $course->ID
+                                            ));
+
+                                            if ($is_enrolled) {
+                                                // حساب نسبة التقدم في المقرر
+                                                $lessons = $wpdb->get_results($wpdb->prepare(
+                                                    "SELECT p.ID FROM {$wpdb->posts} p
+                                                    INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+                                                    WHERE p.post_type = 'fiqh_lesson' AND p.post_status = 'publish'
+                                                    AND pm.meta_key = '_fiqh_lesson_course_id' AND pm.meta_value = %d",
+                                                    $course->ID
+                                                ));
+
+                                                if (!empty($lessons)) {
+                                                    $completed_lessons = 0;
+                                                    foreach ($lessons as $lesson) {
+                                                        $is_completed = $wpdb->get_var($wpdb->prepare(
+                                                            "SELECT id FROM {$wpdb->prefix}fiqh_progress
+                                                            WHERE user_id = %d AND lesson_id = %d AND completed = 1",
+                                                            $user->ID, $lesson->ID
+                                                        ));
+                                                        if ($is_completed) {
+                                                            $completed_lessons++;
+                                                        }
+                                                    }
+                                                    $course_progress = (count($lessons) > 0) ? round(($completed_lessons / count($lessons)) * 100) : 0;
+                                                    $total_progress += $course_progress;
+                                                    if ($course_progress == 100) {
+                                                        $completed_courses++;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        $avg_progress = count($courses) > 0 ? round($total_progress / count($courses)) : 0;
+                                    } else {
+                                        $avg_progress = 0;
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td><strong><?php echo esc_html($user->display_name); ?></strong></td>
+                                        <td><?php echo esc_html($user->user_email); ?></td>
+                                        <td><?php echo date_i18n('Y-m-d', strtotime($enrollment->enrolled_at)); ?></td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <div style="flex: 1; background: #f0f0f1; height: 20px; border-radius: 10px; overflow: hidden;">
+                                                    <div style="background: linear-gradient(90deg, #10B981, #059669); height: 100%; width: <?php echo $avg_progress; ?>%; transition: width 0.3s;"></div>
+                                                </div>
+                                                <strong style="min-width: 45px;"><?php echo $avg_progress; ?>%</strong>
+                                            </div>
+                                            <small style="color: #666;">
+                                                <?php echo $completed_courses; ?> / <?php echo count($courses); ?> <?php _e('مقرر مكتمل', 'fiqh-lms'); ?>
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo get_edit_user_link($user->ID); ?>" class="button button-small">
+                                                <?php _e('عرض الملف', 'fiqh-lms'); ?>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else : ?>
+                        <p style="padding: 20px;"><?php _e('لا يوجد طلاب مسجلون في هذا المستوى بعد.', 'fiqh-lms'); ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <?php
     }
 }
 
