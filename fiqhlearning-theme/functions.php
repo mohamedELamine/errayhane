@@ -231,6 +231,97 @@ function fiqhlearning_login_logo_url_title() {
 add_filter('login_headertext', 'fiqhlearning_login_logo_url_title');
 
 /**
+ * إعادة التوجيه بعد تسجيل الدخول
+ */
+function fiqhlearning_login_redirect($redirect_to, $request, $user) {
+    // في حالة وجود خطأ في تسجيل الدخول
+    if (isset($user->errors) && !empty($user->errors)) {
+        return home_url('/login?login=failed');
+    }
+
+    // إعادة توجيه الطلاب إلى لوحة التحكم الخاصة بهم
+    if (isset($user->roles) && is_array($user->roles)) {
+        if (in_array('student', $user->roles)) {
+            return home_url('/dashboard');
+        }
+
+        // إعادة توجيه المعلمين إلى لوحة التحكم الخاصة بهم
+        if (in_array('teacher', $user->roles)) {
+            return home_url('/dashboard');
+        }
+
+        // المدراء يذهبون إلى لوحة تحكم WordPress
+        if (in_array('administrator', $user->roles)) {
+            return admin_url();
+        }
+    }
+
+    return $redirect_to;
+}
+add_filter('login_redirect', 'fiqhlearning_login_redirect', 10, 3);
+
+/**
+ * منع الطلاب من الوصول إلى لوحة تحكم WordPress
+ */
+function fiqhlearning_block_admin_access() {
+    // السماح للطلبات AJAX
+    if (defined('DOING_AJAX') && DOING_AJAX) {
+        return;
+    }
+
+    // منع الطلاب من الوصول إلى لوحة التحكم
+    if (is_admin() && is_user_logged_in()) {
+        $user = wp_get_current_user();
+
+        if (in_array('student', $user->roles)) {
+            wp_redirect(home_url('/dashboard'));
+            exit;
+        }
+    }
+}
+add_action('admin_init', 'fiqhlearning_block_admin_access');
+
+/**
+ * إعادة توجيه بعد تسجيل الخروج
+ */
+function fiqhlearning_logout_redirect() {
+    wp_redirect(home_url('/login?login=logged_out'));
+    exit;
+}
+add_action('wp_logout', 'fiqhlearning_logout_redirect');
+
+/**
+ * معالجة أخطاء تسجيل الدخول المخصصة
+ */
+function fiqhlearning_custom_login_failed($username) {
+    $referrer = wp_get_referer();
+
+    // إذا كان المستخدم قادماً من صفحة تسجيل الدخول المخصصة
+    if ($referrer && strpos($referrer, '/login') !== false) {
+        wp_redirect(home_url('/login?login=failed'));
+        exit;
+    }
+}
+add_action('wp_login_failed', 'fiqhlearning_custom_login_failed');
+
+/**
+ * معالجة حقول تسجيل الدخول الفارغة
+ */
+function fiqhlearning_blank_login_fields($user, $username, $password) {
+    $referrer = wp_get_referer();
+
+    if ($referrer && strpos($referrer, '/login') !== false) {
+        if (empty($username) || empty($password)) {
+            wp_redirect(home_url('/login?login=empty'));
+            exit;
+        }
+    }
+
+    return $user;
+}
+add_filter('authenticate', 'fiqhlearning_blank_login_fields', 30, 3);
+
+/**
  * تعطيل صفحة التسجيل العامة
  */
 function fiqhlearning_disable_public_registration() {
@@ -394,3 +485,4 @@ add_action('pre_get_posts', 'fiqh_custom_posts_per_page');
 require_once FIQH_THEME_DIR . '/inc/customizer.php';
 require_once FIQH_THEME_DIR . '/inc/template-functions.php';
 require_once FIQH_THEME_DIR . '/inc/ajax-handlers.php';
+require_once FIQH_THEME_DIR . '/inc/widgets.php';
