@@ -480,6 +480,29 @@ function fiqh_custom_posts_per_page($query) {
 add_action('pre_get_posts', 'fiqh_custom_posts_per_page');
 
 /**
+ * تعطيل التسجيل الجديد للمستخدمين
+ */
+function fiqhlearning_disable_registration() {
+    return false;
+}
+add_filter('option_users_can_register', 'fiqhlearning_disable_registration');
+
+// إخفاء خيار التسجيل من صفحة الإعدادات
+function fiqhlearning_remove_registration_option() {
+    add_filter('pre_option_users_can_register', '__return_zero');
+}
+add_action('admin_init', 'fiqhlearning_remove_registration_option');
+
+// إعادة توجيه أي محاولة للوصول إلى صفحة التسجيل
+function fiqhlearning_block_registration_page() {
+    if (isset($_GET['action']) && $_GET['action'] === 'register') {
+        wp_redirect(home_url('/login'));
+        exit;
+    }
+}
+add_action('login_init', 'fiqhlearning_block_registration_page');
+
+/**
  * تضمين ملفات إضافية
  */
 require_once FIQH_THEME_DIR . '/inc/customizer.php';

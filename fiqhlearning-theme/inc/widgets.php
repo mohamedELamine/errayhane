@@ -25,9 +25,16 @@ class Fiqh_Stats_Widget extends WP_Widget {
     public function widget($args, $instance) {
         echo $args['before_widget'];
 
+        // جلب الإعدادات من instance
+        $show_courses = isset($instance['show_courses']) ? $instance['show_courses'] : true;
+        $show_lessons = isset($instance['show_lessons']) ? $instance['show_lessons'] : true;
+        $show_students = isset($instance['show_students']) ? $instance['show_students'] : true;
+        $show_questions = isset($instance['show_questions']) ? $instance['show_questions'] : true;
+
         ?>
         <div class="stats-section">
             <div class="stats-grid">
+                <?php if ($show_courses) : ?>
                 <div class="stat-item">
                     <div class="stat-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -38,6 +45,9 @@ class Fiqh_Stats_Widget extends WP_Widget {
                     <div class="stat-number"><?php echo wp_count_posts('fiqh_course')->publish; ?></div>
                     <div class="stat-label"><?php _e('مقرر دراسي', 'fiqhlearning'); ?></div>
                 </div>
+                <?php endif; ?>
+
+                <?php if ($show_lessons) : ?>
                 <div class="stat-item">
                     <div class="stat-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -48,6 +58,9 @@ class Fiqh_Stats_Widget extends WP_Widget {
                     <div class="stat-number"><?php echo wp_count_posts('fiqh_lesson')->publish; ?></div>
                     <div class="stat-label"><?php _e('درس', 'fiqhlearning'); ?></div>
                 </div>
+                <?php endif; ?>
+
+                <?php if ($show_students) : ?>
                 <div class="stat-item">
                     <div class="stat-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -62,16 +75,24 @@ class Fiqh_Stats_Widget extends WP_Widget {
                     </div>
                     <div class="stat-label"><?php _e('طالب', 'fiqhlearning'); ?></div>
                 </div>
+                <?php endif; ?>
+
+                <?php if ($show_questions) :
+                    global $wpdb;
+                    $questions_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_questions WHERE status != 'deleted'");
+                ?>
                 <div class="stat-item">
                     <div class="stat-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
                         </svg>
                     </div>
-                    <div class="stat-number"><?php echo wp_count_posts('fiqh_teacher')->publish; ?></div>
-                    <div class="stat-label"><?php _e('معلم', 'fiqhlearning'); ?></div>
+                    <div class="stat-number"><?php echo $questions_count; ?></div>
+                    <div class="stat-label"><?php _e('سؤال', 'fiqhlearning'); ?></div>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
         <?php
@@ -80,13 +101,38 @@ class Fiqh_Stats_Widget extends WP_Widget {
     }
 
     public function form($instance) {
+        // الإعدادات الافتراضية
+        $show_courses = isset($instance['show_courses']) ? (bool) $instance['show_courses'] : true;
+        $show_lessons = isset($instance['show_lessons']) ? (bool) $instance['show_lessons'] : true;
+        $show_students = isset($instance['show_students']) ? (bool) $instance['show_students'] : true;
+        $show_questions = isset($instance['show_questions']) ? (bool) $instance['show_questions'] : true;
         ?>
-        <p><?php _e('هذه الودجة لا تحتاج إلى إعدادات. تعرض إحصائيات المنصة تلقائياً.', 'fiqhlearning'); ?></p>
+        <p>
+            <input class="checkbox" type="checkbox" <?php checked($show_courses); ?> id="<?php echo $this->get_field_id('show_courses'); ?>" name="<?php echo $this->get_field_name('show_courses'); ?>" />
+            <label for="<?php echo $this->get_field_id('show_courses'); ?>"><?php _e('عرض عدد المقررات', 'fiqhlearning'); ?></label>
+        </p>
+        <p>
+            <input class="checkbox" type="checkbox" <?php checked($show_lessons); ?> id="<?php echo $this->get_field_id('show_lessons'); ?>" name="<?php echo $this->get_field_name('show_lessons'); ?>" />
+            <label for="<?php echo $this->get_field_id('show_lessons'); ?>"><?php _e('عرض عدد الدروس', 'fiqhlearning'); ?></label>
+        </p>
+        <p>
+            <input class="checkbox" type="checkbox" <?php checked($show_students); ?> id="<?php echo $this->get_field_id('show_students'); ?>" name="<?php echo $this->get_field_name('show_students'); ?>" />
+            <label for="<?php echo $this->get_field_id('show_students'); ?>"><?php _e('عرض عدد الطلاب', 'fiqhlearning'); ?></label>
+        </p>
+        <p>
+            <input class="checkbox" type="checkbox" <?php checked($show_questions); ?> id="<?php echo $this->get_field_id('show_questions'); ?>" name="<?php echo $this->get_field_name('show_questions'); ?>" />
+            <label for="<?php echo $this->get_field_id('show_questions'); ?>"><?php _e('عرض عدد الأسئلة', 'fiqhlearning'); ?></label>
+        </p>
         <?php
     }
 
     public function update($new_instance, $old_instance) {
-        return array();
+        $instance = array();
+        $instance['show_courses'] = (!empty($new_instance['show_courses'])) ? 1 : 0;
+        $instance['show_lessons'] = (!empty($new_instance['show_lessons'])) ? 1 : 0;
+        $instance['show_students'] = (!empty($new_instance['show_students'])) ? 1 : 0;
+        $instance['show_questions'] = (!empty($new_instance['show_questions'])) ? 1 : 0;
+        return $instance;
     }
 }
 

@@ -239,9 +239,9 @@ get_header();
                                         </h3>
 
                                         <div class="course-progress-bar">
-                                            <div class="progress-fill" style="width: <?php echo $progress; ?>%"></div>
+                                            <div class="progress-fill" style="width: <?php echo intval($progress); ?>%"></div>
                                         </div>
-                                        <div class="progress-text"><?php echo $progress; ?>% <?php _e('مكتمل', 'fiqhlearning'); ?></div>
+                                        <div class="progress-text"><?php echo intval($progress); ?>% <?php _e('مكتمل', 'fiqhlearning'); ?></div>
 
                                         <a href="<?php echo get_permalink($course_id); ?>" class="btn btn-primary btn-sm btn-block">
                                             <?php _e('متابعة الدراسة', 'fiqhlearning'); ?>
@@ -352,9 +352,9 @@ get_header();
                                     </h3>
 
                                     <div class="course-progress-bar">
-                                        <div class="progress-fill" style="width: <?php echo $progress; %>%"></div>
+                                        <div class="progress-fill" style="width: <?php echo intval($progress); ?>%"></div>
                                     </div>
-                                    <div class="progress-text"><?php echo $progress; ?>% <?php _e('مكتمل', 'fiqhlearning'); ?></div>
+                                    <div class="progress-text"><?php echo intval($progress); ?>% <?php _e('مكتمل', 'fiqhlearning'); ?></div>
 
                                     <a href="<?php echo get_permalink($course_id); ?>" class="btn btn-primary btn-sm btn-block">
                                         <?php _e('متابعة الدراسة', 'fiqhlearning'); ?>

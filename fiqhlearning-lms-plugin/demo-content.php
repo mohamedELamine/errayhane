@@ -31,6 +31,11 @@ add_action('admin_menu', 'fiqh_add_demo_content_menu');
  * صفحة إنشاء المحتوى التجريبي
  */
 function fiqh_create_demo_content_page() {
+    // التحقق من الصلاحيات أولاً
+    if (!current_user_can('manage_options')) {
+        wp_die(__('عذراً، ليس لديك صلاحية للوصول إلى هذه الصفحة.', 'fiqh-lms'));
+    }
+
     ?>
     <div class="wrap">
         <h1><?php _e('إنشاء محتوى تجريبي كامل', 'fiqh-lms'); ?></h1>
@@ -39,14 +44,14 @@ function fiqh_create_demo_content_page() {
         </div>
 
         <?php
-        if (isset($_GET['run']) && $_GET['run'] === 'yes' && check_admin_referer('fiqh_demo_content')) {
+        // التحقق من POST بدلاً من GET
+        if (isset($_POST['generate_demo']) && check_admin_referer('fiqh_demo_content_action', 'fiqh_demo_content_nonce')) {
             fiqh_generate_demo_content();
         } else {
             ?>
-            <form method="get" action="">
-                <input type="hidden" name="page" value="fiqh-demo-content">
-                <input type="hidden" name="run" value="yes">
-                <?php wp_nonce_field('fiqh_demo_content'); ?>
+            <form method="post" action="">
+                <?php wp_nonce_field('fiqh_demo_content_action', 'fiqh_demo_content_nonce'); ?>
+                <input type="hidden" name="generate_demo" value="1">
                 <p>
                     <input type="submit" class="button button-primary button-large" value="<?php _e('إنشاء المحتوى التجريبي الآن', 'fiqh-lms'); ?>">
                 </p>
@@ -493,7 +498,54 @@ function fiqh_generate_demo_content() {
         }
     }
 
-    // 10. ملخص نهائي
+    // 10. إنشاء الصفحات الضرورية
+    echo '<h2>🔟 إنشاء الصفحات الضرورية</h2>';
+
+    // صفحة تسجيل الدخول
+    $login_page = get_page_by_path('login');
+    if (!$login_page) {
+        $login_page_id = wp_insert_post(array(
+            'post_title' => 'تسجيل الدخول',
+            'post_name' => 'login',
+            'post_content' => '',
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_author' => 1,
+            'page_template' => 'page-login.php'
+        ));
+
+        if ($login_page_id && !is_wp_error($login_page_id)) {
+            echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>تسجيل الدخول</strong> (/login)</p>';
+        } else {
+            echo '<p style="color: red;">❌ فشل إنشاء صفحة تسجيل الدخول</p>';
+        }
+    } else {
+        echo '<p style="color: orange;">⚠️ صفحة تسجيل الدخول موجودة مسبقاً</p>';
+    }
+
+    // صفحة لوحة التحكم
+    $dashboard_page = get_page_by_path('dashboard');
+    if (!$dashboard_page) {
+        $dashboard_page_id = wp_insert_post(array(
+            'post_title' => 'لوحة التحكم',
+            'post_name' => 'dashboard',
+            'post_content' => '',
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_author' => 1,
+            'page_template' => 'page-dashboard.php'
+        ));
+
+        if ($dashboard_page_id && !is_wp_error($dashboard_page_id)) {
+            echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>لوحة التحكم</strong> (/dashboard)</p>';
+        } else {
+            echo '<p style="color: red;">❌ فشل إنشاء صفحة لوحة التحكم</p>';
+        }
+    } else {
+        echo '<p style="color: orange;">⚠️ صفحة لوحة التحكم موجودة مسبقاً</p>';
+    }
+
+    // 11. ملخص نهائي
     echo '<h2>✅ اكتمل إنشاء المحتوى التجريبي!</h2>';
     echo '<div class="updated"><p><strong>تم بنجاح!</strong> تم إنشاء محتوى تجريبي كامل للمنصة.</p></div>';
 
@@ -507,6 +559,7 @@ function fiqh_generate_demo_content() {
     echo '<li>✅ <strong>' . count($questions_data) . '</strong> سؤال</li>';
     echo '<li>✅ <strong>16</strong> ملاحظة</li>';
     echo '<li>✅ <strong>4</strong> مقالات وأحداث</li>';
+    echo '<li>✅ <strong>2</strong> صفحة ضرورية (تسجيل الدخول، لوحة التحكم)</li>';
     echo '</ul>';
 
     echo '<h3>معلومات تسجيل الدخول للطلاب التجريبيين:</h3>';

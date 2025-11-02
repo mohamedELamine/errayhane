@@ -582,9 +582,18 @@ jQuery(document).ready(function($) {
     // إضافة ملاحظة جديدة
     $('#add-note-form').on('submit', function(e) {
         e.preventDefault();
-        const noteText = $('#new-note-text').val().trim();
+        const $form = $(this);
+        const $noteText = $('#new-note-text');
+        const $btn = $form.find('button[type="submit"]');
+        const noteText = $noteText.val().trim();
+        const originalBtnText = $btn.html();
 
-        if (!noteText) return;
+        if (!noteText) {
+            alert('<?php _e('الرجاء كتابة ملاحظتك', 'fiqhlearning'); ?>');
+            return;
+        }
+
+        $btn.prop('disabled', true).text('<?php _e('جاري الحفظ...', 'fiqhlearning'); ?>');
 
         $.ajax({
             url: fiqhData.ajaxUrl,
@@ -597,14 +606,76 @@ jQuery(document).ready(function($) {
                 note_text: noteText
             },
             success: function(response) {
-                if (response.success) {
-                    location.reload(); // إعادة تحميل الصفحة لعرض الملاحظة الجديدة
+                if (response.success && response.data.note) {
+                    const note = response.data.note;
+                    const currentTime = new Date().toLocaleString('ar-SA', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    // إنشاء HTML الملاحظة الجديدة
+                    const noteHtml = '<div class="note-item card" data-note-id="' + note.id + '">' +
+                        '<div class="note-header">' +
+                            '<span class="note-date">' + currentTime + '</span>' +
+                            '<div class="note-actions">' +
+                                '<button class="note-menu-toggle" aria-label="خيارات">' +
+                                    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                                        '<circle cx="12" cy="12" r="1"></circle>' +
+                                        '<circle cx="12" cy="5" r="1"></circle>' +
+                                        '<circle cx="12" cy="19" r="1"></circle>' +
+                                    '</svg>' +
+                                '</button>' +
+                                '<div class="note-dropdown-menu" style="display: none;">' +
+                                    '<button class="edit-note-btn" data-note-id="' + note.id + '">' +
+                                        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                                            '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>' +
+                                            '<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>' +
+                                        '</svg>' +
+                                        '<?php _e('تعديل', 'fiqhlearning'); ?>' +
+                                    '</button>' +
+                                    '<button class="delete-note-btn" data-note-id="' + note.id + '">' +
+                                        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                                            '<polyline points="3 6 5 6 21 6"></polyline>' +
+                                            '<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>' +
+                                        '</svg>' +
+                                        '<?php _e('حذف', 'fiqhlearning'); ?>' +
+                                    '</button>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="note-content">' +
+                            '<div class="note-text">' + noteText.replace(/\n/g, '<br>') + '</div>' +
+                            '<form class="note-edit-form" style="display: none;">' +
+                                '<textarea rows="4" required>' + noteText + '</textarea>' +
+                                '<div class="note-edit-actions">' +
+                                    '<button type="submit" class="btn btn-sm btn-primary"><?php _e('حفظ', 'fiqhlearning'); ?></button>' +
+                                    '<button type="button" class="btn btn-sm btn-secondary cancel-edit-btn"><?php _e('إلغاء', 'fiqhlearning'); ?></button>' +
+                                '</div>' +
+                            '</form>' +
+                        '</div>' +
+                    '</div>';
+
+                    // إزالة رسالة "لا توجد ملاحظات" إن وجدت
+                    $('.no-notes').remove();
+
+                    // إضافة الملاحظة في أول القائمة
+                    $('#notes-list').prepend(noteHtml);
+
+                    // تفريغ حقل النص
+                    $noteText.val('');
+
+                    alert('<?php _e('تم إضافة الملاحظة بنجاح', 'fiqhlearning'); ?>');
                 } else {
                     alert(response.data || '<?php _e('حدث خطأ', 'fiqhlearning'); ?>');
                 }
+                $btn.prop('disabled', false).html(originalBtnText);
             },
             error: function() {
                 alert('<?php _e('حدث خطأ في الاتصال', 'fiqhlearning'); ?>');
+                $btn.prop('disabled', false).html(originalBtnText);
             }
         });
     });
@@ -629,11 +700,20 @@ jQuery(document).ready(function($) {
     // حفظ التعديل
     $(document).on('submit', '.note-edit-form', function(e) {
         e.preventDefault();
-        const noteItem = $(this).closest('.note-item');
+        const $form = $(this);
+        const noteItem = $form.closest('.note-item');
         const noteId = noteItem.data('note-id');
-        const noteText = $(this).find('textarea').val().trim();
+        const $textarea = $form.find('textarea');
+        const noteText = $textarea.val().trim();
+        const $btn = $form.find('button[type="submit"]');
+        const originalBtnText = $btn.text();
 
-        if (!noteText) return;
+        if (!noteText) {
+            alert('<?php _e('الرجاء كتابة ملاحظتك', 'fiqhlearning'); ?>');
+            return;
+        }
+
+        $btn.prop('disabled', true).text('<?php _e('جاري الحفظ...', 'fiqhlearning'); ?>');
 
         $.ajax({
             url: fiqhData.ajaxUrl,
@@ -646,13 +726,22 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response.success) {
-                    location.reload();
+                    // تحديث النص المعروض
+                    noteItem.find('.note-text').html(noteText.replace(/\n/g, '<br>'));
+
+                    // إخفاء نموذج التعديل وإظهار النص
+                    $form.hide();
+                    noteItem.find('.note-text').show();
+
+                    alert('<?php _e('تم تحديث الملاحظة بنجاح', 'fiqhlearning'); ?>');
                 } else {
                     alert(response.data || '<?php _e('حدث خطأ', 'fiqhlearning'); ?>');
                 }
+                $btn.prop('disabled', false).text(originalBtnText);
             },
             error: function() {
                 alert('<?php _e('حدث خطأ في الاتصال', 'fiqhlearning'); ?>');
+                $btn.prop('disabled', false).text(originalBtnText);
             }
         });
     });
@@ -698,8 +787,17 @@ jQuery(document).ready(function($) {
     // إضافة سؤال جديد
     $('#add-lesson-question-form').on('submit', function(e) {
         e.preventDefault();
-        var $btn = $(this).find('button[type="submit"]');
+        var $form = $(this);
+        var $btn = $form.find('button[type="submit"]');
+        var $questionContent = $('#question-content');
         var originalText = $btn.html();
+        var questionText = $questionContent.val().trim();
+
+        if (!questionText) {
+            alert('<?php _e('الرجاء كتابة سؤالك', 'fiqhlearning'); ?>');
+            return;
+        }
+
         $btn.prop('disabled', true).text('<?php _e('جاري الإرسال...', 'fiqhlearning'); ?>');
 
         $.ajax({
@@ -709,12 +807,38 @@ jQuery(document).ready(function($) {
                 action: 'fiqh_add_lesson_question',
                 nonce: fiqhData.nonce,
                 lesson_id: <?php echo get_the_ID(); ?>,
-                question: $('#question-content').val()
+                question: questionText
             },
             success: function(response) {
                 if (response.success) {
+                    // إضافة السؤال الجديد إلى القائمة بدون reload
+                    var currentUser = '<?php echo esc_js(wp_get_current_user()->display_name); ?>';
+                    var questionHtml = '<div class="question-item card" data-question-id="' + response.data.question_id + '">' +
+                        '<div class="question-header">' +
+                            '<div class="question-author">' +
+                                '<strong>' + currentUser + '</strong>' +
+                                '<span class="question-date"><?php _e('الآن', 'fiqhlearning'); ?></span>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="question-content">' +
+                            questionText.replace(/\n/g, '<br>') +
+                        '</div>' +
+                        '<div class="question-status" style="color: #f59e0b; padding: 10px 0; font-size: 14px;">' +
+                            '<?php _e('بانتظار الإجابة', 'fiqhlearning'); ?>' +
+                        '</div>' +
+                    '</div>';
+
+                    // إزالة رسالة "لا توجد أسئلة" إن وجدت
+                    $('.no-questions').remove();
+
+                    // إضافة السؤال الجديد في أول القائمة
+                    $('.questions-list').prepend(questionHtml);
+
+                    // تفريغ حقل النص
+                    $questionContent.val('');
+
+                    // رسالة نجاح
                     alert('<?php _e('تم إرسال السؤال بنجاح', 'fiqhlearning'); ?>');
-                    location.reload();
                 } else {
                     alert(response.data || '<?php _e('حدث خطأ أثناء إرسال السؤال', 'fiqhlearning'); ?>');
                 }
@@ -733,7 +857,15 @@ jQuery(document).ready(function($) {
         var $form = $(this);
         var $btn = $form.find('button[type="submit"]');
         var questionId = $form.data('question-id');
+        var $textarea = $form.find('textarea[name="answer_content"]');
+        var answerText = $textarea.val().trim();
         var originalText = $btn.text();
+
+        if (!answerText) {
+            alert('<?php _e('الرجاء كتابة الإجابة', 'fiqhlearning'); ?>');
+            return;
+        }
+
         $btn.prop('disabled', true).text('<?php _e('جاري الإرسال...', 'fiqhlearning'); ?>');
 
         $.ajax({
@@ -743,12 +875,28 @@ jQuery(document).ready(function($) {
                 action: 'fiqh_add_lesson_answer',
                 nonce: fiqhData.nonce,
                 question_id: questionId,
-                answer: $form.find('textarea[name="answer_content"]').val()
+                answer: answerText
             },
             success: function(response) {
                 if (response.success) {
+                    // إضافة الإجابة بدون reload
+                    var answerHtml = '<div class="question-answer">' +
+                        '<div class="answer-header">' +
+                            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                                '<polyline points="9 11 12 14 22 4"></polyline>' +
+                                '<path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>' +
+                            '</svg>' +
+                            '<strong><?php _e('إجابة المشرف', 'fiqhlearning'); ?></strong>' +
+                        '</div>' +
+                        '<div class="answer-content">' +
+                            answerText.replace(/\n/g, '<br>') +
+                        '</div>' +
+                    '</div>';
+
+                    // استبدال نموذج الإجابة بالإجابة نفسها
+                    $form.parent('.answer-form').replaceWith(answerHtml);
+
                     alert('<?php _e('تم إرسال الإجابة بنجاح', 'fiqhlearning'); ?>');
-                    location.reload();
                 } else {
                     alert(response.data || '<?php _e('حدث خطأ أثناء إرسال الإجابة', 'fiqhlearning'); ?>');
                 }

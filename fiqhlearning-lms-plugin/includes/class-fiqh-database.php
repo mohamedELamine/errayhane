@@ -21,21 +21,39 @@ class FiqhLearning_Database {
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        // جدول الدفعات (Batches)
+        // جدول الدفعات/المستويات (Batches/Levels)
         $table_batches = $wpdb->prefix . 'fiqh_batches';
         $sql_batches = "CREATE TABLE IF NOT EXISTS $table_batches (
             id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             name varchar(255) NOT NULL,
             description text,
+            level_order int(3) DEFAULT 0,
             start_date date,
             end_date date,
             status varchar(20) DEFAULT 'active',
             created_at datetime DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
-            KEY status (status)
+            KEY status (status),
+            KEY level_order (level_order)
         ) $charset_collate;";
         dbDelta($sql_batches);
+
+        // جدول ربط الطلبة بالمستويات (Batch Students)
+        $table_batch_students = $wpdb->prefix . 'fiqh_batch_students';
+        $sql_batch_students = "CREATE TABLE IF NOT EXISTS $table_batch_students (
+            id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            user_id bigint(20) UNSIGNED NOT NULL,
+            batch_id bigint(20) UNSIGNED NOT NULL,
+            status varchar(20) DEFAULT 'active',
+            enrolled_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY user_id (user_id),
+            KEY batch_id (batch_id),
+            KEY status (status),
+            UNIQUE KEY user_batch (user_id, batch_id)
+        ) $charset_collate;";
+        dbDelta($sql_batch_students);
 
         // جدول المسارات (Tracks)
         $table_tracks = $wpdb->prefix . 'fiqh_tracks';

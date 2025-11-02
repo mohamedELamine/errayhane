@@ -17,7 +17,6 @@ class FiqhLearning_Post_Types {
     public static function register_post_types() {
         self::register_course_post_type();
         self::register_lesson_post_type();
-        self::register_teacher_post_type();
     }
 
     /**
@@ -100,40 +99,4 @@ class FiqhLearning_Post_Types {
         register_post_type('fiqh_lesson', $args);
     }
 
-    /**
-     * تسجيل نوع محتوى المعلم (Teacher)
-     */
-    private static function register_teacher_post_type() {
-        $labels = array(
-            'name' => __('المعلمون', 'fiqh-lms'),
-            'singular_name' => __('معلم', 'fiqh-lms'),
-            'menu_name' => __('المعلمون', 'fiqh-lms'),
-            'name_admin_bar' => __('معلم', 'fiqh-lms'),
-            'add_new' => __('إضافة جديد', 'fiqh-lms'),
-            'add_new_item' => __('إضافة معلم جديد', 'fiqh-lms'),
-            'new_item' => __('معلم جديد', 'fiqh-lms'),
-            'edit_item' => __('تعديل المعلم', 'fiqh-lms'),
-            'view_item' => __('عرض المعلم', 'fiqh-lms'),
-            'all_items' => __('جميع المعلمين', 'fiqh-lms'),
-            'search_items' => __('بحث في المعلمين', 'fiqh-lms'),
-            'not_found' => __('لم يتم العثور على معلمين', 'fiqh-lms'),
-        );
-
-        $args = array(
-            'labels' => $labels,
-            'public' => true,
-            'publicly_queryable' => true,
-            'show_ui' => true,
-            'show_in_menu' => 'edit.php?post_type=fiqh_course',
-            'query_var' => true,
-            'rewrite' => array('slug' => 'teachers', 'with_front' => false),
-            'capability_type' => 'post',
-            'has_archive' => true,
-            'hierarchical' => false,
-            'supports' => array('title', 'editor', 'thumbnail'),
-            'show_in_rest' => true,
-        );
-
-        register_post_type('fiqh_teacher', $args);
-    }
 }
