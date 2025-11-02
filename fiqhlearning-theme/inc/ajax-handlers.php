@@ -92,19 +92,27 @@ function fiqh_add_lesson_question() {
     global $wpdb;
     $table_name = $wpdb->prefix . 'fiqh_questions';
 
+    // الحصول على course_id من الدرس
+    $course_id = get_post_meta($lesson_id, '_fiqh_lesson_course_id', true);
+
     $result = $wpdb->insert(
         $table_name,
         array(
             'user_id' => $user_id,
             'lesson_id' => $lesson_id,
-            'question' => $question,
+            'course_id' => $course_id,
+            'question_text' => $question,
+            'status' => 'pending',
             'created_at' => current_time('mysql'),
         ),
-        array('%d', '%d', '%s', '%s')
+        array('%d', '%d', '%d', '%s', '%s', '%s')
     );
 
     if ($result) {
-        wp_send_json_success(__('تم إرسال السؤال بنجاح', 'fiqhlearning'));
+        wp_send_json_success(array(
+            'message' => __('تم إرسال السؤال بنجاح', 'fiqhlearning'),
+            'question_id' => $wpdb->insert_id
+        ));
     } else {
         wp_send_json_error(__('حدث خطأ أثناء إرسال السؤال', 'fiqhlearning'));
     }
@@ -142,14 +150,17 @@ function fiqh_add_lesson_answer() {
             'answer' => $answer,
             'answered_by' => get_current_user_id(),
             'answered_at' => current_time('mysql'),
+            'status' => 'answered',
         ),
         array('id' => $question_id),
-        array('%s', '%d', '%s'),
+        array('%s', '%d', '%s', '%s'),
         array('%d')
     );
 
     if ($result !== false) {
-        wp_send_json_success(__('تم إرسال الإجابة بنجاح', 'fiqhlearning'));
+        wp_send_json_success(array(
+            'message' => __('تم إرسال الإجابة بنجاح', 'fiqhlearning')
+        ));
     } else {
         wp_send_json_error(__('حدث خطأ أثناء إرسال الإجابة', 'fiqhlearning'));
     }
