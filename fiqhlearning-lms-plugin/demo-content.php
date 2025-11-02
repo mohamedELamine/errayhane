@@ -43,7 +43,8 @@ function fiqh_create_demo_content_page() {
             fiqh_generate_demo_content();
         } else {
             ?>
-            <form method="get" action="">
+            <form method="get" action="edit.php">
+                <input type="hidden" name="post_type" value="fiqh_course">
                 <input type="hidden" name="page" value="fiqh-demo-content">
                 <input type="hidden" name="run" value="yes">
                 <?php wp_nonce_field('fiqh_demo_content'); ?>
@@ -62,6 +63,11 @@ function fiqh_create_demo_content_page() {
  * إنشاء المحتوى التجريبي الكامل
  */
 function fiqh_generate_demo_content() {
+    // التحقق من الصلاحيات
+    if (!current_user_can('manage_options')) {
+        wp_die(__('عذراً، ليس لديك صلاحية للوصول إلى هذه الصفحة.', 'fiqh-lms'));
+    }
+
     global $wpdb;
 
     set_time_limit(300); // 5 دقائق
