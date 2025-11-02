@@ -48,16 +48,6 @@ class FiqhLearning_Course_Meta {
             'side',
             'default'
         );
-
-        // المعلم
-        add_meta_box(
-            'fiqh_course_teacher',
-            __('المعلم', 'fiqh-lms'),
-            array($this, 'render_course_teacher_metabox'),
-            'fiqh_course',
-            'side',
-            'default'
-        );
     }
 
     /**
@@ -198,11 +188,6 @@ class FiqhLearning_Course_Meta {
         // حفظ مدة المقرر
         if (isset($_POST['fiqh_course_duration'])) {
             update_post_meta($post_id, '_fiqh_course_duration', sanitize_text_field($_POST['fiqh_course_duration']));
-        }
-
-        // حفظ المعلم
-        if (isset($_POST['fiqh_course_teacher_id'])) {
-            update_post_meta($post_id, '_fiqh_course_teacher_id', intval($_POST['fiqh_course_teacher_id']));
         }
 
         // حفظ المستويات
