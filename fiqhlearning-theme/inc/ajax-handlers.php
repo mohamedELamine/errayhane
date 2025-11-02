@@ -101,7 +101,7 @@ function fiqh_add_lesson_question() {
             'user_id' => $user_id,
             'lesson_id' => $lesson_id,
             'course_id' => $course_id,
-            'question_text' => $question,
+            'question' => $question,
             'status' => 'pending',
             'created_at' => current_time('mysql'),
         ),
