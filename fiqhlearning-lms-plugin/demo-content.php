@@ -31,6 +31,11 @@ add_action('admin_menu', 'fiqh_add_demo_content_menu');
  * صفحة إنشاء المحتوى التجريبي
  */
 function fiqh_create_demo_content_page() {
+    // التحقق من الصلاحيات أولاً
+    if (!current_user_can('manage_options')) {
+        wp_die(__('عذراً، ليس لديك صلاحية للوصول إلى هذه الصفحة.', 'fiqh-lms'));
+    }
+
     ?>
     <div class="wrap">
         <h1><?php _e('إنشاء محتوى تجريبي كامل', 'fiqh-lms'); ?></h1>
@@ -39,15 +44,14 @@ function fiqh_create_demo_content_page() {
         </div>
 
         <?php
-        if (isset($_GET['run']) && $_GET['run'] === 'yes' && check_admin_referer('fiqh_demo_content')) {
+        // التحقق من POST بدلاً من GET
+        if (isset($_POST['generate_demo']) && check_admin_referer('fiqh_demo_content_action', 'fiqh_demo_content_nonce')) {
             fiqh_generate_demo_content();
         } else {
             ?>
-            <form method="get" action="edit.php">
-                <input type="hidden" name="post_type" value="fiqh_course">
-                <input type="hidden" name="page" value="fiqh-demo-content">
-                <input type="hidden" name="run" value="yes">
-                <?php wp_nonce_field('fiqh_demo_content'); ?>
+            <form method="post" action="">
+                <?php wp_nonce_field('fiqh_demo_content_action', 'fiqh_demo_content_nonce'); ?>
+                <input type="hidden" name="generate_demo" value="1">
                 <p>
                     <input type="submit" class="button button-primary button-large" value="<?php _e('إنشاء المحتوى التجريبي الآن', 'fiqh-lms'); ?>">
                 </p>
@@ -63,11 +67,6 @@ function fiqh_create_demo_content_page() {
  * إنشاء المحتوى التجريبي الكامل
  */
 function fiqh_generate_demo_content() {
-    // التحقق من الصلاحيات
-    if (!current_user_can('manage_options')) {
-        wp_die(__('عذراً، ليس لديك صلاحية للوصول إلى هذه الصفحة.', 'fiqh-lms'));
-    }
-
     global $wpdb;
 
     set_time_limit(300); // 5 دقائق
