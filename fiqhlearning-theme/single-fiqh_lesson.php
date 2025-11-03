@@ -112,22 +112,86 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                         allowfullscreen>
                     </iframe>
                 </div>
+
+                <!-- زر إتمام الدرس أسفل الفيديو -->
+                <?php if (!$is_completed && !current_user_can('administrator') && !current_user_can('teacher')) : ?>
+                    <div class="complete-lesson-below-video">
+                        <button class="btn btn-primary btn-lg complete-lesson-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <?php _e('إتمام الدرس', 'fiqhlearning'); ?>
+                        </button>
+                        <p class="complete-lesson-note">
+                            <?php _e('اضغط هنا بعد مشاهدة الدرس كاملاً لتحديث نسبة إنجازك', 'fiqhlearning'); ?>
+                        </p>
+                    </div>
+                <?php elseif ($is_completed) : ?>
+                    <div class="lesson-completed-badge">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <?php _e('تم إتمام هذا الدرس', 'fiqhlearning'); ?>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
 
             <!-- التبويبات -->
             <div class="lesson-tabs">
-                <button class="lesson-tab active" data-tab="notes"><?php _e('الوصف', 'fiqhlearning'); ?></button>
-                <?php if ($pdf_url) : ?>
-                    <button class="lesson-tab" data-tab="attachments"><?php _e('المرفقات', 'fiqhlearning'); ?></button>
+                <button class="lesson-tab active" data-tab="notes">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    <?php _e('الملاحظات', 'fiqhlearning'); ?>
+                </button>
+                <?php
+                // الحصول على المرفقات للتحقق من وجودها
+                $attachments_check = get_post_meta(get_the_ID(), '_fiqh_lesson_attachments', true);
+                $has_attachments_check = !empty($attachments_check) && is_array($attachments_check);
+                if (!$has_attachments_check && $pdf_url) {
+                    $has_attachments_check = true;
+                }
+                ?>
+                <?php if ($has_attachments_check) : ?>
+                    <button class="lesson-tab" data-tab="attachments">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        </svg>
+                        <?php _e('المرفقات', 'fiqhlearning'); ?>
+                    </button>
                 <?php endif; ?>
                 <?php
                 $exercises = get_post_meta(get_the_ID(), '_fiqh_lesson_exercises', true);
                 if ($exercises) :
                 ?>
-                    <button class="lesson-tab" data-tab="exercises"><?php _e('التمارين', 'fiqhlearning'); ?></button>
+                    <button class="lesson-tab" data-tab="exercises">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        <?php _e('التمارين', 'fiqhlearning'); ?>
+                    </button>
                 <?php endif; ?>
-                <button class="lesson-tab" data-tab="questions"><?php _e('الأسئلة', 'fiqhlearning'); ?></button>
-                <button class="lesson-tab" data-tab="my-notes"><?php _e('ملاحظتي', 'fiqhlearning'); ?></button>
+                <button class="lesson-tab" data-tab="questions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    <?php _e('الأسئلة', 'fiqhlearning'); ?>
+                </button>
+                <button class="lesson-tab" data-tab="my-notes">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                    </svg>
+                    <?php _e('ملاحظتي', 'fiqhlearning'); ?>
+                </button>
             </div>
 
             <!-- محتوى التبويبات -->

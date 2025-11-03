@@ -14,14 +14,18 @@ get_header();
     <section class="hero-section">
         <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                <div class="hero-badge">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                     </svg>
-                    <?php echo get_bloginfo('name'); ?>
+                    <?php _e('منصة تعلم الفقه المالكي', 'fiqhlearning'); ?>
+                </div>
+                <h1 class="hero-title">
+                    <?php echo get_theme_mod('hero_title', __('مدرسة الريحان للعلوم الشرعية', 'fiqhlearning')); ?>
                 </h1>
-                <p class="hero-description"><?php echo get_bloginfo('description'); ?></p>
+                <p class="hero-description">
+                    <?php echo get_theme_mod('hero_description', get_bloginfo('description')); ?>
+                </p>
                 <div class="hero-actions">
                     <a href="<?php echo get_post_type_archive_link('fiqh_course'); ?>" class="btn btn-primary btn-lg">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -31,7 +35,7 @@ get_header();
                         <?php _e('تصفح المقررات', 'fiqhlearning'); ?>
                     </a>
                     <?php if (!is_user_logged_in()) : ?>
-                        <a href="<?php echo home_url('/login'); ?>" class="btn btn-secondary btn-lg">
+                        <a href="<?php echo wp_login_url(); ?>" class="btn btn-secondary btn-lg">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                                 <polyline points="10 17 15 12 10 7"></polyline>
@@ -39,15 +43,126 @@ get_header();
                             </svg>
                             <?php _e('تسجيل الدخول', 'fiqhlearning'); ?>
                         </a>
+                    <?php endif; ?>
+                </div>
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <?php _e('دروس شاملة ومتنوعة', 'fiqhlearning'); ?>
+                    </div>
+                    <div class="hero-feature">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <?php _e('شهادات معتمدة', 'fiqhlearning'); ?>
+                    </div>
+                    <div class="hero-feature">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <?php _e('مدرسون متخصصون', 'fiqhlearning'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <?php if (get_theme_mod('hero_image')) : ?>
+                    <img src="<?php echo esc_url(get_theme_mod('hero_image')); ?>" alt="Hero Image">
+                <?php else : ?>
+                    <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- كتاب مفتوح -->
+                        <path d="M100 100 L100 300 L250 330 L400 300 L400 100 L250 70 Z" fill="var(--color-primary-light)" opacity="0.2"/>
+                        <path d="M250 70 L250 330" stroke="var(--color-primary)" stroke-width="3" fill="none"/>
+                        <path d="M100 100 L250 70 L400 100" stroke="var(--color-primary)" stroke-width="3" fill="none"/>
+                        <!-- صفحات -->
+                        <path d="M140 140 L210 130 M140 170 L210 160 M140 200 L210 190" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M290 130 L360 140 M290 160 L360 170 M290 190 L360 200" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"/>
+                        <!-- تزيين -->
+                        <circle cx="250" cy="200" r="60" fill="var(--color-accent)" opacity="0.15"/>
+                    </svg>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم عن المدرسة -->
+    <section class="section about-section">
+        <div class="container">
+            <div class="about-content-wrapper">
+                <div class="about-image">
+                    <?php if (get_theme_mod('about_image')) : ?>
+                        <img src="<?php echo esc_url(get_theme_mod('about_image')); ?>" alt="<?php _e('عن المدرسة', 'fiqhlearning'); ?>">
                     <?php else : ?>
-                        <a href="<?php echo home_url('/dashboard'); ?>" class="btn btn-secondary btn-lg">
+                        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                            <!-- مسجد -->
+                            <path d="M200 50 L150 100 L150 350 L250 350 L250 100 Z" fill="var(--color-primary-light)" opacity="0.3"/>
+                            <path d="M100 100 L300 100" stroke="var(--color-primary)" stroke-width="4"/>
+                            <circle cx="200" cy="30" r="15" fill="var(--color-accent)"/>
+                            <rect x="180" y="150" width="40" height="80" rx="5" fill="var(--color-primary)" opacity="0.5"/>
+                            <!-- قبة -->
+                            <path d="M200 50 Q150 80, 150 100 L250 100 Q250 80, 200 50 Z" fill="var(--color-primary)" opacity="0.4"/>
+                        </svg>
+                    <?php endif; ?>
+                </div>
+                <div class="about-content">
+                    <div class="section-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                        <?php _e('عن المدرسة', 'fiqhlearning'); ?>
+                    </div>
+                    <h2><?php echo get_theme_mod('about_title', __('مدرسة الريحان للعلوم الشرعية', 'fiqhlearning')); ?></h2>
+                    <p><?php echo get_theme_mod('about_description', __('مدرسة الريحان منصة تعليمية متخصصة في تعليم الفقه المالكي والعلوم الشرعية. نسعى لتقديم تعليم عالي الجودة يجمع بين الأصالة والمعاصرة، من خلال دروس مرئية ومسموعة ومواد تعليمية متنوعة.', 'fiqhlearning')); ?></p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <div class="feature-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4><?php _e('منهج شامل', 'fiqhlearning'); ?></h4>
+                                <p><?php _e('دروس متكاملة في الفقه المالكي', 'fiqhlearning'); ?></p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="feature-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4><?php _e('أساتذة متخصصون', 'fiqhlearning'); ?></h4>
+                                <p><?php _e('نخبة من العلماء والمشايخ', 'fiqhlearning'); ?></p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="feature-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4><?php _e('شهادات معتمدة', 'fiqhlearning'); ?></h4>
+                                <p><?php _e('شهادات إتمام للمقررات', 'fiqhlearning'); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    $about_page = get_page_by_path('about');
+                    if ($about_page) :
+                    ?>
+                        <a href="<?php echo get_permalink($about_page); ?>" class="btn btn-primary">
+                            <?php _e('اعرف المزيد', 'fiqhlearning'); ?>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                            <?php _e('لوحة التحكم', 'fiqhlearning'); ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -55,7 +170,84 @@ get_header();
         </div>
     </section>
 
-    <!-- قسم الإحصائيات والودجات -->
+    <!-- قسم الإحصائيات -->
+    <section class="section stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-number">
+                        <?php
+                        $student_count = count_users();
+                        $students = 0;
+                        if (isset($student_count['avail_roles']['student'])) {
+                            $students = $student_count['avail_roles']['student'];
+                        }
+                        echo number_format_i18n($students);
+                        ?>+
+                    </div>
+                    <div class="stat-label"><?php _e('طالب', 'fiqhlearning'); ?></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-number">
+                        <?php
+                        $courses = wp_count_posts('fiqh_course');
+                        echo number_format_i18n($courses->publish);
+                        ?>+
+                    </div>
+                    <div class="stat-label"><?php _e('مقرر', 'fiqhlearning'); ?></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-number">
+                        <?php
+                        $lessons = wp_count_posts('fiqh_lesson');
+                        echo number_format_i18n($lessons->publish);
+                        ?>+
+                    </div>
+                    <div class="stat-label"><?php _e('درس', 'fiqhlearning'); ?></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-number">
+                        <?php
+                        $sciences = wp_count_terms(array('taxonomy' => 'fiqh_course_science'));
+                        echo number_format_i18n($sciences);
+                        ?>+
+                    </div>
+                    <div class="stat-label"><?php _e('علم', 'fiqhlearning'); ?></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الودجات المخصصة -->
     <?php if (is_active_sidebar('homepage')) : ?>
         <section class="section homepage-widgets">
             <div class="container">
@@ -213,7 +405,7 @@ get_header();
                                 <?php echo $question->status === 'answered' ? __('مُجابة', 'fiqhlearning') : __('بانتظار', 'fiqhlearning'); ?>
                             </div>
                             <h4 class="question-title-home">
-                                <?php echo esc_html(wp_trim_words($question->question_text, 12)); ?>
+                                <?php echo isset($question->question) ? esc_html(wp_trim_words($question->question, 12)) : ''; ?>
                             </h4>
                             <div class="question-meta-home">
                                 <span><?php echo $question->is_anonymous ? __('مجهول', 'fiqhlearning') : esc_html($question->user_name); ?></span>

@@ -105,11 +105,40 @@
      */
     function initMenuToggle() {
         const menuToggle = $('.menu-toggle');
-        const navMenu = $('.nav-menu');
+        const mainNavigation = $('.main-navigation');
+        const body = $('body');
 
-        menuToggle.on('click', function() {
+        // فتح/إغلاق القائمة
+        menuToggle.on('click', function(e) {
+            e.stopPropagation();
             $(this).toggleClass('active');
-            navMenu.slideToggle();
+            mainNavigation.toggleClass('active');
+            body.toggleClass('menu-open');
+        });
+
+        // إغلاق القائمة عند النقر على overlay
+        body.on('click', function(e) {
+            if (body.hasClass('menu-open') && !$(e.target).closest('.main-navigation, .menu-toggle').length) {
+                menuToggle.removeClass('active');
+                mainNavigation.removeClass('active');
+                body.removeClass('menu-open');
+            }
+        });
+
+        // إغلاق القائمة عند النقر على رابط
+        $('.nav-menu a').on('click', function() {
+            menuToggle.removeClass('active');
+            mainNavigation.removeClass('active');
+            body.removeClass('menu-open');
+        });
+
+        // إغلاق القائمة بزر ESC
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && body.hasClass('menu-open')) {
+                menuToggle.removeClass('active');
+                mainNavigation.removeClass('active');
+                body.removeClass('menu-open');
+            }
         });
     }
 
