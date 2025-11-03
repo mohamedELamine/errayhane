@@ -412,12 +412,12 @@ class FiqhLearning_Admin_Menus {
                                     <?php echo nl2br(esc_html($question->question)); ?>
                                 </div>
 
-                                <?php if ($question->status === 'answered' && $question->answer) : ?>
+                                <?php if ($question->status === 'answered' && (isset($question->answer) || isset($question->answer_text))) : ?>
                                     <h3><?php _e('الإجابة:', 'fiqh-lms'); ?></h3>
                                     <div class="question-full-text" style="border-right-color: #00a32a;">
-                                        <?php echo nl2br(esc_html($question->answer)); ?>
+                                        <?php echo isset($question->answer) ? nl2br(esc_html($question->answer)) : nl2br(esc_html($question->answer_text)); ?>
                                     </div>
-                                    <p><em><?php _e('أجاب في:', 'fiqh-lms'); ?> <?php echo esc_html($question->answered_at); ?></em></p>
+                                    <p><em><?php _e('أجاب في:', 'fiqh-lms'); ?> <?php echo isset($question->answered_at) && $question->answered_at ? esc_html($question->answered_at) : '-'; ?></em></p>
                                 <?php else : ?>
                                     <div class="answer-form">
                                         <h3><?php _e('الإجابة على السؤال:', 'fiqh-lms'); ?></h3>
