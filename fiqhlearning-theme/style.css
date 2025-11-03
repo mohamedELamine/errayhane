@@ -1,17 +1,17 @@
 /*
-Theme Name: FiqhLearning
+Theme Name: مدرسة الريحان
 Theme URI: https://fiqhlearning.com
-Author: FiqhLearning Team
+Author: محمد الأمين
 Author URI: https://fiqhlearning.com
-Description: قالب WordPress احترافي لمنصة تعليمية إلكترونية لفهم الفقه المالكي. يدعم RTL كاملاً، بألوان خضراء إسلامية، ومصمم خصيصاً لإدارة المقررات والدروس والطلاب بدون إضافات خارجية.
-Version: 1.0.0
+Description: قالب WordPress احترافي لمنصة تعليمية إلكترونية لفهم الفقه المالكي. يدعم RTL كاملاً، بألوان خضراء إسلامية، ومصمم خصيصاً لإدارة المقررات والدروس والطلاب بدون إضافات خارجية. الإصدار 1.3 يتضمن تحسينات شاملة للتصميم المتجاوب مع جميع أحجام الشاشات.
+Version: 1.3.0
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: fiqhlearning
-Tags: rtl-language-support, education, lms, arabic, islamic, two-columns, custom-colors, custom-menu, featured-images, threaded-comments, translation-ready
+Tags: rtl-language-support, education, lms, arabic, islamic, two-columns, custom-colors, custom-menu, featured-images, threaded-comments, translation-ready, responsive-layout
 */
 
 /* ==========================================================================
@@ -494,29 +494,362 @@ body.dark-mode .answer-form {
 }
 
 /* ==========================================================================
-   استجابة الشاشات
+   استجابة الشاشات المحسّنة - الإصدار 1.3
    ========================================================================== */
 
+/* تحسينات للأجهزة اللوحية الكبيرة */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 960px;
+        padding: 0 var(--spacing-lg);
+    }
+
+    .courses-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* تحسينات للأجهزة اللوحية */
 @media (max-width: 768px) {
     :root {
         --text-4xl: 1.75rem;
         --text-3xl: 1.5rem;
         --text-2xl: 1.25rem;
+        --text-xl: 1.125rem;
     }
 
     .container,
     .container-wide {
+        max-width: 100%;
         padding: 0 var(--spacing-md);
     }
 
     .section {
         padding: var(--spacing-2xl) 0;
     }
+
+    .card {
+        padding: var(--spacing-md);
+        border-radius: var(--radius-md);
+    }
+
+    .btn {
+        padding: var(--spacing-md);
+        font-size: var(--text-base);
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .courses-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    /* تحسينات الأسئلة */
+    .questions-section,
+    .exercises-section {
+        padding: var(--spacing-md);
+    }
+
+    .question-item {
+        padding: var(--spacing-md);
+    }
+
+    .question-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .add-question-form,
+    .answer-form {
+        padding: var(--spacing-md);
+    }
+
+    /* تحسينات الهيدر */
+    .header-content {
+        flex-wrap: wrap;
+        padding: var(--spacing-sm) 0;
+    }
+
+    .site-title {
+        font-size: var(--text-xl);
+    }
+
+    .header-actions {
+        gap: var(--spacing-sm);
+    }
+
+    /* تحسينات القوائم */
+    .nav-menu {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .nav-menu li a {
+        padding: var(--spacing-md);
+        display: block;
+    }
+
+    /* تحسينات الفوتر */
+    .footer-widgets-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+    }
+
+    .footer-bottom-content {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+
+    .footer-menu {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    /* تحسينات البطاقات */
+    .course-card,
+    .question-card {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .course-thumbnail,
+    .course-thumbnail-placeholder {
+        height: 180px;
+    }
+
+    /* تحسينات الفيديو */
+    .video-container {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    /* تحسينات التبويبات */
+    .lesson-tabs {
+        flex-wrap: wrap;
+        gap: var(--spacing-xs);
+        overflow-x: auto;
+    }
+
+    .lesson-tab {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--text-sm);
+        white-space: nowrap;
+    }
 }
 
+/* تحسينات للهواتف الصغيرة */
 @media (max-width: 480px) {
     :root {
         --text-4xl: 1.5rem;
         --text-3xl: 1.25rem;
+        --text-2xl: 1.125rem;
+        --text-xl: 1rem;
+        --spacing-3xl: 3rem;
+    }
+
+    .container,
+    .container-wide {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .section {
+        padding: var(--spacing-xl) 0;
+    }
+
+    .card {
+        padding: var(--spacing-sm);
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* تحسينات العناوين */
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.25rem; }
+    h3 { font-size: 1.125rem; }
+    h4 { font-size: 1rem; }
+
+    /* تحسينات الأيقونات */
+    .stat-icon,
+    .science-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .stat-icon svg,
+    .science-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* تحسينات النصوص */
+    .hero-description {
+        font-size: var(--text-base);
+    }
+
+    /* تحسينات النماذج */
+    .add-question-form textarea,
+    .answer-form textarea {
+        padding: var(--spacing-sm);
+        font-size: var(--text-base);
+    }
+
+    /* تحسينات الأزرار */
+    .btn-lg {
+        padding: var(--spacing-md);
+        font-size: var(--text-base);
+    }
+
+    /* تحسينات المودال */
+    .modal-content {
+        width: 95%;
+        padding: var(--spacing-md);
+        margin: 10% auto;
+    }
+
+    .search-modal-content {
+        width: 95%;
+        padding: var(--spacing-md);
+    }
+
+    /* تحسينات شريط الأدوات */
+    .back-to-top {
+        width: 40px;
+        height: 40px;
+        bottom: var(--spacing-md);
+        left: var(--spacing-md);
+    }
+
+    /* تحسينات البطاقات المصغرة */
+    .course-thumbnail,
+    .course-thumbnail-placeholder {
+        height: 160px;
+    }
+
+    .course-content {
+        padding: var(--spacing-sm);
+    }
+
+    .course-title {
+        font-size: var(--text-lg);
+    }
+
+    /* تحسينات صفحة الدرس */
+    .lesson-main-content {
+        padding: var(--spacing-sm);
+    }
+
+    .lesson-header h1 {
+        font-size: var(--text-xl);
+    }
+
+    /* تحسينات الأسئلة في الموبايل */
+    .question-item {
+        padding: var(--spacing-sm);
+    }
+
+    .question-content {
+        font-size: var(--text-base);
+        line-height: 1.6;
+    }
+
+    .question-answer {
+        padding: var(--spacing-sm);
+        margin-top: var(--spacing-md);
+    }
+}
+
+/* تحسينات للشاشات الصغيرة جداً */
+@media (max-width: 360px) {
+    :root {
+        --text-4xl: 1.375rem;
+        --text-3xl: 1.125rem;
+        --text-2xl: 1rem;
+        --spacing-xl: 1.5rem;
+        --spacing-2xl: 2rem;
+        --spacing-3xl: 2.5rem;
+    }
+
+    .container,
+    .container-wide {
+        padding: 0 var(--spacing-xs);
+    }
+
+    .site-title {
+        font-size: var(--text-lg);
+    }
+
+    .header-actions {
+        gap: var(--spacing-xs);
+    }
+
+    .btn {
+        padding: var(--spacing-sm);
+        font-size: var(--text-sm);
+    }
+
+    .card {
+        padding: var(--spacing-xs);
+    }
+
+    .stat-icon,
+    .science-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .modal-content,
+    .search-modal-content {
+        width: 98%;
+        padding: var(--spacing-sm);
+    }
+
+    .question-item {
+        padding: var(--spacing-xs);
+    }
+
+    .add-question-form,
+    .answer-form {
+        padding: var(--spacing-sm);
+    }
+}
+
+/* تحسينات لنمط الطباعة */
+@media print {
+    .main-header,
+    .site-footer,
+    .header-actions,
+    .back-to-top,
+    .dark-mode-toggle,
+    .search-toggle,
+    .btn,
+    .nav-menu {
+        display: none !important;
+    }
+
+    .container,
+    .container-wide {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    body {
+        background-color: white;
+        color: black;
+    }
+
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
     }
 }
