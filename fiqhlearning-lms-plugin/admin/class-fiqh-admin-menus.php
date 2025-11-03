@@ -324,7 +324,7 @@ class FiqhLearning_Admin_Menus {
                             }
                         ?>
                         <tr>
-                            <td><?php echo esc_html(wp_trim_words($question->question_text, 8)); ?></td>
+                            <td><?php echo isset($question->question) ? esc_html(wp_trim_words($question->question, 8)) : '-'; ?></td>
                             <td><?php echo $question->is_anonymous ? __('مجهول', 'fiqh-lms') : esc_html($question->student_name); ?></td>
                             <td>
                                 <?php if ($course) : ?>
@@ -409,13 +409,13 @@ class FiqhLearning_Admin_Menus {
 
                                 <h3><?php _e('نص السؤال:', 'fiqh-lms'); ?></h3>
                                 <div class="question-full-text">
-                                    <?php echo nl2br(esc_html($question->question_text)); ?>
+                                    <?php echo nl2br(esc_html($question->question)); ?>
                                 </div>
 
-                                <?php if ($question->status === 'answered' && $question->answer_text) : ?>
+                                <?php if ($question->status === 'answered' && $question->answer) : ?>
                                     <h3><?php _e('الإجابة:', 'fiqh-lms'); ?></h3>
                                     <div class="question-full-text" style="border-right-color: #00a32a;">
-                                        <?php echo nl2br(esc_html($question->answer_text)); ?>
+                                        <?php echo nl2br(esc_html($question->answer)); ?>
                                     </div>
                                     <p><em><?php _e('أجاب في:', 'fiqh-lms'); ?> <?php echo esc_html($question->answered_at); ?></em></p>
                                 <?php else : ?>
