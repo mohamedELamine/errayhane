@@ -322,3 +322,101 @@ function fiqh_get_lesson_notes() {
     wp_send_json_success(array('notes' => $notes));
 }
 add_action('wp_ajax_fiqh_get_lesson_notes', 'fiqh_get_lesson_notes');
+
+/**
+ * معالج نموذج الاتصال
+ */
+function fiqh_contact_form() {
+    // التحقق من nonce
+    check_ajax_referer('fiqh-ajax-nonce', 'nonce');
+
+    // جلب البيانات
+    $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
+    $subject = isset($_POST['subject']) ? sanitize_text_field($_POST['subject']) : '';
+    $message = isset($_POST['message']) ? sanitize_textarea_field($_POST['message']) : '';
+    $privacy = isset($_POST['privacy']) ? sanitize_text_field($_POST['privacy']) : '';
+
+    // التحقق من البيانات المطلوبة
+    if (empty($name) || empty($email) || empty($subject) || empty($message) || empty($privacy)) {
+        wp_send_json_error(__('جميع الحقول المطلوبة يجب أن تكون مملوءة', 'fiqhlearning'));
+    }
+
+    // التحقق من صحة البريد الإلكتروني
+    if (!is_email($email)) {
+        wp_send_json_error(__('البريد الإلكتروني غير صحيح', 'fiqhlearning'));
+    }
+
+    // ترجمة الموضوع
+    $subject_translations = array(
+        'enrollment' => __('استفسار عن التسجيل', 'fiqhlearning'),
+        'courses' => __('استفسار عن المقررات', 'fiqhlearning'),
+        'technical' => __('مشكلة تقنية', 'fiqhlearning'),
+        'complaint' => __('شكوى', 'fiqhlearning'),
+        'suggestion' => __('اقتراح', 'fiqhlearning'),
+        'other' => __('أخرى', 'fiqhlearning'),
+    );
+    $subject_text = isset($subject_translations[$subject]) ? $subject_translations[$subject] : $subject;
+
+    // إعداد البريد الإلكتروني
+    $to = 'rayhaneschool@gmail.com'; // البريد المحدد من المستخدم
+    $email_subject = sprintf('[%s] رسالة جديدة من %s - %s', get_bloginfo('name'), $name, $subject_text);
+
+    $email_body = sprintf(
+        "رسالة جديدة من نموذج الاتصال\n\n" .
+        "الاسم: %s\n" .
+        "البريد الإلكتروني: %s\n" .
+        "رقم الهاتف: %s\n" .
+        "الموضوع: %s\n\n" .
+        "الرسالة:\n%s\n\n" .
+        "---\n" .
+        "تم إرسال هذه الرسالة من %s\n" .
+        "التاريخ: %s",
+        $name,
+        $email,
+        $phone ? $phone : __('غير محدد', 'fiqhlearning'),
+        $subject_text,
+        $message,
+        get_bloginfo('url'),
+        current_time('mysql')
+    );
+
+    // إعداد headers
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: ' . get_bloginfo('name') . ' <noreply@' . parse_url(get_bloginfo('url'), PHP_URL_HOST) . '>',
+        'Reply-To: ' . $name . ' <' . $email . '>',
+    );
+
+    // إرسال البريد الإلكتروني
+    $sent = wp_mail($to, $email_subject, $email_body, $headers);
+
+    // إرسال نسخة للمرسل (اختياري)
+    $copy_to_sender = get_theme_mod('contact_form_send_copy', false);
+    if ($copy_to_sender && $sent) {
+        $copy_subject = sprintf('[%s] نسخة من رسالتك - %s', get_bloginfo('name'), $subject_text);
+        $copy_body = sprintf(
+            "شكراً لتواصلك معنا!\n\n" .
+            "هذه نسخة من رسالتك:\n\n%s\n\n" .
+            "سنتواصل معك في أقرب وقت ممكن.\n\n" .
+            "تحياتنا،\n" .
+            "%s",
+            $message,
+            get_bloginfo('name')
+        );
+        $copy_headers = array(
+            'Content-Type: text/plain; charset=UTF-8',
+            'From: ' . get_bloginfo('name') . ' <noreply@' . parse_url(get_bloginfo('url'), PHP_URL_HOST) . '>',
+        );
+        wp_mail($email, $copy_subject, $copy_body, $copy_headers);
+    }
+
+    if ($sent) {
+        wp_send_json_success(__('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.', 'fiqhlearning'));
+    } else {
+        wp_send_json_error(__('حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى أو التواصل معنا مباشرة.', 'fiqhlearning'));
+    }
+}
+add_action('wp_ajax_fiqh_contact_form', 'fiqh_contact_form');
+add_action('wp_ajax_nopriv_fiqh_contact_form', 'fiqh_contact_form');
