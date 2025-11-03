@@ -84,61 +84,82 @@ get_header();
                 <!-- بطاقة العنوان -->
                 <div class="info-card">
                     <div class="info-icon">
-                        <i class="icon-location"></i>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
                     </div>
                     <div class="info-content">
-                        <h3>العنوان</h3>
-                        <p>
-                            المملكة المغربية<br>
-                            الرباط - حي النهضة<br>
-                            شارع الفقه المالكي، رقم 123
-                        </p>
+                        <h3><?php _e('العنوان', 'fiqhlearning'); ?></h3>
+                        <p><?php echo nl2br(esc_html(get_theme_mod('contact_address', __('المملكة المغربية - الرباط', 'fiqhlearning')))); ?></p>
                     </div>
                 </div>
 
                 <!-- بطاقة الهاتف -->
+                <?php $contact_phone = get_theme_mod('contact_phone', '+212 661 234 567'); ?>
+                <?php if ($contact_phone) : ?>
                 <div class="info-card">
                     <div class="info-icon">
-                        <i class="icon-phone"></i>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
                     </div>
                     <div class="info-content">
-                        <h3>الهاتف</h3>
+                        <h3><?php _e('الهاتف', 'fiqhlearning'); ?></h3>
                         <p dir="ltr">
-                            <a href="tel:+212537123456">+212 537 123 456</a><br>
-                            <a href="tel:+212661234567">+212 661 234 567</a>
+                            <?php
+                            $phones = explode("\n", $contact_phone);
+                            foreach ($phones as $phone) {
+                                $phone = trim($phone);
+                                if ($phone) {
+                                    $clean_phone = preg_replace('/[^0-9+]/', '', $phone);
+                                    echo '<a href="tel:' . esc_attr($clean_phone) . '">' . esc_html($phone) . '</a><br>';
+                                }
+                            }
+                            ?>
                         </p>
                     </div>
                 </div>
+                <?php endif; ?>
 
                 <!-- بطاقة البريد -->
                 <div class="info-card">
                     <div class="info-icon">
-                        <i class="icon-email"></i>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
                     </div>
                     <div class="info-content">
-                        <h3>البريد الإلكتروني</h3>
+                        <h3><?php _e('البريد الإلكتروني', 'fiqhlearning'); ?></h3>
                         <p>
-                            <a href="mailto:info@fiqhlearning.com">info@fiqhlearning.com</a><br>
-                            <a href="mailto:support@fiqhlearning.com">support@fiqhlearning.com</a>
+                            <a href="mailto:rayhaneschool@gmail.com">rayhaneschool@gmail.com</a>
+                            <?php
+                            $contact_email_secondary = get_theme_mod('contact_email_secondary');
+                            if ($contact_email_secondary) {
+                                echo '<br><a href="mailto:' . esc_attr($contact_email_secondary) . '">' . esc_html($contact_email_secondary) . '</a>';
+                            }
+                            ?>
                         </p>
                     </div>
                 </div>
 
                 <!-- أوقات العمل -->
+                <?php $work_hours = get_theme_mod('contact_work_hours'); ?>
+                <?php if ($work_hours) : ?>
                 <div class="info-card">
                     <div class="info-icon">
-                        <i class="icon-clock"></i>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
                     </div>
                     <div class="info-content">
-                        <h3>أوقات العمل</h3>
-                        <p>
-                            <strong>من الأحد إلى الخميس:</strong><br>
-                            9:00 صباحاً - 5:00 مساءً<br><br>
-                            <strong>الجمعة والسبت:</strong><br>
-                            مغلق
-                        </p>
+                        <h3><?php _e('أوقات العمل', 'fiqhlearning'); ?></h3>
+                        <p><?php echo nl2br(esc_html($work_hours)); ?></p>
                     </div>
                 </div>
+                <?php endif; ?>
 
                 <!-- روابط التواصل الاجتماعي -->
                 <div class="social-links-card">
@@ -207,304 +228,62 @@ get_header();
     </div>
 </main>
 
-<style>
-.contact-page {
-    padding: 40px 0;
-    background: var(--color-bg-light);
-}
-
-.page-header {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.page-title {
-    font-size: 2.8rem;
-    color: var(--color-primary-dark);
-    margin-bottom: 15px;
-}
-
-.page-description {
-    font-size: 1.2rem;
-    color: var(--color-text-secondary);
-}
-
-.contact-content {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 40px;
-    margin-bottom: 50px;
-}
-
-.contact-form-section {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.section-title {
-    font-size: 1.8rem;
-    color: var(--color-primary-dark);
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 3px solid var(--color-primary);
-}
-
-.contact-form {
-    max-width: 100%;
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.form-group {
-    margin-bottom: 25px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: var(--color-text-dark);
-}
-
-.required {
-    color: #DC2626;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #E5E7EB;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-    font-family: 'Cairo', sans-serif;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--color-primary);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 150px;
-}
-
-.privacy-notice {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.privacy-notice input[type="checkbox"] {
-    width: auto;
-}
-
-.privacy-notice label {
-    margin-bottom: 0;
-    font-weight: normal;
-}
-
-.privacy-notice a {
-    color: var(--color-primary);
-    text-decoration: underline;
-}
-
-.form-message {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.form-message.success {
-    background: #D1FAE5;
-    color: #065F46;
-    border: 1px solid #10B981;
-}
-
-.form-message.error {
-    background: #FEE2E2;
-    color: #991B1B;
-    border: 1px solid #DC2626;
-}
-
-.contact-info-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.info-card {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.info-icon {
-    width: 50px;
-    height: 50px;
-    background: var(--color-primary-light);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-primary);
-    font-size: 24px;
-    flex-shrink: 0;
-}
-
-.info-content h3 {
-    font-size: 1.2rem;
-    color: var(--color-primary-dark);
-    margin-bottom: 10px;
-}
-
-.info-content p {
-    color: var(--color-text);
-    line-height: 1.8;
-}
-
-.info-content a {
-    color: var(--color-primary);
-    text-decoration: none;
-}
-
-.info-content a:hover {
-    text-decoration: underline;
-}
-
-.social-links-card {
-    background: var(--color-primary);
-    color: white;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.social-links-card h3 {
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-}
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.social-link {
-    width: 45px;
-    height: 45px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.social-link:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.social-link.telegram { color: #0088cc; }
-.social-link.whatsapp { color: #25D366; }
-.social-link.facebook { color: #1877F2; }
-.social-link.twitter { color: #1DA1F2; }
-.social-link.youtube { color: #FF0000; }
-
-.map-section {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.map-container {
-    margin-top: 25px;
-}
-
-@media (max-width: 1024px) {
-    .contact-content {
-        grid-template-columns: 1fr;
-    }
-
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .page-title {
-        font-size: 2rem;
-    }
-
-    .contact-form-section {
-        padding: 25px;
-    }
-}
-</style>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.getElementById('contact-form');
-    const formMessage = document.getElementById('form-message');
+jQuery(document).ready(function($) {
+    $('#contact-form').on('submit', function(e) {
+        e.preventDefault();
 
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        var $form = $(this);
+        var $submitBtn = $form.find('button[type="submit"]');
+        var originalBtnText = $submitBtn.html();
+        var $formMessage = $('#form-message');
 
-            const formData = new FormData(contactForm);
-            formData.append('action', 'fiqh_contact_form');
+        // تعطيل الزر
+        $submitBtn.prop('disabled', true).html('<svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" opacity="0.25"></circle><path d="M4 12a8 8 0 0 1 8-8" opacity="0.75"></path></svg> <?php _e('جاري الإرسال...', 'fiqhlearning'); ?>');
 
-            // إرسال عبر AJAX
-            fetch(fiqhData.ajaxUrl, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                formMessage.style.display = 'block';
+        // جمع البيانات
+        var formData = {
+            action: 'fiqh_contact_form',
+            nonce: fiqhData.nonce,
+            name: $('#contact-name').val(),
+            email: $('#contact-email').val(),
+            phone: $('#contact-phone').val(),
+            subject: $('#contact-subject').val(),
+            message: $('#contact-message').val(),
+            privacy: $('#privacy-agreement').is(':checked') ? 'on' : ''
+        };
 
-                if (data.success) {
-                    formMessage.className = 'form-message success';
-                    formMessage.textContent = 'تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.';
-                    contactForm.reset();
+        // إرسال عبر AJAX
+        $.ajax({
+            url: fiqhData.ajaxUrl,
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                $formMessage.show();
+
+                if (response.success) {
+                    $formMessage.removeClass('error').addClass('success');
+                    $formMessage.text(response.data || '<?php _e('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.', 'fiqhlearning'); ?>');
+                    $form[0].reset();
                 } else {
-                    formMessage.className = 'form-message error';
-                    formMessage.textContent = data.data || 'حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.';
+                    $formMessage.removeClass('success').addClass('error');
+                    $formMessage.text(response.data || '<?php _e('حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.', 'fiqhlearning'); ?>');
                 }
 
-                // إخفاء الرسالة بعد 5 ثوانٍ
-                setTimeout(() => {
-                    formMessage.style.display = 'none';
-                }, 5000);
-            })
-            .catch(error => {
-                formMessage.style.display = 'block';
-                formMessage.className = 'form-message error';
-                formMessage.textContent = 'حدث خطأ في الاتصال. يرجى المحاولة لاحقاً.';
-            });
+                // إخفاء الرسالة بعد 7 ثوانٍ
+                setTimeout(function() {
+                    $formMessage.fadeOut();
+                }, 7000);
+            },
+            error: function() {
+                $formMessage.show().removeClass('success').addClass('error');
+                $formMessage.text('<?php _e('حدث خطأ في الاتصال. يرجى المحاولة لاحقاً.', 'fiqhlearning'); ?>');
+            },
+            complete: function() {
+                $submitBtn.prop('disabled', false).html(originalBtnText);
+            }
         });
-    }
+    });
 });
 </script>
 

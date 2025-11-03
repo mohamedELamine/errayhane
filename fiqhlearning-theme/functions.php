@@ -110,6 +110,11 @@ function fiqhlearning_enqueue_scripts() {
         wp_enqueue_style('fiqh-home', FIQH_THEME_URI . '/assets/css/home.css', array('fiqh-main'), FIQH_THEME_VERSION);
     }
 
+    // تحميل أنماط صفحة الاتصال
+    if (is_page_template('page-contact.php')) {
+        wp_enqueue_style('fiqh-contact', FIQH_THEME_URI . '/assets/css/contact.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    }
+
     // تحميل PDF.js للعرض المدمج
     wp_enqueue_script('pdfjs', FIQH_THEME_URI . '/assets/js/pdf.min.js', array(), '3.11.174', true);
 
