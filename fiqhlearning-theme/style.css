@@ -493,6 +493,38 @@ body.dark-mode .answer-form {
     border-top-color: var(--color-light-gray);
 }
 
+/* Dark mode - القائمة والهيدر */
+body.dark-mode .main-header {
+    background-color: var(--color-light);
+}
+
+body.dark-mode .menu-toggle {
+    background-color: var(--color-light-gray);
+}
+
+body.dark-mode .menu-icon,
+body.dark-mode .menu-icon::before,
+body.dark-mode .menu-icon::after {
+    background-color: var(--color-primary-light);
+}
+
+body.dark-mode .main-navigation {
+    background-color: var(--color-light);
+}
+
+body.dark-mode .nav-menu li {
+    border-bottom-color: var(--color-light-gray);
+}
+
+body.dark-mode .nav-menu li a {
+    color: var(--color-white);
+}
+
+body.dark-mode .nav-menu li a:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
 /* ==========================================================================
    استجابة الشاشات المحسّنة - الإصدار 1.3
    ========================================================================== */

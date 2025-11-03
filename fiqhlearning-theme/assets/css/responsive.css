@@ -73,6 +73,102 @@
     .filters-form .filter-group {
         width: 100%;
     }
+
+    /* تحسينات القائمة للأجهزة اللوحية */
+    .header-content {
+        position: relative;
+    }
+
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background-color: var(--color-light);
+        border-radius: var(--radius-md);
+        transition: all var(--transition-fast);
+    }
+
+    .menu-toggle:hover {
+        background-color: var(--color-primary-light);
+    }
+
+    .menu-toggle:hover .menu-icon,
+    .menu-toggle:hover .menu-icon::before,
+    .menu-toggle:hover .menu-icon::after {
+        background-color: var(--color-white);
+    }
+
+    .main-navigation {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 320px;
+        height: 100vh;
+        background-color: var(--color-white);
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .main-navigation.active {
+        right: 0;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-xl);
+        gap: 0;
+    }
+
+    .nav-menu li {
+        width: 100%;
+        border-bottom: 1px solid var(--color-light-gray);
+    }
+
+    .nav-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .nav-menu li a {
+        display: block;
+        padding: var(--spacing-md) var(--spacing-sm);
+        font-size: var(--text-lg);
+        border-radius: 0;
+    }
+
+    .nav-menu li a:hover {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+    }
+
+    /* overlay للقائمة */
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity var(--transition-base), visibility var(--transition-base);
+        pointer-events: none;
+    }
+
+    body.menu-open::after {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    body.menu-open {
+        overflow: hidden;
+    }
 }
 
 /* Mobile - 768px */
@@ -84,27 +180,7 @@
     }
 
     .header-content {
-        flex-wrap: wrap;
-    }
-
-    .main-navigation {
-        order: 3;
-        width: 100%;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-menu {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        padding: var(--spacing-md) 0;
-    }
-
-    .nav-menu.active {
-        display: flex;
+        flex-wrap: nowrap;
     }
 
     .nav-menu li a {
