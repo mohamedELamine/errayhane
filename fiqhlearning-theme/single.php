@@ -8,8 +8,7 @@
 get_header();
 ?>
 
-<main id="primary" class="site-main">
-    <div class="container">
+<main id="primary" class="site-main single-post-main">
 
         <?php
         while (have_posts()) : the_post();
@@ -17,66 +16,69 @@ get_header();
             $author_name = get_the_author();
             $author_avatar = get_avatar_url($author_id, array('size' => 96));
             $reading_time = ceil(str_word_count(strip_tags(get_the_content())) / 200); // متوسط 200 كلمة في الدقيقة
+            $has_thumbnail = has_post_thumbnail();
             ?>
 
-            <article id="post-<?php the_ID(); ?>" <?php post_class('single-post-article'); ?>>
-
-                <!-- رأس المقال -->
-                <header class="post-header">
-                    <div class="post-header-meta">
-                        <?php
-                        $categories = get_the_category();
-                        if (!empty($categories)) :
-                            foreach ($categories as $category) :
-                                ?>
-                                <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>" class="post-category-badge">
-                                    <?php echo esc_html($category->name); ?>
-                                </a>
+            <!-- Hero Section -->
+            <div class="post-hero" <?php if ($has_thumbnail) : ?>style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('<?php echo get_the_post_thumbnail_url(null, 'full'); ?>');"<?php endif; ?>>
+                <div class="container">
+                    <div class="post-hero-content">
+                        <!-- التصنيفات -->
+                        <div class="post-hero-categories">
                             <?php
-                            endforeach;
-                        endif;
-                        ?>
-                    </div>
+                            $categories = get_the_category();
+                            if (!empty($categories)) :
+                                foreach ($categories as $category) :
+                                    ?>
+                                    <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>" class="post-category-badge-hero">
+                                        <?php echo esc_html($category->name); ?>
+                                    </a>
+                                <?php
+                                endforeach;
+                            endif;
+                            ?>
+                        </div>
 
-                    <h1 class="post-title"><?php the_title(); ?></h1>
+                        <!-- العنوان -->
+                        <h1 class="post-hero-title"><?php the_title(); ?></h1>
 
-                    <div class="post-meta">
-                        <div class="post-author-info">
-                            <img src="<?php echo esc_url($author_avatar); ?>" alt="<?php echo esc_attr($author_name); ?>" class="author-avatar">
-                            <div class="author-details">
-                                <a href="<?php echo get_author_posts_url($author_id); ?>" class="author-name">
-                                    <?php echo esc_html($author_name); ?>
-                                </a>
-                                <div class="post-date-reading">
-                                    <time datetime="<?php echo get_the_date('c'); ?>">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                                        </svg>
-                                        <?php echo get_the_date(); ?>
-                                    </time>
-                                    <span class="separator">•</span>
-                                    <span class="reading-time">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                        </svg>
-                                        <?php echo $reading_time; ?> <?php _e('دقائق قراءة', 'fiqhlearning'); ?>
-                                    </span>
+                        <!-- معلومات الكاتب والتاريخ -->
+                        <div class="post-hero-meta">
+                            <div class="post-hero-author">
+                                <img src="<?php echo esc_url($author_avatar); ?>" alt="<?php echo esc_attr($author_name); ?>" class="hero-author-avatar">
+                                <div class="hero-author-details">
+                                    <a href="<?php echo get_author_posts_url($author_id); ?>" class="hero-author-name">
+                                        <?php echo esc_html($author_name); ?>
+                                    </a>
+                                    <div class="hero-post-info">
+                                        <time datetime="<?php echo get_the_date('c'); ?>">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                                            </svg>
+                                            <?php echo get_the_date(); ?>
+                                        </time>
+                                        <span class="separator">•</span>
+                                        <span class="reading-time">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                            </svg>
+                                            <?php echo $reading_time; ?> <?php _e('دقائق قراءة', 'fiqhlearning'); ?>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </header>
+                </div>
+            </div>
 
-                <!-- الصورة المميزة -->
-                <?php if (has_post_thumbnail()) : ?>
-                    <div class="post-featured-image">
-                        <?php the_post_thumbnail('large', array('class' => 'featured-image')); ?>
-                    </div>
-                <?php endif; ?>
+            <!-- محتوى المقال -->
+            <div class="container">
+            <article id="post-<?php the_ID(); ?>" <?php post_class('single-post-article'); ?>>
 
                 <!-- محتوى المقال -->
                 <div class="post-content">
@@ -233,7 +235,232 @@ get_header();
         ?>
 
     </div>
+    </div><!-- .container -->
 </main>
+
+<style>
+/* Hero Section للمقال */
+.post-hero {
+    background-color: var(--color-primary-dark);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 100px 0 60px;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.post-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(11, 94, 59, 0.85) 0%, rgba(8, 66, 41, 0.9) 100%);
+    z-index: 1;
+}
+
+.post-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--color-white);
+}
+
+.post-hero-categories {
+    margin-bottom: 20px;
+}
+
+.post-category-badge-hero {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-white);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0 5px;
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-base);
+}
+
+.post-category-badge-hero:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.post-hero-title {
+    font-size: 3rem;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    color: var(--color-white);
+    font-weight: 800;
+}
+
+.post-hero-meta {
+    display: flex;
+    justify-content: center;
+}
+
+.post-hero-author {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hero-author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-author-details {
+    text-align: right;
+}
+
+.hero-author-name {
+    color: var(--color-white);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.hero-author-name:hover {
+    text-decoration: underline;
+}
+
+.hero-post-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+}
+
+.hero-post-info svg {
+    vertical-align: middle;
+}
+
+.hero-post-info .separator {
+    opacity: 0.5;
+}
+
+/* تحسين محتوى المقال */
+.single-post-article {
+    background: var(--color-white);
+    padding: 40px 50px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 40px;
+}
+
+.post-content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-dark-gray);
+}
+
+.post-content h2 {
+    color: var(--color-primary);
+    font-size: 2rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.post-content h3 {
+    color: var(--color-primary-dark);
+    font-size: 1.5rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.post-content p {
+    margin-bottom: 20px;
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    margin: 30px 0;
+}
+
+.post-content blockquote {
+    border-right: 4px solid var(--color-primary);
+    padding: 20px 30px;
+    margin: 30px 0;
+    background: var(--color-light);
+    border-radius: var(--radius-md);
+    font-style: italic;
+    color: var(--color-dark-gray);
+}
+
+.post-content ul,
+.post-content ol {
+    margin: 20px 0;
+    padding-right: 30px;
+}
+
+.post-content li {
+    margin-bottom: 10px;
+}
+
+/* Dark Mode */
+body.dark-mode .post-hero::before {
+    background: linear-gradient(135deg, rgba(11, 94, 59, 0.95) 0%, rgba(8, 66, 41, 1) 100%);
+}
+
+body.dark-mode .single-post-article {
+    background: var(--color-light);
+}
+
+body.dark-mode .post-content {
+    color: var(--color-text);
+}
+
+body.dark-mode .post-content blockquote {
+    background: var(--color-light-gray);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .post-hero {
+        padding: 60px 0 40px;
+    }
+
+    .post-hero-title {
+        font-size: 2rem;
+    }
+
+    .post-hero-author {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-author-details {
+        text-align: center;
+    }
+
+    .single-post-article {
+        padding: 30px 20px;
+    }
+
+    .post-content {
+        font-size: 1rem;
+    }
+
+    .post-content h2 {
+        font-size: 1.5rem;
+    }
+}
+</style>
 
 <?php
 get_footer();
