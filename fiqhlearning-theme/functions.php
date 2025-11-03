@@ -100,6 +100,11 @@ function fiqhlearning_enqueue_scripts() {
         wp_enqueue_style('fiqh-search', FIQH_THEME_URI . '/assets/css/search.css', array('fiqh-main'), FIQH_THEME_VERSION);
     }
 
+    // تحميل أنماط صفحة الدرس
+    if (is_singular('fiqh_lesson')) {
+        wp_enqueue_style('fiqh-lesson', FIQH_THEME_URI . '/assets/css/lesson.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    }
+
     // تحميل PDF.js للعرض المدمج
     wp_enqueue_script('pdfjs', FIQH_THEME_URI . '/assets/js/pdf.min.js', array(), '3.11.174', true);
 
