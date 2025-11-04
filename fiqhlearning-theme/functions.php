@@ -115,6 +115,11 @@ function fiqhlearning_enqueue_scripts() {
         wp_enqueue_style('fiqh-contact', FIQH_THEME_URI . '/assets/css/contact.css', array('fiqh-main'), FIQH_THEME_VERSION);
     }
 
+    // تحميل أنماط صفحة عن المدرسة
+    if (is_page_template('page-about.php')) {
+        wp_enqueue_style('fiqh-about', FIQH_THEME_URI . '/assets/css/about.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    }
+
     // تحميل PDF.js للعرض المدمج
     wp_enqueue_script('pdfjs', FIQH_THEME_URI . '/assets/js/pdf.min.js', array(), '3.11.174', true);
 
