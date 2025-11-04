@@ -594,6 +594,45 @@ function fiqh_custom_comment($comment, $args, $depth) {
 }
 
 /**
+ * إعداد SMTP لإرسال الإيميلات (اختياري)
+ *
+ * لتفعيل SMTP، أضف هذه الأسطر في wp-config.php:
+ *
+ * define('SMTP_HOST', 'smtp.gmail.com');
+ * define('SMTP_PORT', 587);
+ * define('SMTP_SECURE', 'tls'); // أو 'ssl'
+ * define('SMTP_USER', 'rayhaneschool@gmail.com');
+ * define('SMTP_PASS', 'your-app-password-here');
+ * define('SMTP_FROM', 'rayhaneschool@gmail.com');
+ * define('SMTP_FROM_NAME', 'مدرسة الريحان');
+ */
+function fiqhlearning_setup_smtp($phpmailer) {
+    // التحقق من وجود إعدادات SMTP
+    if (defined('SMTP_HOST') && defined('SMTP_USER') && defined('SMTP_PASS')) {
+        $phpmailer->isSMTP();
+        $phpmailer->Host = SMTP_HOST;
+        $phpmailer->Port = defined('SMTP_PORT') ? SMTP_PORT : 587;
+        $phpmailer->SMTPSecure = defined('SMTP_SECURE') ? SMTP_SECURE : 'tls';
+        $phpmailer->SMTPAuth = true;
+        $phpmailer->Username = SMTP_USER;
+        $phpmailer->Password = SMTP_PASS;
+
+        if (defined('SMTP_FROM')) {
+            $phpmailer->From = SMTP_FROM;
+        }
+        if (defined('SMTP_FROM_NAME')) {
+            $phpmailer->FromName = SMTP_FROM_NAME;
+        }
+
+        // تفعيل debug في حالة التطوير
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            $phpmailer->SMTPDebug = 2; // 0 = off, 1 = client, 2 = client and server
+        }
+    }
+}
+add_action('phpmailer_init', 'fiqhlearning_setup_smtp');
+
+/**
  * تضمين ملفات إضافية
  */
 require_once FIQH_THEME_DIR . '/inc/customizer.php';
