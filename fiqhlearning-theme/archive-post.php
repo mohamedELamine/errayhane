@@ -70,7 +70,7 @@ $total_posts = $blog_query->found_posts;
                         <input
                             type="search"
                             name="s"
-                            placeholder="<?php _e(''(-+ AJ 'DEB'D'*...', 'fiqhlearning'); ?>"
+                            placeholder="<?php echo esc_attr(get_theme_mod('blog_search_placeholder', __('ابحث في المقالات...', 'fiqhlearning'))); ?>"
                             value="<?php echo esc_attr($search_query); ?>"
                             class="search-input"
                         >
@@ -114,10 +114,16 @@ $total_posts = $blog_query->found_posts;
             <!-- 9/'/ 'DF*'&, -->
             <div class="results-info">
                 <?php if ($search_query) : ?>
-                    <p><?php printf(__('F*'&, 'D(-+ 9F: <strong>%s</strong>', 'fiqhlearning'), esc_html($search_query)); ?></p>
+                    <p><?php printf(get_theme_mod('blog_search_results_text', __('نتائج البحث عن: <strong>%s</strong>', 'fiqhlearning')), esc_html($search_query)); ?></p>
                 <?php endif; ?>
                 <p class="total-results">
-                    <?php printf(_n('9O+1 9DI EB'D) H'-/)', '9O+1 9DI %s EB'D)', $total_posts, 'fiqhlearning'), number_format_i18n($total_posts)); ?>
+                    <?php
+                    if ($total_posts == 1) {
+                        echo get_theme_mod('blog_results_count_single', __('عُثر على مقالة واحدة', 'fiqhlearning'));
+                    } else {
+                        printf(get_theme_mod('blog_results_count_multiple', __('عُثر على %s مقالة', 'fiqhlearning')), number_format_i18n($total_posts));
+                    }
+                    ?>
                 </p>
             </div>
         </div>
@@ -181,7 +187,7 @@ $total_posts = $blog_query->found_posts;
                                 </div>
 
                                 <a href="<?php the_permalink(); ?>" class="read-more-btn">
-                                    <?php _e(''B1# 'DE2J/', 'fiqhlearning'); ?>
+                                    <?php echo get_theme_mod('blog_read_more_text', __('اقرأ المزيد', 'fiqhlearning')); ?>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -201,8 +207,8 @@ $total_posts = $blog_query->found_posts;
                             'format' => '?paged=%#%',
                             'current' => max(1, $paged),
                             'total' => $blog_query->max_num_pages,
-                            'prev_text' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg> ' . __(''D3'(B', 'fiqhlearning'),
-                            'next_text' => __(''D*'DJ', 'fiqhlearning') . ' <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+                            'prev_text' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg> ' . get_theme_mod('blog_pagination_prev', __('السابق', 'fiqhlearning')),
+                            'next_text' => get_theme_mod('blog_pagination_next', __('التالي', 'fiqhlearning')) . ' <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>',
                             'type' => 'list',
                             'end_size' => 2,
                             'mid_size' => 2,
@@ -217,10 +223,10 @@ $total_posts = $blog_query->found_posts;
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
-                    <h2><?php _e('DE J*E 'D9+H1 9DI EB'D'*', 'fiqhlearning'); ?></h2>
-                    <p><?php _e(',1( 'D(-+ (CDE'* E.*DA) #H *5A- ,EJ9 'D*5FJA'*', 'fiqhlearning'); ?></p>
+                    <h2><?php echo get_theme_mod('blog_no_posts_title', __('لم يتم العثور على مقالات', 'fiqhlearning')); ?></h2>
+                    <p><?php echo get_theme_mod('blog_no_posts_description', __('جرب البحث بكلمات مختلفة أو تصفح جميع التصنيفات', 'fiqhlearning')); ?></p>
                     <a href="<?php echo get_post_type_archive_link('post'); ?>" class="btn btn-primary">
-                        <?php _e('916 ,EJ9 'DEB'D'*', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('blog_no_posts_button', __('عرض جميع المقالات', 'fiqhlearning')); ?>
                     </a>
                 </div>
             <?php endif; ?>

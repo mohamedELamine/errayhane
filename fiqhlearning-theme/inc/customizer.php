@@ -676,5 +676,338 @@ function fiqhlearning_customize_register($wp_customize) {
         'section'     => 'fiqh_blog_section',
         'type'        => 'text',
     ));
+
+    // نص placeholder للبحث
+    $wp_customize->add_setting('blog_search_placeholder', array(
+        'default'           => 'ابحث في المقالات...',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_search_placeholder', array(
+        'label'       => __('نص البحث (Placeholder)', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص نتائج البحث
+    $wp_customize->add_setting('blog_search_results_text', array(
+        'default'           => 'نتائج البحث عن: <strong>%s</strong>',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_search_results_text', array(
+        'label'       => __('نص نتائج البحث', 'fiqhlearning'),
+        'description' => __('استخدم %s للكلمة المبحوثة', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص عدد المقالات (واحد)
+    $wp_customize->add_setting('blog_results_count_single', array(
+        'default'           => 'عُثر على مقالة واحدة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_results_count_single', array(
+        'label'       => __('نص عدد المقالات (واحد)', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص عدد المقالات (متعدد)
+    $wp_customize->add_setting('blog_results_count_multiple', array(
+        'default'           => 'عُثر على %s مقالة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_results_count_multiple', array(
+        'label'       => __('نص عدد المقالات (متعدد)', 'fiqhlearning'),
+        'description' => __('استخدم %s للعدد', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص "اقرأ المزيد"
+    $wp_customize->add_setting('blog_read_more_text', array(
+        'default'           => 'اقرأ المزيد',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_read_more_text', array(
+        'label'       => __('نص "اقرأ المزيد"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص زر السابق في الترقيم
+    $wp_customize->add_setting('blog_pagination_prev', array(
+        'default'           => 'السابق',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_pagination_prev', array(
+        'label'       => __('نص زر السابق (Pagination)', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص زر التالي في الترقيم
+    $wp_customize->add_setting('blog_pagination_next', array(
+        'default'           => 'التالي',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_pagination_next', array(
+        'label'       => __('نص زر التالي (Pagination)', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نصوص "No posts found"
+    $wp_customize->add_setting('blog_no_posts_title', array(
+        'default'           => 'لم يتم العثور على مقالات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_no_posts_title', array(
+        'label'       => __('عنوان "لا توجد مقالات"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('blog_no_posts_description', array(
+        'default'           => 'جرب البحث بكلمات مختلفة أو تصفح جميع التصنيفات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_no_posts_description', array(
+        'label'       => __('وصف "لا توجد مقالات"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'textarea',
+    ));
+
+    $wp_customize->add_setting('blog_no_posts_button', array(
+        'default'           => 'عرض جميع المقالات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_no_posts_button', array(
+        'label'       => __('نص زر "عرض جميع المقالات"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // ==========================================================================
+    // قسم صفحة المقال الفردي (Single Post)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_single_post_section', array(
+        'title'       => __('صفحة المقال الفردي', 'fiqhlearning'),
+        'description' => __('تخصيص نصوص صفحة المقال الفردي', 'fiqhlearning'),
+        'priority'    => 46,
+    ));
+
+    // تسمية الكاتب
+    $wp_customize->add_setting('single_post_author_label', array(
+        'default'           => 'الكاتب',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_author_label', array(
+        'label'       => __('تسمية الكاتب', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // صيغة وقت القراءة
+    $wp_customize->add_setting('single_post_reading_time_format', array(
+        'default'           => '%d دقائق قراءة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_reading_time_format', array(
+        'label'       => __('صيغة وقت القراءة', 'fiqhlearning'),
+        'description' => __('استخدم %d لرقم الدقائق', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "لا توجد تعليقات"
+    $wp_customize->add_setting('single_post_no_comments', array(
+        'default'           => 'لا توجد تعليقات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_no_comments', array(
+        'label'       => __('نص "لا توجد تعليقات"', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // صيغة عدد التعليقات
+    $wp_customize->add_setting('single_post_comments_format', array(
+        'default'           => '%d تعليق',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_comments_format', array(
+        'label'       => __('صيغة عدد التعليقات', 'fiqhlearning'),
+        'description' => __('استخدم %d للعدد', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // تسمية الوسوم
+    $wp_customize->add_setting('single_post_tags_label', array(
+        'default'           => 'الوسوم:',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_tags_label', array(
+        'label'       => __('تسمية الوسوم', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان قسم المشاركة
+    $wp_customize->add_setting('single_post_share_title', array(
+        'default'           => 'شارك المقال',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_share_title', array(
+        'label'       => __('عنوان قسم المشاركة', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نصوص أزرار المشاركة
+    $share_buttons = array(
+        'facebook' => 'فيسبوك',
+        'twitter' => 'تويتر',
+        'whatsapp' => 'واتساب',
+        'telegram' => 'تيليجرام',
+    );
+
+    foreach ($share_buttons as $platform => $label) {
+        $wp_customize->add_setting("single_post_share_{$platform}_text", array(
+            'default'           => $label,
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("single_post_share_{$platform}_text", array(
+            'label'       => sprintf(__('نص زر %s', 'fiqhlearning'), $label),
+            'section'     => 'fiqh_single_post_section',
+            'type'        => 'text',
+        ));
+
+        $wp_customize->add_setting("single_post_share_{$platform}", array(
+            'default'           => sprintf('شارك على %s', $label),
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("single_post_share_{$platform}", array(
+            'label'       => sprintf(__('نص aria-label لـ %s', 'fiqhlearning'), $label),
+            'section'     => 'fiqh_single_post_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // عنوان قسم المؤلف
+    $wp_customize->add_setting('single_post_author_bio_title', array(
+        'default'           => 'عن المؤلف',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_author_bio_title', array(
+        'label'       => __('عنوان قسم المؤلف', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص رابط مقالات المؤلف
+    $wp_customize->add_setting('single_post_author_posts_link', array(
+        'default'           => 'جميع مقالات المؤلف',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_author_posts_link', array(
+        'label'       => __('نص رابط مقالات المؤلف', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان قسم التعليقات (بدون تعليقات)
+    $wp_customize->add_setting('single_post_comments_section_title_zero', array(
+        'default'           => 'التعليقات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_comments_section_title_zero', array(
+        'label'       => __('عنوان قسم التعليقات (بدون تعليقات)', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان قسم التعليقات (مع العدد)
+    $wp_customize->add_setting('single_post_comments_section_title', array(
+        'default'           => 'التعليقات (%d)',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_comments_section_title', array(
+        'label'       => __('عنوان قسم التعليقات (مع العدد)', 'fiqhlearning'),
+        'description' => __('استخدم %d للعدد', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان المقالات ذات الصلة
+    $wp_customize->add_setting('single_post_related_posts_title', array(
+        'default'           => 'مقالات ذات صلة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_related_posts_title', array(
+        'label'       => __('عنوان المقالات ذات الصلة', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "اقرأ المزيد"
+    $wp_customize->add_setting('single_post_read_more', array(
+        'default'           => 'اقرأ المزيد',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_read_more', array(
+        'label'       => __('نص "اقرأ المزيد"', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
 }
 add_action('customize_register', 'fiqhlearning_customize_register');
