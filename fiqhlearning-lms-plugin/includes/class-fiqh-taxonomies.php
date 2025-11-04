@@ -17,7 +17,8 @@ class FiqhLearning_Taxonomies {
     public static function register_taxonomies() {
         self::register_course_science();
         self::register_course_semester();
-        self::register_course_type();
+        // تم تعطيل أنواع المقررات - غير مستخدم في النظام
+        // self::register_course_type();
     }
 
     /**
