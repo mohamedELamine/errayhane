@@ -135,6 +135,130 @@ function fiqhlearning_customize_register($wp_customize) {
         'type'        => 'textarea',
     ));
 
+    // شارة Hero
+    $wp_customize->add_setting('hero_badge', array(
+        'default'           => 'منصة تعلم الفقه المالكي',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_badge', array(
+        'label'       => __('نص الشارة', 'fiqhlearning'),
+        'description' => __('النص الصغير فوق العنوان', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    // مميزات Hero (3 مميزات)
+    $wp_customize->add_setting('hero_feature_1', array(
+        'default'           => 'دروس شاملة ومتنوعة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_feature_1', array(
+        'label'       => __('الميزة الأولى', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('hero_feature_2', array(
+        'default'           => 'شهادات معتمدة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_feature_2', array(
+        'label'       => __('الميزة الثانية', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('hero_feature_3', array(
+        'default'           => 'مدرسون متخصصون',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_feature_3', array(
+        'label'       => __('الميزة الثالثة', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    // خصائص قسم عن المدرسة
+    $wp_customize->add_setting('about_feature_1_title', array(
+        'default'           => 'منهج شامل',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_1_title', array(
+        'label'       => __('عنوان الخاصية الأولى', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_1_desc', array(
+        'default'           => 'دروس متكاملة في الفقه المالكي',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_1_desc', array(
+        'label'       => __('وصف الخاصية الأولى', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_2_title', array(
+        'default'           => 'أساتذة متخصصون',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_2_title', array(
+        'label'       => __('عنوان الخاصية الثانية', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_2_desc', array(
+        'default'           => 'نخبة من العلماء والمشايخ',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_2_desc', array(
+        'label'       => __('وصف الخاصية الثانية', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_3_title', array(
+        'default'           => 'شهادات معتمدة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_3_title', array(
+        'label'       => __('عنوان الخاصية الثالثة', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_3_desc', array(
+        'default'           => 'شهادات إتمام للمقررات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_3_desc', array(
+        'label'       => __('وصف الخاصية الثالثة', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
     // ==========================================================================
     // قسم صفحة عن المعهد (About Page)
     // ==========================================================================

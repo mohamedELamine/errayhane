@@ -18,7 +18,7 @@ get_header();
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                     </svg>
-                    <?php _e('منصة تعلم الفقه المالكي', 'fiqhlearning'); ?>
+                    <?php echo get_theme_mod('hero_badge', __('منصة تعلم الفقه المالكي', 'fiqhlearning')); ?>
                 </div>
                 <h1 class="hero-title">
                     <?php echo get_theme_mod('hero_title', __('مدرسة الريحان للعلوم الشرعية', 'fiqhlearning')); ?>
@@ -50,19 +50,19 @@ get_header();
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        <?php _e('دروس شاملة ومتنوعة', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('hero_feature_1', __('دروس شاملة ومتنوعة', 'fiqhlearning')); ?>
                     </div>
                     <div class="hero-feature">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        <?php _e('شهادات معتمدة', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('hero_feature_2', __('شهادات معتمدة', 'fiqhlearning')); ?>
                     </div>
                     <div class="hero-feature">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        <?php _e('مدرسون متخصصون', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('hero_feature_3', __('مدرسون متخصصون', 'fiqhlearning')); ?>
                     </div>
                 </div>
             </div>
@@ -123,8 +123,8 @@ get_header();
                                 </svg>
                             </div>
                             <div>
-                                <h4><?php _e('منهج شامل', 'fiqhlearning'); ?></h4>
-                                <p><?php _e('دروس متكاملة في الفقه المالكي', 'fiqhlearning'); ?></p>
+                                <h4><?php echo get_theme_mod('about_feature_1_title', __('منهج شامل', 'fiqhlearning')); ?></h4>
+                                <p><?php echo get_theme_mod('about_feature_1_desc', __('دروس متكاملة في الفقه المالكي', 'fiqhlearning')); ?></p>
                             </div>
                         </div>
                         <div class="about-feature">
@@ -137,8 +137,8 @@ get_header();
                                 </svg>
                             </div>
                             <div>
-                                <h4><?php _e('أساتذة متخصصون', 'fiqhlearning'); ?></h4>
-                                <p><?php _e('نخبة من العلماء والمشايخ', 'fiqhlearning'); ?></p>
+                                <h4><?php echo get_theme_mod('about_feature_2_title', __('أساتذة متخصصون', 'fiqhlearning')); ?></h4>
+                                <p><?php echo get_theme_mod('about_feature_2_desc', __('نخبة من العلماء والمشايخ', 'fiqhlearning')); ?></p>
                             </div>
                         </div>
                         <div class="about-feature">
@@ -148,8 +148,8 @@ get_header();
                                 </svg>
                             </div>
                             <div>
-                                <h4><?php _e('شهادات معتمدة', 'fiqhlearning'); ?></h4>
-                                <p><?php _e('شهادات إتمام للمقررات', 'fiqhlearning'); ?></p>
+                                <h4><?php echo get_theme_mod('about_feature_3_title', __('شهادات معتمدة', 'fiqhlearning')); ?></h4>
+                                <p><?php echo get_theme_mod('about_feature_3_desc', __('شهادات إتمام للمقررات', 'fiqhlearning')); ?></p>
                             </div>
                         </div>
                     </div>
@@ -367,62 +367,80 @@ get_header();
         </section>
     <?php endif; ?>
 
-    <!-- قسم آخر الأسئلة -->
+    <!-- قسم آخر المقالات -->
     <?php
-    global $wpdb;
-    $recent_questions = $wpdb->get_results(
-        "SELECT q.*, u.display_name as user_name, c.post_title as course_name
-        FROM {$wpdb->prefix}fiqh_questions q
-        LEFT JOIN {$wpdb->users} u ON q.user_id = u.ID
-        LEFT JOIN {$wpdb->posts} c ON q.course_id = c.ID
-        WHERE q.status != 'deleted'
-        ORDER BY q.created_at DESC
-        LIMIT 3"
-    );
+    $recent_posts = get_posts(array(
+        'post_type'      => 'post',
+        'posts_per_page' => 3,
+        'post_status'    => 'publish',
+        'orderby'        => 'date',
+        'order'          => 'DESC'
+    ));
 
-    if ($recent_questions) :
+    if ($recent_posts) :
     ?>
-        <section class="section questions-section">
+        <section class="section blog-section">
             <div class="container">
                 <div class="section-header">
                     <h2>
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
                         </svg>
-                        <?php _e('آخر الأسئلة', 'fiqhlearning'); ?>
+                        <?php _e('آخر المقالات', 'fiqhlearning'); ?>
                     </h2>
-                    <a href="<?php echo get_permalink(get_page_by_path('questions')); ?>" class="btn btn-outline">
-                        <?php _e('جميع الأسئلة', 'fiqhlearning'); ?>
+                    <a href="<?php echo get_permalink(get_option('page_for_posts')); ?>" class="btn btn-outline">
+                        <?php _e('جميع المقالات', 'fiqhlearning'); ?>
                     </a>
                 </div>
 
-                <div class="questions-grid">
-                    <?php foreach ($recent_questions as $question) : ?>
-                        <div class="question-card-home card">
-                            <div class="question-status-badge <?php echo $question->status === 'answered' ? 'status-answered' : 'status-pending'; ?>">
-                                <?php echo $question->status === 'answered' ? __('مُجابة', 'fiqhlearning') : __('بانتظار', 'fiqhlearning'); ?>
-                            </div>
-                            <h4 class="question-title-home">
-                                <?php echo isset($question->question) ? esc_html(wp_trim_words($question->question, 12)) : ''; ?>
-                            </h4>
-                            <div class="question-meta-home">
-                                <span><?php echo $question->is_anonymous ? __('مجهول', 'fiqhlearning') : esc_html($question->user_name); ?></span>
-                                <span>•</span>
-                                <span><?php echo human_time_diff(strtotime($question->created_at), current_time('timestamp')) . ' ' . __('مضت', 'fiqhlearning'); ?></span>
-                            </div>
-                            <?php if ($question->course_name) : ?>
-                                <div class="question-course-home">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                                    </svg>
-                                    <?php echo esc_html($question->course_name); ?>
+                <div class="blog-posts-grid">
+                    <?php foreach ($recent_posts as $post) : setup_postdata($post); ?>
+                        <article class="blog-post-card card">
+                            <?php if (has_post_thumbnail($post->ID)) : ?>
+                                <div class="blog-post-thumbnail">
+                                    <a href="<?php echo get_permalink($post->ID); ?>">
+                                        <?php echo get_the_post_thumbnail($post->ID, 'medium', array('loading' => 'lazy')); ?>
+                                    </a>
                                 </div>
                             <?php endif; ?>
-                        </div>
-                    <?php endforeach; ?>
+                            <div class="blog-post-content">
+                                <div class="blog-post-meta">
+                                    <span class="post-date">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <?php echo get_the_date('', $post->ID); ?>
+                                    </span>
+                                    <?php
+                                    $categories = get_the_category($post->ID);
+                                    if (!empty($categories)) :
+                                    ?>
+                                        <span class="post-category"><?php echo esc_html($categories[0]->name); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <h3 class="blog-post-title">
+                                    <a href="<?php echo get_permalink($post->ID); ?>">
+                                        <?php echo get_the_title($post->ID); ?>
+                                    </a>
+                                </h3>
+                                <p class="blog-post-excerpt">
+                                    <?php echo wp_trim_words(get_the_excerpt($post->ID), 20); ?>
+                                </p>
+                                <a href="<?php echo get_permalink($post->ID); ?>" class="read-more-link">
+                                    <?php _e('اقرأ المزيد', 'fiqhlearning'); ?>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
+                        </article>
+                    <?php endforeach; wp_reset_postdata(); ?>
                 </div>
             </div>
         </section>
