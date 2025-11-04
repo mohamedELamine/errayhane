@@ -88,37 +88,37 @@ Tags: rtl-language-support, education, lms, arabic, islamic, two-columns, custom
     --radius-full: 9999px;
 }
 
-/* وضع الظلام - ألوان محسنة */
+/* وضع الظلام - ألوان محسنة للقراءة والراحة */
 body.dark-mode {
-    /* الخلفيات */
-    --color-white: #1a1f2e;
-    --color-light: #242936;
-    --color-light-gray: #2d3444;
+    /* الخلفيات - أغمق وأكثر تباين */
+    --color-white: #0f1419;
+    --color-light: #1a1f2e;
+    --color-light-gray: #242936;
 
-    /* النصوص */
-    --color-black: #f0f2f5;
-    --color-dark: #e4e6eb;
-    --color-dark-gray: #b0b3b8;
-    --color-gray: #8a8d91;
+    /* النصوص - أفضل تباين */
+    --color-black: #e8eaed;
+    --color-dark: #c9d1d9;
+    --color-dark-gray: #8b949e;
+    --color-gray: #6e7681;
 
-    /* الألوان الأساسية - أفتح قليلاً للوضع الليلي */
-    --color-primary: #1ec97e;
-    --color-primary-dark: #14B171;
-    --color-primary-light: #35d48f;
-    --color-accent: #35d48f;
+    /* الألوان الأساسية - أخضر متوازن */
+    --color-primary: #10b981;
+    --color-primary-dark: #059669;
+    --color-primary-light: #34d399;
+    --color-accent: #34d399;
 
     /* ألوان الحالات */
-    --color-success: #1ec97e;
-    --color-warning: #ffb84d;
-    --color-error: #ff6b6b;
-    --color-info: #5dade2;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #3b82f6;
 
-    /* الظلال في الوضع الليلي - أكثر وضوحًا */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.6);
+    /* الظلال في الوضع الليلي */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.6), 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6), 0 2px 4px -1px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.8), 0 10px 10px -5px rgba(0, 0, 0, 0.7);
 }
 
 body.dark-mode .card {

@@ -17,8 +17,7 @@ class FiqhLearning_Taxonomies {
     public static function register_taxonomies() {
         self::register_course_science();
         self::register_course_semester();
-        // تم تعطيل أنواع المقررات - غير مستخدم في النظام
-        // self::register_course_type();
+        // تم حذف أنواع المقررات - النظام يعتمد على: العلوم ← المقررات ← المستويات ← الطلاب
     }
 
     /**
@@ -83,37 +82,5 @@ class FiqhLearning_Taxonomies {
         );
 
         register_taxonomy('fiqh_course_semester', array('fiqh_course'), $args);
-    }
-
-    /**
-     * تصنيف أنواع المقررات
-     */
-    private static function register_course_type() {
-        $labels = array(
-            'name' => __('أنواع المقررات', 'fiqh-lms'),
-            'singular_name' => __('نوع', 'fiqh-lms'),
-            'menu_name' => __('الأنواع', 'fiqh-lms'),
-            'all_items' => __('جميع الأنواع', 'fiqh-lms'),
-            'edit_item' => __('تعديل النوع', 'fiqh-lms'),
-            'view_item' => __('عرض النوع', 'fiqh-lms'),
-            'update_item' => __('تحديث النوع', 'fiqh-lms'),
-            'add_new_item' => __('إضافة نوع جديد', 'fiqh-lms'),
-            'new_item_name' => __('اسم النوع الجديد', 'fiqh-lms'),
-            'search_items' => __('بحث في الأنواع', 'fiqh-lms'),
-        );
-
-        $args = array(
-            'labels' => $labels,
-            'hierarchical' => true,
-            'public' => true,
-            'show_ui' => true,
-            'show_admin_column' => true,
-            'show_in_nav_menus' => false,
-            'show_tagcloud' => false,
-            'rewrite' => array('slug' => 'type'),
-            'show_in_rest' => true,
-        );
-
-        register_taxonomy('fiqh_course_type', array('fiqh_course'), $args);
     }
 }
