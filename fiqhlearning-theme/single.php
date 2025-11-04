@@ -8,75 +8,72 @@
 get_header();
 ?>
 
-<main id="primary" class="site-main">
-    <div class="container">
+<?php
+while (have_posts()) : the_post();
+    $author_id = get_the_author_meta('ID');
+    $author_name = get_the_author();
+    $author_avatar = get_avatar_url($author_id, array('size' => 96));
+    $reading_time = ceil(str_word_count(strip_tags(get_the_content())) / 200); // متوسط 200 كلمة في الدقيقة
+    ?>
 
-        <?php
-        while (have_posts()) : the_post();
-            $author_id = get_the_author_meta('ID');
-            $author_name = get_the_author();
-            $author_avatar = get_avatar_url($author_id, array('size' => 96));
-            $reading_time = ceil(str_word_count(strip_tags(get_the_content())) / 200); // متوسط 200 كلمة في الدقيقة
-            ?>
-
-            <article id="post-<?php the_ID(); ?>" <?php post_class('single-post-article'); ?>>
-
-                <!-- رأس المقال -->
-                <header class="post-header">
-                    <div class="post-header-meta">
+    <!-- Hero Section -->
+    <section class="post-hero" <?php if (has_post_thumbnail()) : ?>style="background-image: url('<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(), 'full')); ?>');"<?php endif; ?>>
+        <div class="post-hero-overlay"></div>
+        <div class="container">
+            <div class="post-hero-content">
+                <div class="post-hero-meta">
+                    <?php
+                    $categories = get_the_category();
+                    if (!empty($categories)) :
+                        foreach ($categories as $category) :
+                            ?>
+                            <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>" class="post-category-badge">
+                                <?php echo esc_html($category->name); ?>
+                            </a>
                         <?php
-                        $categories = get_the_category();
-                        if (!empty($categories)) :
-                            foreach ($categories as $category) :
-                                ?>
-                                <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>" class="post-category-badge">
-                                    <?php echo esc_html($category->name); ?>
-                                </a>
-                            <?php
-                            endforeach;
-                        endif;
-                        ?>
-                    </div>
+                        endforeach;
+                    endif;
+                    ?>
+                </div>
 
-                    <h1 class="post-title"><?php the_title(); ?></h1>
+                <h1 class="post-hero-title"><?php the_title(); ?></h1>
 
-                    <div class="post-meta">
-                        <div class="post-author-info">
-                            <img src="<?php echo esc_url($author_avatar); ?>" alt="<?php echo esc_attr($author_name); ?>" class="author-avatar">
-                            <div class="author-details">
-                                <a href="<?php echo get_author_posts_url($author_id); ?>" class="author-name">
-                                    <?php echo esc_html($author_name); ?>
-                                </a>
-                                <div class="post-date-reading">
-                                    <time datetime="<?php echo get_the_date('c'); ?>">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                                        </svg>
-                                        <?php echo get_the_date(); ?>
-                                    </time>
-                                    <span class="separator">•</span>
-                                    <span class="reading-time">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                        </svg>
-                                        <?php echo $reading_time; ?> <?php _e('دقائق قراءة', 'fiqhlearning'); ?>
-                                    </span>
-                                </div>
+                <div class="post-hero-info">
+                    <div class="post-author-info">
+                        <img src="<?php echo esc_url($author_avatar); ?>" alt="<?php echo esc_attr($author_name); ?>" class="author-avatar">
+                        <div class="author-details">
+                            <a href="<?php echo get_author_posts_url($author_id); ?>" class="author-name">
+                                <?php echo esc_html($author_name); ?>
+                            </a>
+                            <div class="post-date-reading">
+                                <time datetime="<?php echo get_the_date('c'); ?>">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    <?php echo get_the_date(); ?>
+                                </time>
+                                <span class="separator">•</span>
+                                <span class="reading-time">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    <?php echo $reading_time; ?> <?php _e('دقائق قراءة', 'fiqhlearning'); ?>
+                                </span>
                             </div>
                         </div>
                     </div>
-                </header>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- الصورة المميزة -->
-                <?php if (has_post_thumbnail()) : ?>
-                    <div class="post-featured-image">
-                        <?php the_post_thumbnail('large', array('class' => 'featured-image')); ?>
-                    </div>
-                <?php endif; ?>
+<main id="primary" class="site-main single-post-main">
+    <div class="container">
+        <article id="post-<?php the_ID(); ?>" <?php post_class('single-post-article'); ?>>
 
                 <!-- محتوى المقال -->
                 <div class="post-content">
@@ -221,19 +218,21 @@ get_header();
                 <?php endif; ?>
             </nav>
 
-            <!-- التعليقات -->
-            <?php
-            if (comments_open() || get_comments_number()) :
-                comments_template();
-            endif;
-            ?>
+        </article>
 
+        <!-- التعليقات -->
         <?php
-        endwhile;
+        if (comments_open() || get_comments_number()) :
+            comments_template();
+        endif;
         ?>
 
     </div>
 </main>
+
+<?php
+endwhile;
+?>
 
 <?php
 get_footer();
