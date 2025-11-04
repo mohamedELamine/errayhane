@@ -294,7 +294,7 @@ get_header();
                                         <?php echo $question->status === 'answered' ? __('مُجابة', 'fiqhlearning') : __('بانتظار', 'fiqhlearning'); ?>
                                     </div>
                                     <div class="question-content">
-                                        <p class="question-text"><?php echo esc_html(wp_trim_words($question->question_text, 20)); ?></p>
+                                        <p class="question-text"><?php echo esc_html(wp_trim_words($question->question, 20)); ?></p>
                                         <div class="question-meta">
                                             <?php if ($question->course_name) : ?>
                                                 <span class="course-badge"><?php echo esc_html($question->course_name); ?></span>

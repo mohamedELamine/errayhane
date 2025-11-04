@@ -360,8 +360,31 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                                         <div class="question-header">
                                             <div class="question-author">
                                                 <strong><?php echo esc_html($question_user->display_name); ?></strong>
-                                                <span class="question-date"><?php echo human_time_diff(strtotime($question->created_at), current_time('timestamp')) . ' ' . __('مضت', 'fiqhlearning'); ?></span>
+                                                <span class="question-date">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                                    </svg>
+                                                    <?php echo human_time_diff(strtotime($question->created_at), current_time('timestamp')) . ' ' . __('مضت', 'fiqhlearning'); ?>
+                                                </span>
                                             </div>
+                                            <?php if ($question->answer) : ?>
+                                                <span class="question-status" style="background-color: rgba(34, 197, 94, 0.1); color: #22c55e;">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                                    </svg>
+                                                    <?php _e('مُجابة', 'fiqhlearning'); ?>
+                                                </span>
+                                            <?php else : ?>
+                                                <span class="question-status" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                                                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                                    </svg>
+                                                    <?php _e('بانتظار', 'fiqhlearning'); ?>
+                                                </span>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="question-content">
                                             <?php echo wp_kses_post(nl2br($question->question)); ?>

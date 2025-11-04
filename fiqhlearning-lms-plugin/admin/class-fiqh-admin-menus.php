@@ -184,6 +184,25 @@ class FiqhLearning_Admin_Menus {
     public function questions_page() {
         global $wpdb;
 
+        // معالجة حذف سؤال
+        if (isset($_POST['delete_question']) && check_admin_referer('delete_question_action', 'delete_question_nonce')) {
+            $question_id = intval($_POST['question_id']);
+
+            if ($question_id) {
+                $updated = $wpdb->update(
+                    $wpdb->prefix . 'fiqh_questions',
+                    array('status' => 'deleted'),
+                    array('id' => $question_id),
+                    array('%s'),
+                    array('%d')
+                );
+
+                if ($updated) {
+                    echo '<div class="notice notice-success is-dismissible"><p>' . __('تم حذف السؤال بنجاح', 'fiqh-lms') . '</p></div>';
+                }
+            }
+        }
+
         // معالجة الإجابة على سؤال
         if (isset($_POST['answer_question']) && check_admin_referer('answer_question_action', 'answer_question_nonce')) {
             $question_id = intval($_POST['question_id']);
@@ -193,7 +212,7 @@ class FiqhLearning_Admin_Menus {
                 $updated = $wpdb->update(
                     $wpdb->prefix . 'fiqh_questions',
                     array(
-                        'answer_text' => $answer_text,
+                        'answer' => $answer_text,
                         'answered_by' => get_current_user_id(),
                         'answered_at' => current_time('mysql'),
                         'status' => 'answered'
@@ -204,7 +223,31 @@ class FiqhLearning_Admin_Menus {
                 );
 
                 if ($updated) {
-                    echo '<div class="notice notice-success is-dismissible"><p>' . __('تم الإجابة على السؤال بنجاح', 'fiqh-lms') . '</p></div>';
+                    // إرسال إشعار للطالب
+                    $question_data = $wpdb->get_row($wpdb->prepare(
+                        "SELECT user_id, course_id FROM {$wpdb->prefix}fiqh_questions WHERE id = %d",
+                        $question_id
+                    ));
+
+                    if ($question_data && $question_data->user_id) {
+                        $course = get_post($question_data->course_id);
+                        $course_title = $course ? $course->post_title : __('المقرر', 'fiqh-lms');
+
+                        $wpdb->insert(
+                            $wpdb->prefix . 'fiqh_notifications',
+                            array(
+                                'user_id' => $question_data->user_id,
+                                'title' => __('تم الإجابة على سؤالك', 'fiqh-lms'),
+                                'message' => sprintf(__('تم الإجابة على سؤالك في مقرر: %s', 'fiqh-lms'), $course_title),
+                                'type' => 'success',
+                                'action_url' => get_permalink(get_page_by_path('questions')),
+                                'created_at' => current_time('mysql')
+                            ),
+                            array('%d', '%s', '%s', '%s', '%s', '%s')
+                        );
+                    }
+
+                    echo '<div class="notice notice-success is-dismissible"><p>' . __('تم الإجابة على السؤال بنجاح وإرسال إشعار للطالب', 'fiqh-lms') . '</p></div>';
                 }
             }
         }
@@ -358,6 +401,13 @@ class FiqhLearning_Admin_Menus {
                                 <button type="button" class="button button-small" onclick="openQuestionModal(<?php echo $question->id; ?>)">
                                     <?php _e('عرض وإجابة', 'fiqh-lms'); ?>
                                 </button>
+                                <form method="post" style="display:inline-block; margin-right: 5px;" onsubmit="return confirm('<?php _e('هل أنت متأكد من حذف هذا السؤال؟', 'fiqh-lms'); ?>');">
+                                    <?php wp_nonce_field('delete_question_action', 'delete_question_nonce'); ?>
+                                    <input type="hidden" name="question_id" value="<?php echo $question->id; ?>">
+                                    <button type="submit" name="delete_question" class="button button-small" style="color: #d63638;">
+                                        <?php _e('حذف', 'fiqh-lms'); ?>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
 
@@ -418,6 +468,16 @@ class FiqhLearning_Admin_Menus {
                                         <?php echo nl2br(esc_html($question->answer)); ?>
                                     </div>
                                     <p><em><?php _e('أجاب في:', 'fiqh-lms'); ?> <?php echo esc_html($question->answered_at); ?></em></p>
+
+                                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                                        <form method="post" onsubmit="return confirm('<?php _e('هل أنت متأكد من حذف هذا السؤال؟', 'fiqh-lms'); ?>');">
+                                            <?php wp_nonce_field('delete_question_action', 'delete_question_nonce'); ?>
+                                            <input type="hidden" name="question_id" value="<?php echo $question->id; ?>">
+                                            <button type="submit" name="delete_question" class="button" style="color: #d63638;">
+                                                <?php _e('حذف السؤال', 'fiqh-lms'); ?>
+                                            </button>
+                                        </form>
+                                    </div>
                                 <?php else : ?>
                                     <div class="answer-form">
                                         <h3><?php _e('الإجابة على السؤال:', 'fiqh-lms'); ?></h3>
@@ -428,6 +488,16 @@ class FiqhLearning_Admin_Menus {
                                             <p class="submit">
                                                 <input type="submit" name="answer_question" class="button button-primary" value="<?php _e('حفظ الإجابة', 'fiqh-lms'); ?>">
                                             </p>
+                                        </form>
+                                    </div>
+
+                                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                                        <form method="post" onsubmit="return confirm('<?php _e('هل أنت متأكد من حذف هذا السؤال؟', 'fiqh-lms'); ?>');">
+                                            <?php wp_nonce_field('delete_question_action', 'delete_question_nonce'); ?>
+                                            <input type="hidden" name="question_id" value="<?php echo $question->id; ?>">
+                                            <button type="submit" name="delete_question" class="button" style="color: #d63638;">
+                                                <?php _e('حذف السؤال', 'fiqh-lms'); ?>
+                                            </button>
                                         </form>
                                     </div>
                                 <?php endif; ?>
@@ -864,14 +934,6 @@ class FiqhLearning_Admin_Menus {
         foreach ($enrollments as $enrollment) {
             $course = get_post($enrollment->course_id);
             if ($course) {
-                $course_data = array(
-                    'course' => $course,
-                    'enrolled_at' => $enrollment->enrolled_at,
-                    'progress' => $enrollment->progress,
-                    'status' => $enrollment->status,
-                    'completed_lessons' => array()
-                );
-
                 // جلب الدروس المكتملة
                 $completed = $wpdb->get_results($wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}fiqh_progress
@@ -879,6 +941,29 @@ class FiqhLearning_Admin_Menus {
                     $student_id,
                     $enrollment->course_id
                 ));
+
+                // حساب إجمالي الدروس في المقرر
+                $total_lessons = $wpdb->get_var($wpdb->prepare(
+                    "SELECT COUNT(*) FROM {$wpdb->posts}
+                    WHERE post_type = 'fiqh_lesson'
+                    AND post_status = 'publish'
+                    AND post_parent = %d",
+                    $enrollment->course_id
+                ));
+
+                // حساب نسبة التقدم
+                $progress = 0;
+                if ($total_lessons > 0) {
+                    $progress = round((count($completed) / $total_lessons) * 100);
+                }
+
+                $course_data = array(
+                    'course' => $course,
+                    'enrolled_at' => $enrollment->enrolled_at,
+                    'progress' => $progress,
+                    'status' => $enrollment->status,
+                    'completed_lessons' => array()
+                );
 
                 foreach ($completed as $lesson_progress) {
                     $lesson = get_post($lesson_progress->lesson_id);
@@ -888,7 +973,7 @@ class FiqhLearning_Admin_Menus {
                 }
 
                 $report['enrollments'][] = $course_data;
-                $total_progress_sum += $enrollment->progress;
+                $total_progress_sum += $progress;
             }
         }
 
