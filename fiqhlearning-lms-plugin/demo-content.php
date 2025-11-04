@@ -545,6 +545,50 @@ function fiqh_generate_demo_content() {
         echo '<p style="color: orange;">⚠️ صفحة لوحة التحكم موجودة مسبقاً</p>';
     }
 
+    // صفحة خطة الدراسة
+    $study_plan_page = get_page_by_path('study-plan');
+    if (!$study_plan_page) {
+        $study_plan_page_id = wp_insert_post(array(
+            'post_title' => 'خطة الدراسة',
+            'post_name' => 'study-plan',
+            'post_content' => '',
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_author' => 1,
+            'page_template' => 'page-study-plan.php'
+        ));
+
+        if ($study_plan_page_id && !is_wp_error($study_plan_page_id)) {
+            echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>خطة الدراسة</strong> (/study-plan)</p>';
+        } else {
+            echo '<p style="color: red;">❌ فشل إنشاء صفحة خطة الدراسة</p>';
+        }
+    } else {
+        echo '<p style="color: orange;">⚠️ صفحة خطة الدراسة موجودة مسبقاً</p>';
+    }
+
+    // صفحة دليل اللوائح
+    $regulations_page = get_page_by_path('regulations');
+    if (!$regulations_page) {
+        $regulations_page_id = wp_insert_post(array(
+            'post_title' => 'دليل اللوائح',
+            'post_name' => 'regulations',
+            'post_content' => '',
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_author' => 1,
+            'page_template' => 'page-regulations.php'
+        ));
+
+        if ($regulations_page_id && !is_wp_error($regulations_page_id)) {
+            echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>دليل اللوائح</strong> (/regulations)</p>';
+        } else {
+            echo '<p style="color: red;">❌ فشل إنشاء صفحة دليل اللوائح</p>';
+        }
+    } else {
+        echo '<p style="color: orange;">⚠️ صفحة دليل اللوائح موجودة مسبقاً</p>';
+    }
+
     // 11. ملخص نهائي
     echo '<h2>✅ اكتمل إنشاء المحتوى التجريبي!</h2>';
     echo '<div class="updated"><p><strong>تم بنجاح!</strong> تم إنشاء محتوى تجريبي كامل للمنصة.</p></div>';
@@ -559,7 +603,7 @@ function fiqh_generate_demo_content() {
     echo '<li>✅ <strong>' . count($questions_data) . '</strong> سؤال</li>';
     echo '<li>✅ <strong>16</strong> ملاحظة</li>';
     echo '<li>✅ <strong>4</strong> مقالات وأحداث</li>';
-    echo '<li>✅ <strong>2</strong> صفحة ضرورية (تسجيل الدخول، لوحة التحكم)</li>';
+    echo '<li>✅ <strong>4</strong> صفحات ضرورية (تسجيل الدخول، لوحة التحكم، خطة الدراسة، دليل اللوائح)</li>';
     echo '</ul>';
 
     echo '<h3>معلومات تسجيل الدخول للطلاب التجريبيين:</h3>';

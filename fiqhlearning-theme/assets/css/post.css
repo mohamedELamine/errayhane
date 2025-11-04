@@ -1,0 +1,758 @@
+/**
+ * أنماط صفحة المقال الواحد
+ *
+ * @package FiqhLearning
+ * @version 1.3
+ */
+
+/* ==========================================
+   Hero Section
+   ========================================== */
+
+.post-hero {
+    position: relative;
+    min-height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-4xl) 0;
+    margin-bottom: var(--spacing-3xl);
+    isolation: isolate;
+}
+
+.post-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(11, 94, 59, 0.95) 0%,
+        rgba(11, 94, 59, 0.85) 50%,
+        rgba(13, 148, 136, 0.8) 100%
+    );
+    z-index: 1;
+}
+
+.post-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at 20% 50%,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+    );
+    z-index: 2;
+}
+
+.post-hero .container {
+    position: relative;
+    z-index: 3;
+}
+
+.post-hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.post-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.post-category-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-white);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-base);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.post-category-badge:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.post-hero-title {
+    font-size: var(--font-size-4xl);
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.2;
+    margin-bottom: var(--spacing-xl);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.post-hero-info {
+    display: flex;
+    justify-content: center;
+}
+
+.post-hero .post-author-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.post-hero .author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid var(--color-white);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.post-hero .author-details {
+    text-align: right;
+}
+
+.post-hero .author-name {
+    display: block;
+    color: var(--color-white);
+    font-weight: 600;
+    font-size: var(--font-size-base);
+    text-decoration: none;
+    margin-bottom: var(--spacing-xs);
+    transition: opacity var(--transition-base);
+}
+
+.post-hero .author-name:hover {
+    opacity: 0.85;
+}
+
+.post-hero .post-date-reading {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.post-hero .post-date-reading svg {
+    opacity: 0.85;
+}
+
+.post-hero .separator {
+    opacity: 0.6;
+}
+
+/* ==========================================
+   المحتوى الرئيسي
+   ========================================== */
+
+.single-post-main {
+    padding: 0 0 var(--spacing-4xl) 0;
+}
+
+.single-post-article {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-3xl);
+    margin-bottom: var(--spacing-3xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.post-content {
+    font-size: var(--font-size-lg);
+    line-height: 1.9;
+    color: var(--color-text);
+}
+
+.post-content p {
+    margin-bottom: var(--spacing-xl);
+}
+
+.post-content h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-heading);
+    margin: var(--spacing-3xl) 0 var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 3px solid var(--color-primary);
+}
+
+.post-content h3 {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--color-heading);
+    margin: var(--spacing-2xl) 0 var(--spacing-md);
+}
+
+.post-content h4 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-heading);
+    margin: var(--spacing-xl) 0 var(--spacing-md);
+}
+
+.post-content ul,
+.post-content ol {
+    margin: var(--spacing-lg) 0;
+    padding-right: var(--spacing-xl);
+}
+
+.post-content li {
+    margin-bottom: var(--spacing-sm);
+}
+
+.post-content blockquote {
+    position: relative;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+    background: var(--color-primary-lightest);
+    border-right: 4px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    font-style: italic;
+    color: var(--color-primary-dark);
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    margin: var(--spacing-xl) 0;
+    box-shadow: var(--shadow-md);
+}
+
+.post-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    transition: color var(--transition-base);
+}
+
+.post-content a:hover {
+    color: var(--color-primary-dark);
+}
+
+.post-content code {
+    background: var(--color-background);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.post-content pre {
+    background: var(--color-background);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    margin: var(--spacing-xl) 0;
+}
+
+.post-content pre code {
+    background: none;
+    padding: 0;
+}
+
+/* التاجات */
+.post-footer {
+    margin-top: var(--spacing-2xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--color-border);
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.post-tags svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.tag-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: var(--color-primary-lightest);
+    color: var(--color-primary-dark);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--transition-base);
+}
+
+.tag-badge:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   التعليقات
+   ========================================== */
+
+.comments-section {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-3xl);
+    box-shadow: var(--shadow-sm);
+}
+
+.comments-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-heading);
+    margin-bottom: var(--spacing-2xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.comments-title svg {
+    color: var(--color-primary);
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--spacing-3xl) 0;
+}
+
+.comment-item {
+    margin-bottom: var(--spacing-xl);
+}
+
+.comment-body {
+    display: flex;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--color-background);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+}
+
+.comment-body:hover {
+    box-shadow: var(--shadow-sm);
+    transform: translateX(-2px);
+}
+
+.comment-avatar {
+    flex-shrink: 0;
+}
+
+.comment-avatar .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--color-white);
+    box-shadow: var(--shadow-sm);
+}
+
+.comment-content-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+.comment-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.comment-author-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.comment-author-name {
+    font-weight: 600;
+    color: var(--color-heading);
+}
+
+.comment-author-name a {
+    color: var(--color-heading);
+    text-decoration: none;
+    transition: color var(--transition-base);
+}
+
+.comment-author-name a:hover {
+    color: var(--color-primary);
+}
+
+.author-badge {
+    display: inline-flex;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.comment-metadata {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+}
+
+.comment-text {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text);
+    line-height: 1.7;
+}
+
+.comment-awaiting-moderation {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-warning-light);
+    border-right: 3px solid var(--color-warning);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    color: var(--color-warning-dark);
+}
+
+.comment-actions {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.comment-reply-link,
+.comment-edit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-primary);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-base);
+}
+
+.comment-reply-link:hover,
+.comment-edit-link:hover {
+    background: var(--color-primary-lightest);
+}
+
+/* التعليقات المتداخلة */
+.children {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-lg) 0 0 var(--spacing-3xl);
+}
+
+/* نموذج التعليقات */
+#commentform {
+    margin-top: var(--spacing-2xl);
+}
+
+.comment-reply-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-heading);
+    margin-bottom: var(--spacing-xl);
+}
+
+.comment-reply-title svg {
+    color: var(--color-primary);
+}
+
+.comment-reply-title #cancel-comment-reply-link {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-danger);
+    margin-right: auto;
+}
+
+.logged-in-as {
+    padding: var(--spacing-md);
+    background: var(--color-primary-lightest);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.logged-in-as a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.logged-in-as a:hover {
+    text-decoration: underline;
+}
+
+.comment-form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.comment-form-field {
+    margin-bottom: var(--spacing-lg);
+}
+
+.comment-form-field label {
+    display: block;
+    font-weight: 600;
+    color: var(--color-heading);
+    margin-bottom: var(--spacing-sm);
+}
+
+.comment-form-field .required {
+    color: var(--color-danger);
+}
+
+.comment-form-field input[type="text"],
+.comment-form-field input[type="email"],
+.comment-form-field input[type="url"],
+.comment-form-field textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    transition: all var(--transition-base);
+}
+
+.comment-form-field input:focus,
+.comment-form-field textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(11, 94, 59, 0.1);
+}
+
+.comment-form-field textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.comment-form-submit {
+    margin-top: var(--spacing-lg);
+}
+
+.form-submit {
+    margin: 0;
+}
+
+/* رسالة عدم وجود تعليقات */
+.no-comments {
+    padding: var(--spacing-xl);
+    text-align: center;
+    background: var(--color-background);
+    border-radius: var(--radius-md);
+    color: var(--color-text-light);
+}
+
+/* التنقل بين التعليقات */
+.comment-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin: var(--spacing-xl) 0;
+    padding: var(--spacing-lg) 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.comment-navigation a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--color-primary-lightest);
+    color: var(--color-primary);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all var(--transition-base);
+}
+
+.comment-navigation a:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* ==========================================
+   الوضع الداكن
+   ========================================== */
+
+body.dark-mode .single-post-article,
+body.dark-mode .comments-section {
+    background: var(--color-dark-surface);
+}
+
+body.dark-mode .comment-body {
+    background: var(--color-dark-background);
+}
+
+body.dark-mode .comment-body:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .comment-form-field input,
+body.dark-mode .comment-form-field textarea {
+    background: var(--color-dark-background);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+body.dark-mode .logged-in-as {
+    background: rgba(11, 94, 59, 0.1);
+}
+
+/* ==========================================
+   استجابة الشاشات
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .post-hero {
+        min-height: 450px;
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .post-hero-title {
+        font-size: var(--font-size-3xl);
+    }
+
+    .single-post-article,
+    .comments-section {
+        padding: var(--spacing-2xl);
+    }
+}
+
+@media (max-width: 768px) {
+    .post-hero {
+        min-height: 400px;
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .post-hero-title {
+        font-size: var(--font-size-2xl);
+    }
+
+    .post-hero .post-author-info {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-md);
+    }
+
+    .post-hero .author-details {
+        text-align: center;
+    }
+
+    .post-hero .post-date-reading {
+        justify-content: center;
+    }
+
+    .single-post-article,
+    .comments-section {
+        padding: var(--spacing-xl);
+    }
+
+    .post-content {
+        font-size: var(--font-size-base);
+    }
+
+    .comment-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .children {
+        margin-right: var(--spacing-lg);
+    }
+
+    .comment-body {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .post-hero {
+        min-height: 350px;
+        padding: var(--spacing-xl) 0;
+    }
+
+    .post-hero-title {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .post-hero .author-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .single-post-article,
+    .comments-section {
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-md);
+    }
+
+    .comment-avatar .avatar {
+        width: 48px;
+        height: 48px;
+    }
+
+    .children {
+        margin-right: var(--spacing-md);
+    }
+}
+
+/* ==========================================
+   طباعة
+   ========================================== */
+
+@media print {
+    .post-hero {
+        background: none !important;
+        min-height: auto;
+        padding: var(--spacing-lg) 0;
+    }
+
+    .post-hero::before,
+    .post-hero-overlay {
+        display: none;
+    }
+
+    .post-hero-title,
+    .post-hero .author-name,
+    .post-hero .post-date-reading {
+        color: #000 !important;
+    }
+
+    .post-category-badge {
+        background: #e0e0e0 !important;
+        color: #000 !important;
+    }
+
+    .comments-section,
+    .comment-reply-link,
+    .comment-edit-link,
+    #commentform {
+        display: none;
+    }
+}

@@ -110,6 +110,26 @@ function fiqhlearning_enqueue_scripts() {
         wp_enqueue_style('fiqh-home', FIQH_THEME_URI . '/assets/css/home.css', array('fiqh-main'), FIQH_THEME_VERSION);
     }
 
+    // تحميل أنماط صفحة الاتصال
+    if (is_page_template('page-contact.php')) {
+        wp_enqueue_style('fiqh-contact', FIQH_THEME_URI . '/assets/css/contact.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    }
+
+    // تحميل أنماط صفحة عن المدرسة
+    if (is_page_template('page-about.php')) {
+        wp_enqueue_style('fiqh-about', FIQH_THEME_URI . '/assets/css/about.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    }
+
+    // تحميل أنماط صفحة المقال الواحد
+    if (is_single() && get_post_type() == 'post') {
+        wp_enqueue_style('fiqh-post', FIQH_THEME_URI . '/assets/css/post.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    }
+
+    // تحميل أنماط صفحات خطة الدراسة ودليل اللوائح
+    if (is_page_template('page-study-plan.php') || is_page_template('page-regulations.php')) {
+        wp_enqueue_style('fiqh-pages', FIQH_THEME_URI . '/assets/css/pages.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    }
+
     // تحميل PDF.js للعرض المدمج
     wp_enqueue_script('pdfjs', FIQH_THEME_URI . '/assets/js/pdf.min.js', array(), '3.11.174', true);
 
@@ -516,6 +536,101 @@ function fiqhlearning_block_registration_page() {
     }
 }
 add_action('login_init', 'fiqhlearning_block_registration_page');
+
+/**
+ * تنسيق التعليقات المخصص
+ */
+function fiqh_custom_comment($comment, $args, $depth) {
+    $GLOBALS['comment'] = $comment;
+    ?>
+    <li <?php comment_class('comment-item'); ?> id="comment-<?php comment_ID(); ?>">
+        <article class="comment-body">
+            <div class="comment-avatar">
+                <?php echo get_avatar($comment, 60, '', '', array('class' => 'avatar')); ?>
+            </div>
+            <div class="comment-content-wrapper">
+                <div class="comment-meta">
+                    <div class="comment-author-info">
+                        <span class="comment-author-name"><?php echo get_comment_author_link(); ?></span>
+                        <?php if (get_comment_author_email() == get_the_author_meta('user_email')) : ?>
+                            <span class="author-badge"><?php _e('الكاتب', 'fiqhlearning'); ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="comment-metadata">
+                        <time datetime="<?php comment_time('c'); ?>">
+                            <?php printf(_x('%1$s في %2$s', '1: date, 2: time', 'fiqhlearning'), get_comment_date(), get_comment_time()); ?>
+                        </time>
+                    </div>
+                </div>
+
+                <div class="comment-text">
+                    <?php if ($comment->comment_approved == '0') : ?>
+                        <p class="comment-awaiting-moderation"><?php _e('تعليقك في انتظار المراجعة.', 'fiqhlearning'); ?></p>
+                    <?php endif; ?>
+                    <?php comment_text(); ?>
+                </div>
+
+                <div class="comment-actions">
+                    <?php
+                    comment_reply_link(array_merge($args, array(
+                        'reply_text' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> ' . __('رد', 'fiqhlearning'),
+                        'depth' => $depth,
+                        'max_depth' => $args['max_depth']
+                    )));
+                    ?>
+                    <?php if (current_user_can('edit_comment', $comment->comment_ID)) : ?>
+                        <a href="<?php echo get_edit_comment_link(); ?>" class="comment-edit-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            <?php _e('تعديل', 'fiqhlearning'); ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </article>
+    <?php
+}
+
+/**
+ * إعداد SMTP لإرسال الإيميلات (اختياري)
+ *
+ * لتفعيل SMTP، أضف هذه الأسطر في wp-config.php:
+ *
+ * define('SMTP_HOST', 'smtp.gmail.com');
+ * define('SMTP_PORT', 587);
+ * define('SMTP_SECURE', 'tls'); // أو 'ssl'
+ * define('SMTP_USER', 'rayhaneschool@gmail.com');
+ * define('SMTP_PASS', 'your-app-password-here');
+ * define('SMTP_FROM', 'rayhaneschool@gmail.com');
+ * define('SMTP_FROM_NAME', 'مدرسة الريحان');
+ */
+function fiqhlearning_setup_smtp($phpmailer) {
+    // التحقق من وجود إعدادات SMTP
+    if (defined('SMTP_HOST') && defined('SMTP_USER') && defined('SMTP_PASS')) {
+        $phpmailer->isSMTP();
+        $phpmailer->Host = SMTP_HOST;
+        $phpmailer->Port = defined('SMTP_PORT') ? SMTP_PORT : 587;
+        $phpmailer->SMTPSecure = defined('SMTP_SECURE') ? SMTP_SECURE : 'tls';
+        $phpmailer->SMTPAuth = true;
+        $phpmailer->Username = SMTP_USER;
+        $phpmailer->Password = SMTP_PASS;
+
+        if (defined('SMTP_FROM')) {
+            $phpmailer->From = SMTP_FROM;
+        }
+        if (defined('SMTP_FROM_NAME')) {
+            $phpmailer->FromName = SMTP_FROM_NAME;
+        }
+
+        // تفعيل debug في حالة التطوير
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            $phpmailer->SMTPDebug = 2; // 0 = off, 1 = client, 2 = client and server
+        }
+    }
+}
+add_action('phpmailer_init', 'fiqhlearning_setup_smtp');
 
 /**
  * تضمين ملفات إضافية

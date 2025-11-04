@@ -130,38 +130,6 @@ class FiqhLearning_Course_Meta {
     }
 
     /**
-     * Meta Box: المعلم
-     */
-    public function render_course_teacher_metabox($post) {
-        $teacher_id = get_post_meta($post->ID, '_fiqh_course_teacher_id', true);
-
-        // جلب جميع المعلمين
-        $teachers = get_posts(array(
-            'post_type' => 'fiqh_teacher',
-            'posts_per_page' => -1,
-            'orderby' => 'title',
-            'order' => 'ASC'
-        ));
-
-        ?>
-        <p>
-            <label for="fiqh_course_teacher_id"><strong><?php _e('اختر المعلم:', 'fiqh-lms'); ?></strong></label>
-        </p>
-        <select name="fiqh_course_teacher_id" id="fiqh_course_teacher_id" class="widefat">
-            <option value=""><?php _e('-- لا يوجد معلم --', 'fiqh-lms'); ?></option>
-            <?php foreach ($teachers as $teacher) : ?>
-                <option value="<?php echo $teacher->ID; ?>" <?php selected($teacher_id, $teacher->ID); ?>>
-                    <?php echo esc_html($teacher->post_title); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <p class="description">
-            <?php _e('المعلم المسؤول عن تدريس هذا المقرر', 'fiqh-lms'); ?>
-        </p>
-        <?php
-    }
-
-    /**
      * حفظ بيانات المقرر
      */
     public function save_course_meta($post_id, $post) {
