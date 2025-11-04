@@ -125,6 +125,11 @@ function fiqhlearning_enqueue_scripts() {
         wp_enqueue_style('fiqh-post', FIQH_THEME_URI . '/assets/css/post.css', array('fiqh-main'), FIQH_THEME_VERSION);
     }
 
+    // تحميل أنماط صفحات خطة الدراسة ودليل اللوائح
+    if (is_page_template('page-study-plan.php') || is_page_template('page-regulations.php')) {
+        wp_enqueue_style('fiqh-pages', FIQH_THEME_URI . '/assets/css/pages.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    }
+
     // تحميل PDF.js للعرض المدمج
     wp_enqueue_script('pdfjs', FIQH_THEME_URI . '/assets/js/pdf.min.js', array(), '3.11.174', true);
 
