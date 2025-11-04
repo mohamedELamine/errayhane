@@ -95,15 +95,18 @@ get_header();
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
-                    <?php _e('مسيرة المدرسة', 'fiqhlearning'); ?>
+                    <?php echo get_theme_mod('about_timeline_title', __('مسيرة المدرسة', 'fiqhlearning')); ?>
                 </h2>
-                <p><?php _e('رحلتنا منذ التأسيس حتى اليوم', 'fiqhlearning'); ?></p>
+                <p><?php echo get_theme_mod('about_timeline_description', __('رحلتنا منذ التأسيس حتى اليوم', 'fiqhlearning')); ?></p>
             </div>
 
             <div class="timeline">
                 <?php
-                // جلب أحداث Timeline من Customizer أو استخدام قيم افتراضية
-                $timeline_events = get_theme_mod('about_timeline_events', array(
+                // جلب أحداث Timeline من Customizer
+                $timeline_events = array();
+
+                // Default events
+                $default_events = array(
                     array(
                         'year' => '2015',
                         'title' => 'التأسيس',
@@ -129,7 +132,27 @@ get_header();
                         'title' => 'النسخة المطورة',
                         'description' => 'إطلاق النسخة المطورة من المنصة مع مزايا تعليمية متقدمة'
                     ),
-                ));
+                );
+
+                // Get events from customizer (up to 6 events)
+                for ($i = 1; $i <= 6; $i++) {
+                    $year = get_theme_mod("about_timeline_event_{$i}_year", '');
+                    $title = get_theme_mod("about_timeline_event_{$i}_title", '');
+                    $description = get_theme_mod("about_timeline_event_{$i}_description", '');
+
+                    if (!empty($year) && !empty($title)) {
+                        $timeline_events[] = array(
+                            'year' => $year,
+                            'title' => $title,
+                            'description' => $description
+                        );
+                    }
+                }
+
+                // If no customizer events, use defaults
+                if (empty($timeline_events)) {
+                    $timeline_events = $default_events;
+                }
 
                 if (!empty($timeline_events)) :
                     foreach ($timeline_events as $index => $event) :
