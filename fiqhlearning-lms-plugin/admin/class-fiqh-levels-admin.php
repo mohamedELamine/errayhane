@@ -522,7 +522,6 @@ class FiqhLearning_Levels_Admin {
                             <thead>
                                 <tr>
                                     <th><?php _e('اسم المقرر', 'fiqh-lms'); ?></th>
-                                    <th><?php _e('المعلم', 'fiqh-lms'); ?></th>
                                     <th><?php _e('المدة', 'fiqh-lms'); ?></th>
                                     <th><?php _e('عدد الدروس', 'fiqh-lms'); ?></th>
                                     <th><?php _e('الإجراءات', 'fiqh-lms'); ?></th>
@@ -530,8 +529,6 @@ class FiqhLearning_Levels_Admin {
                             </thead>
                             <tbody>
                                 <?php foreach ($courses as $course) :
-                                    $teacher_id = get_post_meta($course->ID, '_fiqh_course_teacher_id', true);
-                                    $teacher = $teacher_id ? get_post($teacher_id) : null;
                                     $duration = get_post_meta($course->ID, '_fiqh_course_duration', true);
 
                                     // عدد الدروس
@@ -545,7 +542,6 @@ class FiqhLearning_Levels_Admin {
                                     ?>
                                     <tr>
                                         <td><strong><?php echo esc_html($course->post_title); ?></strong></td>
-                                        <td><?php echo $teacher ? esc_html($teacher->post_title) : '-'; ?></td>
                                         <td><?php echo $duration ? esc_html($duration) : '-'; ?></td>
                                         <td><?php echo $lessons_count; ?> <?php _e('درس', 'fiqh-lms'); ?></td>
                                         <td>

@@ -67,7 +67,6 @@ class FiqhLearning_Admin {
 
         $book_url = get_post_meta($post->ID, '_fiqh_course_book_url', true);
         $duration = get_post_meta($post->ID, '_fiqh_course_duration', true);
-        $teacher_id = get_post_meta($post->ID, '_fiqh_course_teacher_id', true);
 
         ?>
         <div class="fiqh-meta-box">
@@ -81,19 +80,6 @@ class FiqhLearning_Admin {
                 <label for="fiqh_course_duration"><strong><?php _e('مدة المقرر', 'fiqh-lms'); ?></strong></label><br>
                 <input type="text" id="fiqh_course_duration" name="fiqh_course_duration" value="<?php echo esc_attr($duration); ?>" class="regular-text">
                 <span class="description"><?php _e('مثال: 12 أسبوع', 'fiqh-lms'); ?></span>
-            </p>
-
-            <p>
-                <label for="fiqh_course_teacher_id"><strong><?php _e('المعلم', 'fiqh-lms'); ?></strong></label><br>
-                <select id="fiqh_course_teacher_id" name="fiqh_course_teacher_id">
-                    <option value=""><?php _e('-- اختر المعلم --', 'fiqh-lms'); ?></option>
-                    <?php
-                    $teachers = get_posts(array('post_type' => 'fiqh_teacher', 'posts_per_page' => -1));
-                    foreach ($teachers as $teacher) {
-                        echo '<option value="' . $teacher->ID . '" ' . selected($teacher_id, $teacher->ID, false) . '>' . esc_html($teacher->post_title) . '</option>';
-                    }
-                    ?>
-                </select>
             </p>
 
             <hr style="margin: 20px 0;">
@@ -225,10 +211,6 @@ class FiqhLearning_Admin {
 
         if (isset($_POST['fiqh_course_duration'])) {
             update_post_meta($post_id, '_fiqh_course_duration', sanitize_text_field($_POST['fiqh_course_duration']));
-        }
-
-        if (isset($_POST['fiqh_course_teacher_id'])) {
-            update_post_meta($post_id, '_fiqh_course_teacher_id', intval($_POST['fiqh_course_teacher_id']));
         }
     }
 

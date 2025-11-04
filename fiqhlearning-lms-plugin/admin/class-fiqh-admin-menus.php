@@ -486,10 +486,10 @@ class FiqhLearning_Admin_Menus {
     }
 
     /**
-     * إخفاء المعلمين والدروس من القائمة الجانبية
+     * إخفاء الدروس من القائمة الجانبية
      */
     public function hide_post_types_from_menu() {
-        remove_menu_page('edit.php?post_type=fiqh_teacher');
+        // تم حذف fiqh_teacher من النظام (1.3)
         remove_menu_page('edit.php?post_type=fiqh_lesson');
     }
 
