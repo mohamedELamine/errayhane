@@ -529,6 +529,39 @@ function fiqhlearning_customize_register($wp_customize) {
         'type'        => 'textarea',
     ));
 
+    // نصوص إضافية لصفحة خطة الدراسة
+    $study_plan_labels = array(
+        'breadcrumb_home' => array('label' => 'Breadcrumb: الرئيسية', 'default' => 'الرئيسية'),
+        'breadcrumb_study_plan' => array('label' => 'Breadcrumb: خطة الدراسة', 'default' => 'خطة الدراسة'),
+        'levels_system_title' => array('label' => 'عنوان نظام المستويات', 'default' => 'نظام المستويات الدراسية'),
+        'level_label' => array('label' => 'تسمية "المستوى"', 'default' => 'المستوى'),
+        'start_date_label' => array('label' => 'تسمية "البداية:"', 'default' => 'البداية:'),
+        'end_date_label' => array('label' => 'تسمية "النهاية:"', 'default' => 'النهاية:'),
+        'courses_title' => array('label' => 'عنوان "المقررات الدراسية"', 'default' => 'المقررات الدراسية'),
+        'lesson_label' => array('label' => 'تسمية "درس"', 'default' => 'درس'),
+        'no_levels_title' => array('label' => 'عنوان "لم يتم إضافة مستويات"', 'default' => 'لم يتم إضافة مستويات دراسية بعد'),
+        'no_levels_desc' => array('label' => 'وصف "لم يتم إضافة مستويات"', 'default' => 'سيتم إضافة الخطة الدراسية قريباً'),
+        'browse_courses_btn' => array('label' => 'زر "تصفح المقررات"', 'default' => 'تصفح المقررات'),
+        'cta_title' => array('label' => 'CTA: العنوان', 'default' => 'مستعد للبدء؟'),
+        'cta_desc' => array('label' => 'CTA: الوصف', 'default' => 'ابدأ رحلتك التعليمية الآن وانضم إلى مدرسة الريحان'),
+        'cta_button_courses' => array('label' => 'CTA: زر المقررات', 'default' => 'تصفح المقررات'),
+        'cta_button_about' => array('label' => 'CTA: زر عن المدرسة', 'default' => 'عن المدرسة'),
+    );
+
+    foreach ($study_plan_labels as $key => $data) {
+        $wp_customize->add_setting("study_plan_{$key}", array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("study_plan_{$key}", array(
+            'label'   => $data['label'],
+            'section' => 'fiqh_study_plan_section',
+            'type'    => 'text',
+        ));
+    }
+
     // ==========================================================================
     // قسم صفحة دليل اللوائح (Regulations)
     // ==========================================================================
@@ -564,6 +597,35 @@ function fiqhlearning_customize_register($wp_customize) {
         'section'     => 'fiqh_regulations_section',
         'type'        => 'textarea',
     ));
+
+    // نصوص إضافية لصفحة دليل اللوائح
+    $regulations_labels = array(
+        'breadcrumb_home' => array('label' => 'Breadcrumb: الرئيسية', 'default' => 'الرئيسية'),
+        'breadcrumb_regulations' => array('label' => 'Breadcrumb: دليل اللوائح', 'default' => 'دليل اللوائح'),
+        'sections_title' => array('label' => 'عنوان "الأقسام"', 'default' => 'الأقسام'),
+        'admission_title' => array('label' => 'عنوان "شروط القبول"', 'default' => 'شروط القبول'),
+        'enrollment_title' => array('label' => 'عنوان "نظام التسجيل"', 'default' => 'نظام التسجيل'),
+        'attendance_title' => array('label' => 'عنوان "الحضور والغياب"', 'default' => 'الحضور والغياب'),
+        'exams_title' => array('label' => 'عنوان "الاختبارات"', 'default' => 'الاختبارات'),
+        'grades_title' => array('label' => 'عنوان "نظام الدرجات"', 'default' => 'نظام الدرجات'),
+        'behavior_title' => array('label' => 'عنوان "السلوك والانضباط"', 'default' => 'السلوك والانضباط'),
+        'certificates_title' => array('label' => 'عنوان "الشهادات"', 'default' => 'الشهادات'),
+        'rights_title' => array('label' => 'عنوان "الحقوق والواجبات"', 'default' => 'الحقوق والواجبات'),
+    );
+
+    foreach ($regulations_labels as $key => $data) {
+        $wp_customize->add_setting("regulations_{$key}", array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("regulations_{$key}", array(
+            'label'   => $data['label'],
+            'section' => 'fiqh_regulations_section',
+            'type'    => 'text',
+        ));
+    }
 
     // ==========================================================================
     // قسم صفحة الأسئلة (Questions)
