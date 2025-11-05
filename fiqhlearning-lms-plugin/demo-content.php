@@ -288,61 +288,345 @@ function fiqh_generate_demo_content() {
     // جمع كل الطلاب
     $all_student_ids = array_merge($student_ids_level1, $student_ids_level2);
 
-    // 6. إنشاء مقررات تجريبية
-    echo '<h2>6️⃣ إنشاء المقررات الدراسية</h2>';
-    $courses_data = array(
+    // 6. إنشاء مقررات تجريبية مفصلة مع المحاضرات
+    echo '<h2>6️⃣ إنشاء المقررات الدراسية المفصلة</h2>';
+
+    // بيانات المقررات مع محاضراتها
+    $detailed_courses = array(
+        // علم الفقه
         array(
-            'title' => 'فقه العبادات - المذهب المالكي',
+            'title' => 'متن المرشد المعين',
             'science' => '⚖️ علم الفقه',
-            'content' => '<p>مقرر شامل في فقه العبادات على المذهب المالكي، يشمل دراسة الطهارة والصلاة والزكاة والصيام والحج.</p>',
-            'excerpt' => 'دراسة شاملة لفقه العبادات على المذهب المالكي',
-            'duration' => '16 أسبوع',
-            'level' => 'المستوى الأول'
+            'content' => '<p>شرح متن المرشد المعين على الضروري من علوم الدين</p>',
+            'excerpt' => 'متن المرشد المعين على الضروري من علوم الدين',
+            'duration' => '18 محاضرة',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'المحاضرة الأولى - الجزء الأول', 'url' => 'https://youtu.be/jprs2rJKfVc'),
+                array('title' => 'المحاضرة الأولى - الجزء الثاني', 'url' => 'https://youtu.be/ApCXniVww4s'),
+                array('title' => 'المحاضرة الأولى - الجزء الثالث', 'url' => 'https://youtu.be/uN-7N8B4pxY'),
+                array('title' => 'المحاضرة الثانية', 'url' => 'https://youtu.be/GBqx93bA44E'),
+                array('title' => 'المحاضرة الثالثة', 'url' => 'https://youtu.be/hGC64jID_ow'),
+                array('title' => 'المحاضرة الرابعة', 'url' => 'https://youtu.be/Vvloak0LtU8'),
+                array('title' => 'المحاضرة الخامسة', 'url' => 'https://youtu.be/en01cDv4cmo'),
+                array('title' => 'المحاضرة السادسة', 'url' => 'https://youtu.be/pz00tc7GyNs'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/h8WHkdnx1b8'),
+                array('title' => 'الحصة الثامنة', 'url' => 'https://youtu.be/1Bpy-MeEkmg'),
+                array('title' => 'الحصة التاسعة', 'url' => 'https://youtu.be/UlnN0eIUj5s'),
+                array('title' => 'المحاضرة العاشرة', 'url' => 'https://youtu.be/f8moQbl5Dps'),
+                array('title' => 'المحاضرة الحادية عشرة', 'url' => 'https://youtu.be/HVfcl2mt6o0'),
+                array('title' => 'المحاضرة الثانية عشرة', 'url' => 'https://youtu.be/f6D9TTgC4wE'),
+                array('title' => 'المحاضرة الثالثة عشرة', 'url' => 'https://youtu.be/PIgbhWwxATw'),
+                array('title' => 'المحاضرة الرابعة عشرة', 'url' => 'https://youtu.be/E8e63cnjQ30'),
+                array('title' => 'المحاضرة الرابعة عشرة تابع', 'url' => 'https://youtu.be/-iYJzKHfnmA'),
+                array('title' => 'المحاضرة الخامسة عشرة و الأخيرة', 'url' => 'https://youtu.be/jqdAH-DHEWY'),
+            )
         ),
         array(
-            'title' => 'مصطلح الحديث',
-            'science' => '📜 علم مصطلح الحديث',
-            'content' => '<p>دراسة علم مصطلح الحديث وأنواع الأحاديث والرواة وطرق التصحيح والتضعيف.</p>',
-            'excerpt' => 'مقدمة في علم مصطلح الحديث',
-            'duration' => '12 أسبوع',
-            'level' => 'المستوى الأول'
+            'title' => 'متن العبقري',
+            'science' => '⚖️ علم الفقه',
+            'content' => '<p>شرح متن العبقري في الفقه المالكي</p>',
+            'excerpt' => 'متن العبقري في الفقه المالكي',
+            'duration' => '21 محاضرة',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'المحاضرة الأولى', 'url' => 'https://youtu.be/yMNNEziMXGI'),
+                array('title' => 'المحاضرة الثانية', 'url' => 'https://youtu.be/Y2FfbRjJAJI'),
+                array('title' => 'المحاضرة الثالثة', 'url' => 'https://youtu.be/XlfEMF1r5T4'),
+                array('title' => 'المحاضرة الرابعة', 'url' => 'https://youtu.be/-l_UDTopkUc'),
+                array('title' => 'المحاضرة الخامسة', 'url' => 'https://youtu.be/s5zwHfCDG0I'),
+                array('title' => 'المحاضرة السادسة', 'url' => 'https://youtu.be/uZ4vaQnAyKk'),
+                array('title' => 'المحاضرة السابعة', 'url' => 'https://youtu.be/22bZMlZg6N4'),
+                array('title' => 'المحاضرة الثامنة', 'url' => 'https://youtu.be/o1vMAEZlgPs'),
+                array('title' => 'المحاضرة التاسعة', 'url' => 'https://youtu.be/19J1XPnToFk'),
+                array('title' => 'المحاضرة العاشرة', 'url' => 'https://youtu.be/yvj3AkcdZQI'),
+                array('title' => 'المحاضرة الحادية عشر', 'url' => 'https://youtu.be/NRZ02waMOqY'),
+                array('title' => 'المحاضرة الثانية عشر', 'url' => 'https://youtu.be/gsyYGSgr-GM'),
+                array('title' => 'المحاضرة الثالثة عشر', 'url' => 'https://youtu.be/_zizOA2xo8w'),
+                array('title' => 'المحاضرة الرابعة عشر', 'url' => 'https://youtu.be/-Qjf19gTwc4'),
+                array('title' => 'المحاضرة الخامسة عشر', 'url' => 'https://youtu.be/GVRFK6xdxr8'),
+                array('title' => 'المحاضرة السادسة عشر', 'url' => 'https://youtu.be/WWRx0IdEPs8'),
+                array('title' => 'المحاضرة السابعة عشر', 'url' => 'https://youtu.be/b5PrHyF19LI'),
+                array('title' => 'المحاضرة الثامنة عشر', 'url' => 'https://youtu.be/QTYjfHB93LA'),
+                array('title' => 'المحاضرة التاسعة عشر', 'url' => 'https://youtu.be/z-xyz4qLYpQ'),
+                array('title' => 'المحاضرة العشرون', 'url' => 'https://youtu.be/-TAo50P3EtQ'),
+                array('title' => 'المحاضرة الحادية و العشرون', 'url' => 'https://youtu.be/7HeRQLVoiws'),
+            )
         ),
         array(
-            'title' => 'تفسير جزء عم',
-            'science' => '📘 علم التفسير',
-            'content' => '<p>دراسة تفسير سور جزء عم مع بيان أسباب النزول والإعراب والفوائد.</p>',
-            'excerpt' => 'تفسير مفصل لسور جزء عم',
-            'duration' => '10 أسابيع',
-            'level' => 'المستوى الأول'
+            'title' => 'شرح متن المرشد المعين على الضروري من علوم الدين',
+            'science' => '⚖️ علم الفقه',
+            'content' => '<p>شرح مفصل لمتن المرشد المعين للمستوى الأول</p>',
+            'excerpt' => 'شرح متن المرشد المعين',
+            'duration' => '15 حصة',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/5GeHTCxUVs8'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/a5394Id-ljU'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/XqYml4zRfzE'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/dpniyIgkR_M'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/PjPKfZe7IRQ'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/s7AAgMUqpGs'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/sKwuwZa0qTU'),
+                array('title' => 'الحصة الثامنة', 'url' => 'https://youtu.be/W5_WNYHt5Eo'),
+                array('title' => 'الحصة التاسعة', 'url' => 'https://youtu.be/CsD1NXer6Ms'),
+                array('title' => 'الحصة العاشرة', 'url' => 'https://youtu.be/yFIw9r-U1yk'),
+                array('title' => 'الحصة الحادية عشرة', 'url' => 'https://youtu.be/C1aaKTO4J9c'),
+                array('title' => 'الحصة الثانية عشرة', 'url' => 'https://youtu.be/JjiPH36y91o'),
+                array('title' => 'الحصة الثالثة عشرة', 'url' => 'https://youtu.be/tE6bctkGAd4'),
+                array('title' => 'الحصة الرابعة عشر', 'url' => 'https://youtu.be/YNWqqQTHcJk'),
+                array('title' => 'الخامسة عشر', 'url' => 'https://youtu.be/VxnULGfV5_s'),
+            )
         ),
         array(
-            'title' => 'العقيدة الطحاوية',
-            'science' => '🕋 علم العقيدة (علم الكلام)',
-            'content' => '<p>شرح متن العقيدة الطحاوية للإمام الطحاوي رحمه الله.</p>',
-            'excerpt' => 'شرح العقيدة الطحاوية',
-            'duration' => '14 أسبوع',
-            'level' => 'المستوى الثاني'
+            'title' => 'شرح متن العبقري',
+            'science' => '⚖️ علم الفقه',
+            'content' => '<p>شرح مبسط لمتن العبقري للمبتدئين</p>',
+            'excerpt' => 'شرح متن العبقري للمبتدئين',
+            'duration' => '7 حصص',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/zt1CRHr5Axw'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/2ZMoiaQwENI'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/89gP7TjHpMs'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/E0Svl15YVwQ'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/ThBZy0FwdZc'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/WE-NkpfB5fI'),
+                array('title' => 'الحصة السابعة والأخيرة', 'url' => 'https://youtu.be/5_m-r958Tdw'),
+            )
         ),
+        // علم الميراث
         array(
-            'title' => 'النحو الواضح',
+            'title' => 'شرح الرحبية',
+            'science' => '🧮 علم الميراث',
+            'content' => '<p>شرح متن الرحبية في علم الفرائض</p>',
+            'excerpt' => 'شرح الرحبية في الفرائض',
+            'duration' => '10 حصص',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/1aG7Fpjn_cE'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/Dhysp7ubCUE'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/W-3vwu9xu54'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/E86NXxnTvc-'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/h02xpW_ZSko'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/WoX-lv0CESY'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/jOEVjRm4uu4'),
+                array('title' => 'الحصة الثامنة', 'url' => 'https://youtu.be/PDFlumrtG54'),
+                array('title' => 'الحصة التاسعة', 'url' => 'https://youtu.be/l-ekXpyEGas'),
+                array('title' => 'الحصة الأخيرة', 'url' => 'https://youtu.be/28e9freLY5k'),
+            )
+        ),
+        // علم النحو
+        array(
+            'title' => 'متن الأجرومية',
             'science' => '✍️ علم النحو',
-            'content' => '<p>دراسة قواعد النحو العربي بأسلوب واضح ومبسط.</p>',
-            'excerpt' => 'تعلم قواعد النحو العربي',
-            'duration' => '12 أسبوع',
-            'level' => 'المستوى الأول'
+            'content' => '<p>شرح متن الأجرومية في النحو</p>',
+            'excerpt' => 'شرح الأجرومية في النحو',
+            'duration' => '12 جزء',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'المحاضرة الأولى - الجزء الأول', 'url' => 'https://youtu.be/0H5ZUVU66ms'),
+                array('title' => 'المحاضرة الأولى - الجزء الثاني', 'url' => 'https://youtu.be/aCw0n9OrPdQ'),
+                array('title' => 'المحاضرة الأولى - الجزء الثالث', 'url' => 'https://youtu.be/E43t5_ucjcc'),
+                array('title' => 'المحاضرة الأولى - الجزء الرابع', 'url' => 'https://youtu.be/0hpw6ws0R60'),
+                array('title' => 'المحاضرة الأولى - الجزء الخامس', 'url' => 'https://youtu.be/IKuFdoQBYvk'),
+                array('title' => 'المحاضرة الأولى - الجزء السادس', 'url' => 'https://youtu.be/NvbLgHmohCU'),
+                array('title' => 'المحاضرة الثانية - الجزء الأول', 'url' => 'https://youtu.be/JB3rG10QPvc'),
+                array('title' => 'المحاضرة الثانية - الجزء الثاني', 'url' => 'https://youtu.be/0dklo9b6J48'),
+                array('title' => 'المحاضرة الثانية - الجزء الثالث', 'url' => 'https://youtu.be/4GcRcBMu2gU'),
+                array('title' => 'المحاضرة الثانية - الجزء الرابع', 'url' => 'https://youtu.be/TZlNS9nSjmk'),
+                array('title' => 'المحاضرة الثانية - الجزء الخامس', 'url' => 'https://youtu.be/XBugwNKI-E0'),
+                array('title' => 'المحاضرة الثانية - الجزء السادس', 'url' => 'https://youtu.be/C63EsVSuepY'),
+            )
         ),
         array(
-            'title' => 'أصول الفقه - مقدمة',
-            'science' => '⚖️ أصول الفقه',
-            'content' => '<p>مقدمة في علم أصول الفقه وقواعده الأساسية.</p>',
-            'excerpt' => 'مدخل إلى علم أصول الفقه',
-            'duration' => '14 أسبوع',
-            'level' => 'المستوى الثاني'
+            'title' => 'دروس شرح الآجرومية للدفعة الجديدة',
+            'science' => '✍️ علم النحو',
+            'content' => '<p>دروس مبسطة في شرح الآجرومية</p>',
+            'excerpt' => 'شرح الآجرومية للمبتدئين',
+            'duration' => '13 حصة',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى (مقدمات)', 'url' => 'https://youtu.be/fwMvNius2-s'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/LnWdT6NF18Y'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/0c8AGNkpVqk'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/RhYhYhQGNWg'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/5-MyUF6WA3E'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/hmO8d2tkoaI'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/bSyRohpb3IY'),
+                array('title' => 'الحصة الثامنة', 'url' => 'https://youtu.be/BosSglLUmWA'),
+                array('title' => 'الحصة التاسعة', 'url' => 'https://youtu.be/IhSfdefKr2M'),
+                array('title' => 'الحصة العاشرة', 'url' => 'https://youtu.be/x6ZKzOUne9Y'),
+                array('title' => 'الحصة الحادية عشر', 'url' => 'https://youtu.be/GKkdJ7E_qxc'),
+                array('title' => 'الحصة الثانية عشر', 'url' => 'https://youtu.be/5OTURyJghpY'),
+                array('title' => 'حصة إعرابية عامة', 'url' => 'https://youtu.be/5APRciJrAkA'),
+            )
+        ),
+        // علم الصرف
+        array(
+            'title' => 'متن الصرف الصغير',
+            'science' => '🔠 علم الصرف',
+            'content' => '<p>شرح متن الصرف الصغير</p>',
+            'excerpt' => 'شرح الصرف الصغير',
+            'duration' => '11 جزء',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'المحاضرة الأولى - الجزء الأول', 'url' => 'https://youtu.be/9Z10li_AS5E'),
+                array('title' => 'المحاضرة الأولى - الجزء الثاني', 'url' => 'https://youtu.be/OS2JpKuacIY'),
+                array('title' => 'المحاضرة الأولى - الجزء الثالث', 'url' => 'https://youtu.be/bCMnzg7Du30'),
+                array('title' => 'المحاضرة الأولى - الجزء الرابع', 'url' => 'https://youtu.be/cz9xyUyoJow'),
+                array('title' => 'المحاضرة الثانية - الجزء الأول', 'url' => 'https://youtu.be/sKcx4kBsPqM'),
+                array('title' => 'المحاضرة الثانية - الجزء الثاني', 'url' => 'https://youtu.be/qlNCuJsSM7E'),
+                array('title' => 'المحاضرة الثانية - الجزء الثالث', 'url' => 'https://youtu.be/na-XqYJ_nfA'),
+                array('title' => 'المحاضرة الثالثة - الجزء الأول', 'url' => 'https://youtu.be/W6p9NYtVeTg'),
+                array('title' => 'المحاضرة الثالثة - الجزء الثاني', 'url' => 'https://youtu.be/EzZcELYkW0A'),
+                array('title' => 'المحاضرة الرابعة - الجزء الأول', 'url' => 'https://youtu.be/h8IJrB3u0P0'),
+                array('title' => 'المحاضرة الرابعة - الجزء الثاني', 'url' => 'https://youtu.be/A3SRrEj1ceA'),
+            )
+        ),
+        array(
+            'title' => 'شرح كتاب الصرف الصغير',
+            'science' => '🔠 علم الصرف',
+            'content' => '<p>شرح مبسط لكتاب الصرف الصغير</p>',
+            'excerpt' => 'شرح الصرف للمبتدئين',
+            'duration' => '3 حصص',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/2FLP6vY2mbA'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/YXt4PlURwr0'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/NcpsQ6fGrg8'),
+            )
+        ),
+        // علم التفسير
+        array(
+            'title' => 'شرح مقدمة في أصول التفسير لابن تيمية',
+            'science' => '📘 علم التفسير',
+            'content' => '<p>شرح مقدمة ابن تيمية في أصول التفسير</p>',
+            'excerpt' => 'مقدمة في أصول التفسير',
+            'duration' => '6 حصص',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/FVTnHhabavA'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/a483N_XMmw8'),
+                array('title' => 'الحصة الثالثة - الجزء الأول', 'url' => 'https://youtu.be/knjZgZGSwOQ'),
+                array('title' => 'الحصة الثالثة - الجزء الثاني', 'url' => 'https://youtu.be/-rCm3xWOjc'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/XSFA3VOgsnE'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/Uupk3WTOnF4'),
+                array('title' => 'الحصة السادسة والأخيرة', 'url' => 'https://youtu.be/gjboPBCoInQ'),
+            )
+        ),
+        array(
+            'title' => 'فسحة تاريخية في علم التفسير',
+            'science' => '📘 علم التفسير',
+            'content' => '<p>رحلة تاريخية في علم التفسير وتطوره</p>',
+            'excerpt' => 'فسحة تاريخية في علم التفسير',
+            'duration' => 'محاضرة واحدة',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'فسحة تاريخية علم التفسير - الجزء 1', 'url' => 'https://youtu.be/Zu_PCWsQ0E8'),
+            )
+        ),
+        // علم المنطق
+        array(
+            'title' => 'مقدمات في علم المنطق - مستوى متقدم',
+            'science' => '🧩 علم المنطق',
+            'content' => '<p>مقدمات متقدمة في علم المنطق</p>',
+            'excerpt' => 'مقدمات في علم المنطق',
+            'duration' => '6 أجزاء',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'المحاضرة الأولى - الجزء الأول', 'url' => 'https://youtu.be/k8dHUc2MNA8'),
+                array('title' => 'المحاضرة الأولى - الجزء الثاني', 'url' => 'https://youtu.be/Uf7PCkVqXv4'),
+                array('title' => 'المحاضرة الأولى - الجزء الثالث', 'url' => 'https://youtu.be/QxA19apZ_k0'),
+                array('title' => 'المحاضرة الثانية - الجزء الأول', 'url' => 'https://youtu.be/PKzEdJ3_EoQ'),
+                array('title' => 'المحاضرة الثانية - الجزء الثاني', 'url' => 'https://youtu.be/NTnHpxbSZ_Y'),
+                array('title' => 'المحاضرة الثانية - الجزء الأخير', 'url' => 'https://youtu.be/NEfzUDX3ESo'),
+            )
+        ),
+        array(
+            'title' => 'مقدمات في علم المنطق - تمهيدي',
+            'science' => '🧩 علم المنطق',
+            'content' => '<p>مقدمات تمهيدية في علم المنطق</p>',
+            'excerpt' => 'مقدمات تمهيدية في المنطق',
+            'duration' => 'حصتان',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/0ByVdfN4eJM'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/cpoZIVwNGUo'),
+            )
+        ),
+        // علم مصطلح الحديث
+        array(
+            'title' => 'شرح البيقونية - تمهيدي',
+            'science' => '📜 علم مصطلح الحديث',
+            'content' => '<p>شرح منظومة البيقونية في مصطلح الحديث</p>',
+            'excerpt' => 'شرح البيقونية للمبتدئين',
+            'duration' => '7 حصص',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/3OJ1SmnyqgI'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/t-6vWESGPDo'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/DDIwXQ_-CS8'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/MJ2tqDleV7o'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/ZWSTjG4c8Xw'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/NzehgV5Vgbg'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/fL8fBR57pOI'),
+            )
+        ),
+        array(
+            'title' => 'قواعد التحديث من فنون مصطلح الحديث',
+            'science' => '📜 علم مصطلح الحديث',
+            'content' => '<p>دراسة قواعد التحديث وفنون مصطلح الحديث</p>',
+            'excerpt' => 'قواعد التحديث',
+            'duration' => '12 حصة',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/4okfUT06tbs'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/M9nWVlGrvv8'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/9ms0-qeDQR0'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/K03A0rshfks'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/ruzjMfUUviw'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/gG5JUYyMzoI'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/t2sXQ3ABJ7M'),
+                array('title' => 'الحصة الثامنة', 'url' => 'https://youtu.be/88xTFmia4Vg'),
+                array('title' => 'الحصة التاسعة', 'url' => 'https://youtu.be/3cp_oIZowr0'),
+                array('title' => 'الحصة العاشرة', 'url' => 'https://youtu.be/q0uMLoVhZW8'),
+                array('title' => 'الحصة الحادية عشرة', 'url' => 'https://youtu.be/RW5df0RhP1w'),
+                array('title' => 'الحصة الأخيرة', 'url' => 'https://youtu.be/0PxtftB43XM'),
+            )
+        ),
+        array(
+            'title' => 'شرح متن البيقونية',
+            'science' => '📜 علم مصطلح الحديث',
+            'content' => '<p>شرح مفصل لمتن البيقونية في مصطلح الحديث</p>',
+            'excerpt' => 'شرح متن البيقونية',
+            'duration' => '18 درس',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'مقدمة - الجزء الأول', 'url' => 'https://youtu.be/dts8gBZZpnQ'),
+                array('title' => 'مقدمة - الجزء الثاني', 'url' => 'https://youtu.be/E0X_RlKClSQ'),
+                array('title' => 'شرح الأبيات 1-2', 'url' => 'https://youtu.be/n_yNykVLzxY'),
+                array('title' => 'شرح الأبيات 3-4', 'url' => 'https://youtu.be/CkhZhe0DnpM'),
+                array('title' => 'شرح: الحديث الحسن والضعيف', 'url' => 'https://youtu.be/hmhLH1X6PMI'),
+                array('title' => 'شرح: الحديث المرفوع والمقطوع', 'url' => 'https://youtu.be/zqRfS3yiFi4'),
+                array('title' => 'شرح الحديث: المسلسل والمتصل', 'url' => 'https://youtu.be/8c8fxSa3lkY'),
+                array('title' => 'شرح الحديث العزيز والمشهور', 'url' => 'https://youtu.be/LQT4ifchMpM'),
+                array('title' => 'شرح الحديث المعنعن والمؤنئن', 'url' => 'https://youtu.be/1N1VQxLoGbQ'),
+                array('title' => 'شرح الحديث الموقوف والمرسل', 'url' => 'https://youtu.be/LY_2h2Mn37g'),
+                array('title' => 'شرح الحديث: الغريب', 'url' => 'https://youtu.be/ZSX6K1DXJOY'),
+                array('title' => 'شرح الحديث المنقطع والعضل', 'url' => 'https://youtu.be/Pv8UQ6vTbXY'),
+                array('title' => 'شرح الحديث: المدلس وبيان أنواعه', 'url' => 'https://youtu.be/ulgUFTHF7PM'),
+                array('title' => 'شرح الحديث الشاذ والمقلوب', 'url' => 'https://youtu.be/Gz64iLNY_uw'),
+                array('title' => 'شرح الحديث الفرد والمعلل', 'url' => 'https://youtu.be/_APgFjXvvCE'),
+                array('title' => 'شرح الحديث: المضطرب والمدرج', 'url' => 'https://youtu.be/UMsVo-DISkA'),
+                array('title' => 'شرح الحديث: المدبج، المتفق، المؤتلف، المختلف', 'url' => 'https://youtu.be/YiDzIWa8GzA'),
+                array('title' => 'المنكر والمتروك والموضوع ثم خاتمة النظم', 'url' => 'https://youtu.be/dbPpdEdphqk'),
+            )
         ),
     );
 
-    $course_ids = array();
-    foreach ($courses_data as $course_data) {
+    $total_lessons = 0;
+    foreach ($detailed_courses as $course_data) {
         $science_term = get_term_by('name', $course_data['science'], 'fiqh_course_science');
 
         $course_id = wp_insert_post(array(
@@ -368,8 +652,28 @@ function fiqh_generate_demo_content() {
                 update_post_meta($course_id, '_fiqh_course_levels', array($batch_ids[$course_data['level']]));
             }
 
-            $course_ids[] = $course_id;
-            echo '<p style="color: green;">✅ تم إنشاء مقرر: <strong>' . $course_data['title'] . '</strong> (' . $course_data['level'] . ')</p>';
+            // إنشاء الدروس (المحاضرات)
+            if (!empty($course_data['lessons'])) {
+                foreach ($course_data['lessons'] as $index => $lesson) {
+                    $lesson_id = wp_insert_post(array(
+                        'post_title' => $lesson['title'],
+                        'post_content' => '<p>محاضرة من مقرر: ' . $course_data['title'] . '</p>',
+                        'post_status' => 'publish',
+                        'post_type' => 'fiqh_lesson',
+                        'post_author' => 1,
+                        'menu_order' => $index + 1,
+                    ));
+
+                    if ($lesson_id && !is_wp_error($lesson_id)) {
+                        update_post_meta($lesson_id, '_fiqh_lesson_course_id', $course_id);
+                        update_post_meta($lesson_id, '_fiqh_lesson_video_url', $lesson['url']);
+                        update_post_meta($lesson_id, '_fiqh_lesson_duration', '30-45 دقيقة');
+                        $total_lessons++;
+                    }
+                }
+            }
+
+            echo '<p style="color: green;">✅ تم إنشاء مقرر: <strong>' . $course_data['title'] . '</strong> مع <strong>' . count($course_data['lessons']) . '</strong> محاضرة (' . $course_data['level'] . ')</p>';
         }
     }
 
@@ -384,7 +688,19 @@ function fiqh_generate_demo_content() {
     echo '<li>✅ <strong>3</strong> مدراء</li>';
     echo '<li>✅ <strong>12</strong> طالبة في المستوى الثاني</li>';
     echo '<li>✅ <strong>15</strong> طالب/ة في المستوى الأول</li>';
-    echo '<li>✅ <strong>' . count($courses_data) . '</strong> مقررات دراسية</li>';
+    echo '<li>✅ <strong>' . count($detailed_courses) . '</strong> مقررات دراسية مفصلة</li>';
+    echo '<li>✅ <strong>' . $total_lessons . '</strong> محاضرة مع روابط يوتيوب</li>';
+    echo '</ul>';
+
+    echo '<h3>تفصيل المقررات:</h3>';
+    echo '<ul>';
+    echo '<li>📚 <strong>علم الفقه:</strong> 4 مقررات (2 للمستوى الأول، 2 للمستوى الثاني)</li>';
+    echo '<li>📚 <strong>علم الميراث:</strong> 1 مقرر (المستوى الثاني)</li>';
+    echo '<li>📚 <strong>علم النحو:</strong> 2 مقرر (1 لكل مستوى)</li>';
+    echo '<li>📚 <strong>علم الصرف:</strong> 2 مقرر (1 لكل مستوى)</li>';
+    echo '<li>📚 <strong>علم التفسير:</strong> 2 مقرر (المستوى الثاني)</li>';
+    echo '<li>📚 <strong>علم المنطق:</strong> 2 مقرر (1 لكل مستوى)</li>';
+    echo '<li>📚 <strong>علم مصطلح الحديث:</strong> 3 مقررات (1 للمستوى الأول، 2 للمستوى الثاني)</li>';
     echo '</ul>';
 
     echo '<h3>معلومات تسجيل الدخول:</h3>';
