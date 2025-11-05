@@ -1,6 +1,6 @@
 <?php
 /**
- * محتوى تجريبي Demo Content
+ * محتوى تجريبي Demo Content - محدّث بالبيانات الحقيقية
  *
  * ملاحظة: هذا الملف يُشغّل مرة واحدة فقط لإنشاء محتوى تجريبي كامل
  * للتشغيل: قم بزيارة: wp-admin/admin.php?page=fiqh-demo-content
@@ -40,7 +40,7 @@ function fiqh_create_demo_content_page() {
     <div class="wrap">
         <h1><?php _e('إنشاء محتوى تجريبي كامل', 'fiqh-lms'); ?></h1>
         <div class="notice notice-warning">
-            <p><strong><?php _e('تحذير:', 'fiqh-lms'); ?></strong> <?php _e('سيتم إنشاء محتوى تجريبي كامل للمنصة. هذه العملية قد تستغرق بعض الوقت.', 'fiqh-lms'); ?></p>
+            <p><strong><?php _e('تحذير:', 'fiqh-lms'); ?></strong> <?php _e('سيتم إنشاء محتوى تجريبي كامل للمنصة مع البيانات الحقيقية. هذه العملية قد تستغرق بعض الوقت.', 'fiqh-lms'); ?></p>
         </div>
 
         <?php
@@ -64,7 +64,7 @@ function fiqh_create_demo_content_page() {
 }
 
 /**
- * إنشاء المحتوى التجريبي الكامل
+ * إنشاء المحتوى التجريبي الكامل بالبيانات الحقيقية
  */
 function fiqh_generate_demo_content() {
     global $wpdb;
@@ -73,15 +73,20 @@ function fiqh_generate_demo_content() {
 
     echo '<div class="updated"><p><strong>' . __('بدأ إنشاء المحتوى التجريبي...', 'fiqh-lms') . '</strong></p></div>';
 
-    // 1. إنشاء التصنيفات
-    echo '<h2>1️⃣ إنشاء التصنيفات والعلوم الشرعية</h2>';
+    // 1. إنشاء التصنيفات والعلوم الشرعية
+    echo '<h2>1️⃣ إنشاء العلوم الشرعية</h2>';
     $sciences_data = array(
-        array('name' => 'الفقه', 'desc' => 'علم الفقه الإسلامي والأحكام الشرعية'),
-        array('name' => 'الحديث', 'desc' => 'علم الحديث النبوي الشريف'),
-        array('name' => 'التفسير', 'desc' => 'علم تفسير القرآن الكريم'),
-        array('name' => 'العقيدة', 'desc' => 'علم العقيدة والتوحيد'),
-        array('name' => 'اللغة العربية', 'desc' => 'علوم اللغة العربية والنحو والصرف'),
-        array('name' => 'الأصول', 'desc' => 'علم أصول الفقه'),
+        array('name' => '📘 علم التفسير', 'desc' => 'هو علمٌ يبحث في بيان كيفيّة فَهْم ألفاظ القرآن الكريم.'),
+        array('name' => '🧩 علم المنطق', 'desc' => 'علم تمنع مراعاته من الوقوع في الخطأ في الفكر.'),
+        array('name' => '📜 علم مصطلح الحديث', 'desc' => 'هو العلم بقواعدٍ يُعرف بها أحوال السند والمتن من حيث القبول أو الرد.'),
+        array('name' => '📚 مطالعة (كتاب مختار)', 'desc' => 'المطالعة الموجهة توسع عقل الطالب وتزيد فِطنته ونباهته.'),
+        array('name' => '⚖️ أصول الفقه', 'desc' => 'علم يبحث في أدلة الفقه الإجمالية وكيفية الاستفادة منها، وحال المستفيد.'),
+        array('name' => '🕋 علم العقيدة (علم الكلام)', 'desc' => 'يقوم علم الكلام على بحث ودراسة مسائل العقيدة الإسلامية بإيراد الأدلة وعرض الحجج على إثباتها.'),
+        array('name' => '🌿 علم التزكية', 'desc' => 'يسمى كذلك بعلم إصلاح النفس أو علم التصوف، وهو علمٌ يبحث فيه عن الطرق التي تخلص النفس من أسوائها.'),
+        array('name' => '⚖️ علم الفقه', 'desc' => 'العلم بالأحكام الشرعية المكتسبة من أدلتها التفصيلية.'),
+        array('name' => '🧮 علم الميراث', 'desc' => 'علم الفرائض أو علم المواريث هو العلم الذي يعنى بأحوال تَرِكة الميت وميراثه من حيث تقسيمها على مستحقيها.'),
+        array('name' => '✍️ علم النحو', 'desc' => 'هو علم يعصم اللسان من اللحن.'),
+        array('name' => '🔠 علم الصرف', 'desc' => 'علم بأصول يُعرف بها أحوال بِنْيَة الكلمة التي ليست بإعراب ولا بناء.'),
     );
 
     foreach ($sciences_data as $science) {
@@ -90,9 +95,9 @@ function fiqh_generate_demo_content() {
             wp_insert_term($science['name'], 'fiqh_course_science', array(
                 'description' => $science['desc']
             ));
-            echo '<p style="color: green;">✅ تم إنشاء علم: <strong>' . $science['name'] . '</strong></p>';
+            echo '<p style="color: green;">✅ تم إنشاء علم: <strong>' . esc_html($science['name']) . '</strong></p>';
         } else {
-            echo '<p style="color: orange;">⚠️ العلم موجود مسبقاً: ' . $science['name'] . '</p>';
+            echo '<p style="color: orange;">⚠️ العلم موجود مسبقاً: ' . esc_html($science['name']) . '</p>';
         }
     }
 
@@ -113,16 +118,18 @@ function fiqh_generate_demo_content() {
     echo '<h2>2️⃣ إنشاء المستويات الدراسية</h2>';
     $batches = array(
         array(
-            'name' => 'المستوى الأول - خريف 2024',
-            'description' => 'المستوى الدراسي الأول للعام الدراسي 2024-2025',
+            'name' => 'المستوى الأول',
+            'description' => 'المستوى الأول للطلبة المبتدئين',
+            'level_order' => 1,
             'start_date' => '2024-09-01',
-            'end_date' => '2024-12-31',
+            'end_date' => '2025-06-30',
             'status' => 'active'
         ),
         array(
-            'name' => 'المستوى الثاني - ربيع 2025',
-            'description' => 'المستوى الدراسي الثاني للعام الدراسي 2024-2025',
-            'start_date' => '2025-01-01',
+            'name' => 'المستوى الثاني',
+            'description' => 'المستوى الثاني للطلبة المتقدمين',
+            'level_order' => 2,
+            'start_date' => '2024-09-01',
             'end_date' => '2025-06-30',
             'status' => 'active'
         ),
@@ -138,150 +145,199 @@ function fiqh_generate_demo_content() {
 
         if (!$exists) {
             $wpdb->insert($wpdb->prefix . 'fiqh_batches', $batch);
-            $batch_ids[] = $wpdb->insert_id;
-            echo '<p style="color: green;">✅ تم إنشاء مستوى: <strong>' . $batch['name'] . '</strong></p>';
+            $batch_ids[$batch['name']] = $wpdb->insert_id;
+            echo '<p style="color: green;">✅ تم إنشاء مستوى: <strong>' . $batch['name'] . '</strong> (ترتيب: ' . $batch['level_order'] . ')</p>';
         } else {
-            $batch_ids[] = $exists;
+            $batch_ids[$batch['name']] = $exists;
             echo '<p style="color: orange;">⚠️ المستوى موجود مسبقاً: ' . $batch['name'] . '</p>';
         }
     }
 
-    // 3. إنشاء طلاب تجريبيين
-    echo '<h2>3️⃣ إنشاء طلاب تجريبيين</h2>';
-    $students_data = array(
-        array('username' => 'ahmad_student', 'email' => 'ahmad@example.com', 'display_name' => 'أحمد محمد'),
-        array('username' => 'fatima_student', 'email' => 'fatima@example.com', 'display_name' => 'فاطمة علي'),
-        array('username' => 'omar_student', 'email' => 'omar@example.com', 'display_name' => 'عمر خالد'),
-        array('username' => 'sara_student', 'email' => 'sara@example.com', 'display_name' => 'سارة أحمد'),
+    // 3. إنشاء حسابات الإدارة
+    echo '<h2>3️⃣ إنشاء حسابات الإدارة</h2>';
+    $admin_users = array(
+        array(
+            'username' => 'mohamed',
+            'email' => 'mohamed@gmail.com',
+            'password' => 'HUNTERpeace2014',
+            'display_name' => 'mohamed',
+            'level' => 'المستوى الثاني'
+        ),
+        array(
+            'username' => 'admin',
+            'email' => 'rayhaneschool@gmail.com',
+            'password' => '23062022',
+            'display_name' => 'admin',
+            'level' => 'المستوى الثاني'
+        ),
+        array(
+            'username' => 'abdelhamid_kerroumiعبد_الحميد_كرومي',
+            'email' => 'Kerroumiabdelhamid272@gmail.com',
+            'password' => 'Kerroumiabdelhamid272@gmail.com',
+            'display_name' => 'عبد الحميد كرومي',
+            'level' => 'المستوى الثاني'
+        ),
     );
 
-    $student_ids = array();
-    foreach ($students_data as $student) {
-        $user_id = username_exists($student['username']);
+    foreach ($admin_users as $admin) {
+        $user_id = username_exists($admin['username']);
+        if (!$user_id && !email_exists($admin['email'])) {
+            $user_id = wp_create_user($admin['username'], $admin['password'], $admin['email']);
+            wp_update_user(array(
+                'ID' => $user_id,
+                'display_name' => $admin['display_name'],
+                'role' => 'administrator'
+            ));
+
+            // تعيين المستوى
+            if (isset($batch_ids[$admin['level']])) {
+                update_user_meta($user_id, '_fiqh_student_level', $batch_ids[$admin['level']]);
+            }
+
+            echo '<p style="color: green;">✅ تم إنشاء مدير: <strong>' . $admin['display_name'] . '</strong> (البريد: ' . $admin['email'] . ')</p>';
+        } else {
+            echo '<p style="color: orange;">⚠️ المستخدم موجود مسبقاً: ' . $admin['display_name'] . '</p>';
+        }
+    }
+
+    // 4. إنشاء طلاب المستوى الثاني
+    echo '<h2>4️⃣ إنشاء طلاب المستوى الثاني</h2>';
+    $level2_students = array(
+        array('email' => 'noussaybabrmk@gmail.com', 'password' => '0665153437', 'display_name' => 'نسيبة برمكي'),
+        array('email' => 'bouchra.meryemg1@yahoo.com', 'password' => '0669436242', 'display_name' => 'مريم بوشرى'),
+        array('email' => 'mahboubabourafa@gmail.com', 'password' => '0672030813', 'display_name' => 'محبوبة برافة'),
+        array('email' => 'asmasamo2003@gmail.com', 'password' => '0673634075', 'display_name' => 'عائشة صديقي'),
+        array('email' => 'mohibatoalqoran1994@gmail.com', 'password' => '0666273737', 'display_name' => 'صفية موساوي'),
+        array('email' => 'Fatimazohrazohra992@gmail.com', 'password' => '0673598421', 'display_name' => 'محفوض فاطمة'),
+        array('email' => 'meryem98meryem98@gmail.com', 'password' => '0659748993', 'display_name' => 'بحاج مريم'),
+        array('email' => 'lalabelouafi94@gmail.com', 'password' => '0669876787', 'display_name' => 'لالة بلوافي'),
+        array('email' => 'aichahila74@gmail.com', 'password' => '0697491838', 'display_name' => 'عائشة حيلة'),
+        array('email' => 'thrgtf32@gmail.com', 'password' => '0699303922', 'display_name' => 'قطاف أحمد الطاهر'),
+        array('email' => 'Meryem.sgr00@gmail.com', 'password' => '0658540656', 'display_name' => 'رباب مريم صغير'),
+        array('email' => 'hadjerhammaoui2001@gmail.com', 'password' => '0673431208', 'display_name' => 'هاجر حماوي'),
+    );
+
+    $student_ids_level2 = array();
+    foreach ($level2_students as $student) {
+        $username = sanitize_user(str_replace(['@', '.'], '_', explode('@', $student['email'])[0]));
+        $user_id = email_exists($student['email']);
+
         if (!$user_id) {
-            $user_id = wp_create_user($student['username'], 'password123', $student['email']);
+            $user_id = wp_create_user($username, $student['password'], $student['email']);
             wp_update_user(array(
                 'ID' => $user_id,
                 'display_name' => $student['display_name'],
                 'role' => 'student'
             ));
-            $student_ids[] = $user_id;
-            echo '<p style="color: green;">✅ تم إنشاء طالب: <strong>' . $student['display_name'] . '</strong> (كلمة المرور: password123)</p>';
+
+            // تعيين المستوى الثاني
+            update_user_meta($user_id, '_fiqh_student_level', $batch_ids['المستوى الثاني']);
+
+            $student_ids_level2[] = $user_id;
+            echo '<p style="color: green;">✅ تم إنشاء طالبة: <strong>' . $student['display_name'] . '</strong> (' . $student['email'] . ')</p>';
         } else {
-            $student_ids[] = $user_id;
-            echo '<p style="color: orange;">⚠️ الطالب موجود مسبقاً: ' . $student['display_name'] . '</p>';
+            $student_ids_level2[] = $user_id;
+            echo '<p style="color: orange;">⚠️ الطالبة موجودة مسبقاً: ' . $student['display_name'] . '</p>';
         }
     }
 
-    // ربط الطلاب بالمستويات
-    if (!empty($batch_ids) && !empty($student_ids)) {
-        foreach ($student_ids as $student_id) {
-            foreach ($batch_ids as $batch_id) {
-                $exists = $wpdb->get_var($wpdb->prepare(
-                    "SELECT id FROM {$wpdb->prefix}fiqh_batch_students WHERE user_id = %d AND batch_id = %d",
-                    $student_id,
-                    $batch_id
-                ));
+    // 5. إنشاء طلاب المستوى الأول
+    echo '<h2>5️⃣ إنشاء طلاب المستوى الأول</h2>';
+    $level1_students = array(
+        array('email' => 'rabhikarima1994@gmail.com', 'password' => '0662010098', 'display_name' => 'رابحي كريمة'),
+        array('email' => 'benchikhbakhta01@gmail.com', 'password' => '0662676839', 'display_name' => 'بختة بن الشيخ'),
+        array('email' => 'isambahaa62@gmail.com', 'password' => '0660937757', 'display_name' => 'بوصالح نورة'),
+        array('email' => 'Saba31526@gmail.com', 'password' => '0667983106', 'display_name' => 'صبا'),
+        array('email' => 'latifadjeballah.1988@gmail.com', 'password' => '0669992642', 'display_name' => 'جاب الله لطيفة'),
+        array('email' => 'hlleme01@gmail.com', 'password' => '0664089031', 'display_name' => 'بلخير عبد الحليم'),
+        array('email' => 'aloumer2001saad@gmail.com', 'password' => '0799179814', 'display_name' => 'سعد نفاد'),
+        array('email' => 'slimanideja76@gmail.com', 'password' => '0662654669', 'display_name' => 'سليماني جمعة'),
+        array('email' => 'khaledbouchra45@gmail.com', 'password' => '0662250419', 'display_name' => 'خارف مباركة'),
+        array('email' => 'omalhkir93@gmail.com', 'password' => '0669008578', 'display_name' => 'بن عزاوي أم الخير'),
+        array('email' => 'nounaalgariba@gmail.com', 'password' => '0655745375', 'display_name' => 'بن دحو إيمان'),
+        array('email' => 'yaganora@gmail.com', 'password' => '0673602675', 'display_name' => 'ياقة نورية'),
+        array('email' => 'Mohamedbahida13@gmail.com', 'password' => '0663208072', 'display_name' => 'باحيدة محمد'),
+        array('email' => 'djelloulabencheikh@gmail.com', 'password' => '0674135949', 'display_name' => 'بن الشيخ جلولة'),
+        array('email' => 'omarionline@gmail.com', 'password' => '0696465289', 'display_name' => 'عوماري محمد'),
+    );
 
-                if (!$exists) {
-                    $wpdb->insert($wpdb->prefix . 'fiqh_batch_students', array(
-                        'batch_id' => $batch_id,
-                        'user_id' => $student_id,
-                        'enrolled_at' => current_time('mysql'),
-                        'status' => 'active'
-                    ));
-                }
-            }
+    $student_ids_level1 = array();
+    foreach ($level1_students as $student) {
+        $username = sanitize_user(str_replace(['@', '.'], '_', explode('@', $student['email'])[0]));
+        $user_id = email_exists($student['email']);
+
+        if (!$user_id) {
+            $user_id = wp_create_user($username, $student['password'], $student['email']);
+            wp_update_user(array(
+                'ID' => $user_id,
+                'display_name' => $student['display_name'],
+                'role' => 'student'
+            ));
+
+            // تعيين المستوى الأول
+            update_user_meta($user_id, '_fiqh_student_level', $batch_ids['المستوى الأول']);
+
+            $student_ids_level1[] = $user_id;
+            echo '<p style="color: green;">✅ تم إنشاء طالب/ة: <strong>' . $student['display_name'] . '</strong> (' . $student['email'] . ')</p>';
+        } else {
+            $student_ids_level1[] = $user_id;
+            echo '<p style="color: orange;">⚠️ الطالب/ة موجود/ة مسبقاً: ' . $student['display_name'] . '</p>';
         }
-        echo '<p style="color: green;">✅ تم ربط الطلاب بالمستويات الدراسية</p>';
     }
 
-    // 4. إنشاء المقررات
-    echo '<h2>4️⃣ إنشاء المقررات الدراسية</h2>';
+    // جمع كل الطلاب
+    $all_student_ids = array_merge($student_ids_level1, $student_ids_level2);
+
+    // 6. إنشاء مقررات تجريبية
+    echo '<h2>6️⃣ إنشاء المقررات الدراسية</h2>';
     $courses_data = array(
         array(
             'title' => 'فقه العبادات - المذهب المالكي',
-            'science' => 'الفقه',
-            'content' => '<p>مقرر شامل في فقه العبادات على المذهب المالكي، يشمل دراسة الطهارة والصلاة والزكاة والصيام والحج.</p>
-<h3>أهداف المقرر:</h3>
-<ul>
-<li>فهم أحكام الطهارة والصلاة بالتفصيل</li>
-<li>معرفة أحكام الزكاة والصوم</li>
-<li>دراسة مناسك الحج والعمرة</li>
-<li>التطبيق العملي للأحكام الفقهية</li>
-</ul>',
-            'excerpt' => 'دراسة شاملة لفقه العبادات على المذهب المالكي من الطهارة إلى الحج',
+            'science' => '⚖️ علم الفقه',
+            'content' => '<p>مقرر شامل في فقه العبادات على المذهب المالكي، يشمل دراسة الطهارة والصلاة والزكاة والصيام والحج.</p>',
+            'excerpt' => 'دراسة شاملة لفقه العبادات على المذهب المالكي',
             'duration' => '16 أسبوع',
+            'level' => 'المستوى الأول'
         ),
         array(
             'title' => 'مصطلح الحديث',
-            'science' => 'الحديث',
-            'content' => '<p>دراسة علم مصطلح الحديث وأنواع الأحاديث والرواة وطرق التصحيح والتضعيف.</p>
-<h3>محاور المقرر:</h3>
-<ul>
-<li>تعريف علم مصطلح الحديث وأهميته</li>
-<li>أنواع الحديث: الصحيح، الحسن، الضعيف</li>
-<li>علم الجرح والتعديل</li>
-<li>دراسة أشهر كتب الحديث</li>
-</ul>',
-            'excerpt' => 'مقدمة في علم مصطلح الحديث ومعرفة أنواع الأحاديث وطرق التصحيح',
+            'science' => '📜 علم مصطلح الحديث',
+            'content' => '<p>دراسة علم مصطلح الحديث وأنواع الأحاديث والرواة وطرق التصحيح والتضعيف.</p>',
+            'excerpt' => 'مقدمة في علم مصطلح الحديث',
             'duration' => '12 أسبوع',
+            'level' => 'المستوى الأول'
         ),
         array(
             'title' => 'تفسير جزء عم',
-            'science' => 'التفسير',
-            'content' => '<p>دراسة تفسير سور جزء عم مع بيان أسباب النزول والإعراب والفوائد.</p>
-<h3>منهج التفسير:</h3>
-<ul>
-<li>تفسير كل سورة مع بيان سبب النزول</li>
-<li>شرح المفردات اللغوية</li>
-<li>استنباط الفوائد والأحكام</li>
-<li>الربط مع الواقع المعاصر</li>
-</ul>',
-            'excerpt' => 'تفسير مفصل لسور جزء عم مع بيان المعاني والأحكام والفوائد',
+            'science' => '📘 علم التفسير',
+            'content' => '<p>دراسة تفسير سور جزء عم مع بيان أسباب النزول والإعراب والفوائد.</p>',
+            'excerpt' => 'تفسير مفصل لسور جزء عم',
             'duration' => '10 أسابيع',
+            'level' => 'المستوى الأول'
         ),
         array(
             'title' => 'العقيدة الطحاوية',
-            'science' => 'العقيدة',
-            'content' => '<p>شرح متن العقيدة الطحاوية للإمام الطحاوي رحمه الله.</p>
-<h3>محتوى المقرر:</h3>
-<ul>
-<li>مقدمة في علم العقيدة</li>
-<li>شرح أصول العقيدة الإسلامية</li>
-<li>التوحيد وأنواعه</li>
-<li>الإيمان بالله وأسمائه وصفاته</li>
-</ul>',
-            'excerpt' => 'شرح العقيدة الطحاوية وبيان أصول العقيدة الإسلامية الصحيحة',
+            'science' => '🕋 علم العقيدة (علم الكلام)',
+            'content' => '<p>شرح متن العقيدة الطحاوية للإمام الطحاوي رحمه الله.</p>',
+            'excerpt' => 'شرح العقيدة الطحاوية',
             'duration' => '14 أسبوع',
+            'level' => 'المستوى الثاني'
         ),
         array(
-            'title' => 'النحو الواضح - المستوى الأول',
-            'science' => 'اللغة العربية',
-            'content' => '<p>دراسة قواعد النحو العربي بأسلوب واضح ومبسط للمبتدئين.</p>
-<h3>المحاور الرئيسية:</h3>
-<ul>
-<li>الجملة الاسمية والجملة الفعلية</li>
-<li>المرفوعات والمنصوبات والمجرورات</li>
-<li>الأفعال وتصريفاتها</li>
-<li>التطبيقات العملية</li>
-</ul>',
-            'excerpt' => 'تعلم قواعد النحو العربي بطريقة سهلة ومبسطة مع تطبيقات عملية',
+            'title' => 'النحو الواضح',
+            'science' => '✍️ علم النحو',
+            'content' => '<p>دراسة قواعد النحو العربي بأسلوب واضح ومبسط.</p>',
+            'excerpt' => 'تعلم قواعد النحو العربي',
             'duration' => '12 أسبوع',
+            'level' => 'المستوى الأول'
         ),
         array(
             'title' => 'أصول الفقه - مقدمة',
-            'science' => 'الأصول',
-            'content' => '<p>مقدمة في علم أصول الفقه وقواعده الأساسية.</p>
-<h3>موضوعات المقرر:</h3>
-<ul>
-<li>تعريف علم الأصول وأهميته</li>
-<li>مصادر التشريع الإسلامي</li>
-<li>القواعد الأصولية</li>
-<li>الاجتهاد والتقليد</li>
-</ul>',
-            'excerpt' => 'مدخل إلى علم أصول الفقه ومعرفة قواعد الاستنباط الفقهي',
+            'science' => '⚖️ أصول الفقه',
+            'content' => '<p>مقدمة في علم أصول الفقه وقواعده الأساسية.</p>',
+            'excerpt' => 'مدخل إلى علم أصول الفقه',
             'duration' => '14 أسبوع',
+            'level' => 'المستوى الثاني'
         ),
     );
 
@@ -307,311 +363,34 @@ function fiqh_generate_demo_content() {
             // إضافة meta data
             update_post_meta($course_id, '_fiqh_course_duration', $course_data['duration']);
 
-            // ربط المقرر بالمستويات
-            if (!empty($batch_ids)) {
-                update_post_meta($course_id, '_fiqh_course_levels', $batch_ids);
+            // ربط المقرر بالمستوى المناسب
+            if (isset($batch_ids[$course_data['level']])) {
+                update_post_meta($course_id, '_fiqh_course_levels', array($batch_ids[$course_data['level']]));
             }
 
             $course_ids[] = $course_id;
-            echo '<p style="color: green;">✅ تم إنشاء مقرر: <strong>' . $course_data['title'] . '</strong></p>';
+            echo '<p style="color: green;">✅ تم إنشاء مقرر: <strong>' . $course_data['title'] . '</strong> (' . $course_data['level'] . ')</p>';
         }
     }
 
-    // 5. إنشاء الدروس لكل مقرر
-    echo '<h2>5️⃣ إنشاء الدروس</h2>';
-    $lessons_per_course = 5;
-    $lesson_titles = array(
-        'مقدمة ونظرة عامة',
-        'الجزء الأول',
-        'الجزء الثاني',
-        'التطبيقات العملية',
-        'المراجعة والاختبار'
-    );
-
-    foreach ($course_ids as $course_id) {
-        $course_title = get_the_title($course_id);
-
-        for ($i = 0; $i < $lessons_per_course; $i++) {
-            $lesson_id = wp_insert_post(array(
-                'post_title' => $lesson_titles[$i] . ' - ' . $course_title,
-                'post_content' => '<p>محتوى الدرس: ' . $lesson_titles[$i] . '</p><p>هذا درس تجريبي يحتوي على شرح مفصل للموضوع مع أمثلة وتطبيقات عملية.</p>',
-                'post_status' => 'publish',
-                'post_type' => 'fiqh_lesson',
-                'post_author' => 1,
-                'menu_order' => $i + 1,
-            ));
-
-            if ($lesson_id && !is_wp_error($lesson_id)) {
-                update_post_meta($lesson_id, '_fiqh_lesson_course_id', $course_id);
-                update_post_meta($lesson_id, '_fiqh_lesson_video_url', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-                update_post_meta($lesson_id, '_fiqh_lesson_duration', ($i + 1) * 10 . ' دقيقة');
-            }
-        }
-
-        echo '<p style="color: green;">✅ تم إنشاء ' . $lessons_per_course . ' دروس للمقرر: <strong>' . $course_title . '</strong></p>';
-    }
-
-    // 6. تسجيل الطلاب في المقررات
-    echo '<h2>6️⃣ تسجيل الطلاب في المقررات</h2>';
-    if (!empty($student_ids) && !empty($course_ids)) {
-        foreach ($student_ids as $student_id) {
-            // تسجيل كل طالب في 2-3 مقررات عشوائية
-            $random_courses = array_rand(array_flip($course_ids), min(3, count($course_ids)));
-            if (!is_array($random_courses)) {
-                $random_courses = array($random_courses);
-            }
-
-            foreach ($random_courses as $course_id) {
-                $exists = $wpdb->get_var($wpdb->prepare(
-                    "SELECT id FROM {$wpdb->prefix}fiqh_enrollments WHERE user_id = %d AND course_id = %d",
-                    $student_id,
-                    $course_id
-                ));
-
-                if (!$exists) {
-                    $wpdb->insert($wpdb->prefix . 'fiqh_enrollments', array(
-                        'user_id' => $student_id,
-                        'course_id' => $course_id,
-                        'enrolled_at' => current_time('mysql'),
-                        'status' => 'active'
-                    ));
-                }
-            }
-        }
-        echo '<p style="color: green;">✅ تم تسجيل الطلاب في المقررات</p>';
-    }
-
-    // 7. إنشاء أسئلة تجريبية
-    echo '<h2>7️⃣ إنشاء أسئلة تجريبية</h2>';
-    $questions_data = array(
-        'ما هو حكم الوضوء قبل الصلاة؟',
-        'كيف أحسب زكاة المال؟',
-        'ما هي شروط الصيام؟',
-        'ما الفرق بين الحج والعمرة؟',
-        'كيف أعرب هذه الجملة؟',
-        'ما هو تفسير قوله تعالى: "إنا أعطيناك الكوثر"؟',
-        'ما هي أركان الإيمان؟',
-        'ما الفرق بين الحديث الصحيح والحسن؟',
-    );
-
-    if (!empty($student_ids) && !empty($course_ids)) {
-        foreach ($questions_data as $index => $question_text) {
-            $student_id = $student_ids[array_rand($student_ids)];
-            $course_id = $course_ids[array_rand($course_ids)];
-
-            // الحصول على درس من المقرر
-            $lessons = get_posts(array(
-                'post_type' => 'fiqh_lesson',
-                'posts_per_page' => 1,
-                'meta_query' => array(
-                    array(
-                        'key' => '_fiqh_lesson_course_id',
-                        'value' => $course_id
-                    )
-                )
-            ));
-            $lesson_id = !empty($lessons) ? $lessons[0]->ID : null;
-
-            $is_answered = $index % 3 === 0; // كل سؤال ثالث يكون مجاب
-
-            $wpdb->insert($wpdb->prefix . 'fiqh_questions', array(
-                'user_id' => $student_id,
-                'course_id' => $course_id,
-                'lesson_id' => $lesson_id,
-                'question_text' => $question_text,
-                'is_anonymous' => $index % 4 === 0,
-                'status' => $is_answered ? 'answered' : 'pending',
-                'answer_text' => $is_answered ? 'إجابة تجريبية على السؤال. هذا نص توضيحي للإجابة.' : null,
-                'answered_by' => $is_answered ? 1 : null,
-                'answered_at' => $is_answered ? current_time('mysql') : null,
-                'created_at' => current_time('mysql'),
-            ));
-        }
-        echo '<p style="color: green;">✅ تم إنشاء ' . count($questions_data) . ' سؤال تجريبي</p>';
-    }
-
-    // 8. إنشاء ملاحظات تجريبية
-    echo '<h2>8️⃣ إنشاء ملاحظات تجريبية</h2>';
-    if (!empty($student_ids) && !empty($course_ids)) {
-        $notes_data = array(
-            'ملاحظة مهمة عن الدرس',
-            'نقطة يجب مراجعتها',
-            'سؤال للمناقشة',
-            'فائدة من الدرس',
-        );
-
-        $notes_count = 0;
-        foreach ($student_ids as $student_id) {
-            foreach ($notes_data as $note_text) {
-                $course_id = $course_ids[array_rand($course_ids)];
-                $wpdb->insert($wpdb->prefix . 'fiqh_notes', array(
-                    'user_id' => $student_id,
-                    'course_id' => $course_id,
-                    'note_text' => $note_text,
-                    'created_at' => current_time('mysql'),
-                ));
-                $notes_count++;
-            }
-        }
-        echo '<p style="color: green;">✅ تم إنشاء ' . $notes_count . ' ملاحظة تجريبية</p>';
-    }
-
-    // 9. إنشاء مقالات (Posts) تجريبية
-    echo '<h2>9️⃣ إنشاء مقالات وأحداث</h2>';
-    $posts_data = array(
-        array(
-            'title' => 'بدء التسجيل للفصل الدراسي الجديد',
-            'category' => 'أحداث',
-            'content' => '<p>يسر إدارة المنصة أن تعلن عن بدء التسجيل للفصل الدراسي الجديد. يمكن للطلاب التسجيل في المقررات المتاحة ابتداءً من اليوم.</p><p>للتسجيل، يرجى زيارة قسم المقررات واختيار المقررات المناسبة لمستواكم الدراسي.</p>',
-        ),
-        array(
-            'title' => 'محاضرة خاصة: الفقه المقارن',
-            'category' => 'أحداث',
-            'content' => '<p>تنظم المنصة محاضرة خاصة بعنوان "الفقه المقارن" يوم الجمعة القادم في تمام الساعة 8 مساءً.</p><p>سيتم بث المحاضرة مباشرة عبر المنصة، ندعو جميع الطلاب للحضور والمشاركة.</p>',
-        ),
-        array(
-            'title' => 'نصائح للمذاكرة الفعالة',
-            'category' => 'مقالات علمية',
-            'content' => '<p>المذاكرة الفعالة ليست فقط عن عدد الساعات، بل عن جودة الوقت المستثمر. إليك بعض النصائح:</p><ul><li>حدد أوقاتاً منتظمة للمذاكرة</li><li>راجع ملاحظاتك بانتظام</li><li>استخدم طرقاً متنوعة للمراجعة</li></ul>',
-        ),
-        array(
-            'title' => 'إعلان: تحديثات جديدة على المنصة',
-            'category' => 'إعلانات',
-            'content' => '<p>تم إضافة مميزات جديدة على المنصة تشمل:</p><ul><li>نظام الأسئلة والأجوبة المحسّن</li><li>إمكانية إضافة الملاحظات الشخصية</li><li>تتبع التقدم الدراسي</li></ul>',
-        ),
-    );
-
-    foreach ($posts_data as $post_data) {
-        $category_id = get_cat_ID($post_data['category']);
-
-        $post_id = wp_insert_post(array(
-            'post_title' => $post_data['title'],
-            'post_content' => $post_data['content'],
-            'post_status' => 'publish',
-            'post_type' => 'post',
-            'post_author' => 1,
-            'post_category' => array($category_id)
-        ));
-
-        if ($post_id && !is_wp_error($post_id)) {
-            echo '<p style="color: green;">✅ تم إنشاء مقال: <strong>' . $post_data['title'] . '</strong></p>';
-        }
-    }
-
-    // 10. إنشاء الصفحات الضرورية
-    echo '<h2>🔟 إنشاء الصفحات الضرورية</h2>';
-
-    // صفحة تسجيل الدخول
-    $login_page = get_page_by_path('login');
-    if (!$login_page) {
-        $login_page_id = wp_insert_post(array(
-            'post_title' => 'تسجيل الدخول',
-            'post_name' => 'login',
-            'post_content' => '',
-            'post_status' => 'publish',
-            'post_type' => 'page',
-            'post_author' => 1,
-            'page_template' => 'page-login.php'
-        ));
-
-        if ($login_page_id && !is_wp_error($login_page_id)) {
-            echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>تسجيل الدخول</strong> (/login)</p>';
-        } else {
-            echo '<p style="color: red;">❌ فشل إنشاء صفحة تسجيل الدخول</p>';
-        }
-    } else {
-        echo '<p style="color: orange;">⚠️ صفحة تسجيل الدخول موجودة مسبقاً</p>';
-    }
-
-    // صفحة لوحة التحكم
-    $dashboard_page = get_page_by_path('dashboard');
-    if (!$dashboard_page) {
-        $dashboard_page_id = wp_insert_post(array(
-            'post_title' => 'لوحة التحكم',
-            'post_name' => 'dashboard',
-            'post_content' => '',
-            'post_status' => 'publish',
-            'post_type' => 'page',
-            'post_author' => 1,
-            'page_template' => 'page-dashboard.php'
-        ));
-
-        if ($dashboard_page_id && !is_wp_error($dashboard_page_id)) {
-            echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>لوحة التحكم</strong> (/dashboard)</p>';
-        } else {
-            echo '<p style="color: red;">❌ فشل إنشاء صفحة لوحة التحكم</p>';
-        }
-    } else {
-        echo '<p style="color: orange;">⚠️ صفحة لوحة التحكم موجودة مسبقاً</p>';
-    }
-
-    // صفحة خطة الدراسة
-    $study_plan_page = get_page_by_path('study-plan');
-    if (!$study_plan_page) {
-        $study_plan_page_id = wp_insert_post(array(
-            'post_title' => 'خطة الدراسة',
-            'post_name' => 'study-plan',
-            'post_content' => '',
-            'post_status' => 'publish',
-            'post_type' => 'page',
-            'post_author' => 1,
-            'page_template' => 'page-study-plan.php'
-        ));
-
-        if ($study_plan_page_id && !is_wp_error($study_plan_page_id)) {
-            echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>خطة الدراسة</strong> (/study-plan)</p>';
-        } else {
-            echo '<p style="color: red;">❌ فشل إنشاء صفحة خطة الدراسة</p>';
-        }
-    } else {
-        echo '<p style="color: orange;">⚠️ صفحة خطة الدراسة موجودة مسبقاً</p>';
-    }
-
-    // صفحة دليل اللوائح
-    $regulations_page = get_page_by_path('regulations');
-    if (!$regulations_page) {
-        $regulations_page_id = wp_insert_post(array(
-            'post_title' => 'دليل اللوائح',
-            'post_name' => 'regulations',
-            'post_content' => '',
-            'post_status' => 'publish',
-            'post_type' => 'page',
-            'post_author' => 1,
-            'page_template' => 'page-regulations.php'
-        ));
-
-        if ($regulations_page_id && !is_wp_error($regulations_page_id)) {
-            echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>دليل اللوائح</strong> (/regulations)</p>';
-        } else {
-            echo '<p style="color: red;">❌ فشل إنشاء صفحة دليل اللوائح</p>';
-        }
-    } else {
-        echo '<p style="color: orange;">⚠️ صفحة دليل اللوائح موجودة مسبقاً</p>';
-    }
-
-    // 11. ملخص نهائي
+    // 7. ملخص نهائي
     echo '<h2>✅ اكتمل إنشاء المحتوى التجريبي!</h2>';
-    echo '<div class="updated"><p><strong>تم بنجاح!</strong> تم إنشاء محتوى تجريبي كامل للمنصة.</p></div>';
+    echo '<div class="updated"><p><strong>تم بنجاح!</strong> تم إنشاء محتوى تجريبي كامل بالبيانات الحقيقية.</p></div>';
 
     echo '<h3>ملخص المحتوى المنشأ:</h3>';
     echo '<ul>';
-    echo '<li>✅ <strong>6</strong> علوم شرعية</li>';
-    echo '<li>✅ <strong>2</strong> مستوى دراسي</li>';
-    echo '<li>✅ <strong>4</strong> طلاب تجريبيين</li>';
+    echo '<li>✅ <strong>11</strong> علم شرعي</li>';
+    echo '<li>✅ <strong>2</strong> مستوى دراسي (الأول والثاني)</li>';
+    echo '<li>✅ <strong>3</strong> مدراء</li>';
+    echo '<li>✅ <strong>12</strong> طالبة في المستوى الثاني</li>';
+    echo '<li>✅ <strong>15</strong> طالب/ة في المستوى الأول</li>';
     echo '<li>✅ <strong>' . count($courses_data) . '</strong> مقررات دراسية</li>';
-    echo '<li>✅ <strong>' . (count($courses_data) * $lessons_per_course) . '</strong> درس</li>';
-    echo '<li>✅ <strong>' . count($questions_data) . '</strong> سؤال</li>';
-    echo '<li>✅ <strong>16</strong> ملاحظة</li>';
-    echo '<li>✅ <strong>4</strong> مقالات وأحداث</li>';
-    echo '<li>✅ <strong>4</strong> صفحات ضرورية (تسجيل الدخول، لوحة التحكم، خطة الدراسة، دليل اللوائح)</li>';
     echo '</ul>';
 
-    echo '<h3>معلومات تسجيل الدخول للطلاب التجريبيين:</h3>';
-    echo '<table class="widefat"><thead><tr><th>اسم المستخدم</th><th>كلمة المرور</th></tr></thead><tbody>';
-    foreach ($students_data as $student) {
-        echo '<tr><td>' . $student['username'] . '</td><td>password123</td></tr>';
-    }
-    echo '</tbody></table>';
+    echo '<h3>معلومات تسجيل الدخول:</h3>';
+    echo '<p><strong>ملاحظة:</strong> تم إنشاء الحسابات بكلمات المرور المحددة من قبل الإدارة.</p>';
+    echo '<p><strong>الإدارة:</strong> mohamed, admin, عبد الحميد كرومي</p>';
 
-    echo '<p style="margin-top: 20px;"><a href="' . home_url() . '" class="button button-primary button-large">زيارة الموقع</a></p>';
+    echo '<p style="margin-top: 20px;"><a href="' . home_url() . '" class="button button-primary button-large">زيارة الموقع</a> ';
+    echo '<a href="' . admin_url('edit.php?post_type=fiqh_course&page=fiqh-levels') . '" class="button button-large">إدارة المستويات</a></p>';
 }
