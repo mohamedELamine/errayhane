@@ -1186,11 +1186,58 @@ function fiqh_generate_demo_content($delete_old = false) {
 
     echo '<p style="color: green;">✅ تم تسجيل الطلاب في المقررات المناسبة: <strong>' . $enrolled_count . '</strong> تسجيل</p>';
 
+    // 7. إنشاء اشتراكات تجريبية لجميع الطلاب المسجلين
+    echo '<h2>7️⃣ إنشاء اشتراكات تجريبية</h2>';
+
+    // جلب جميع الطلاب
+    $all_students_with_batches = $wpdb->get_results(
+        "SELECT DISTINCT u.ID as user_id, bs.batch_id
+        FROM {$wpdb->users} u
+        INNER JOIN {$wpdb->usermeta} um ON u.ID = um.user_id
+        LEFT JOIN {$wpdb->prefix}fiqh_batch_students bs ON u.ID = bs.user_id AND bs.status = 'active'
+        WHERE um.meta_key = 'wp_capabilities' AND um.meta_value LIKE '%student%'"
+    );
+
+    $subscription_count = 0;
+    foreach ($all_students_with_batches as $student_data) {
+        // التحقق من عدم وجود اشتراك مسبق
+        $existing_subscription = $wpdb->get_var($wpdb->prepare(
+            "SELECT id FROM {$wpdb->prefix}fiqh_subscriptions WHERE user_id = %d",
+            $student_data->user_id
+        ));
+
+        if (!$existing_subscription) {
+            // قيم افتراضية للاشتراك (2000 دج شهرياً)
+            $monthly_amount = 2000.00;
+            $start_date = date('Y-m-01'); // أول يوم من الشهر الحالي
+
+            $wpdb->insert(
+                $wpdb->prefix . 'fiqh_subscriptions',
+                array(
+                    'user_id' => $student_data->user_id,
+                    'batch_id' => $student_data->batch_id,
+                    'monthly_amount' => $monthly_amount,
+                    'subscription_type' => 'monthly',
+                    'status' => 'active',
+                    'start_date' => $start_date,
+                    'notes' => 'اشتراك تجريبي تم إنشاؤه تلقائياً'
+                ),
+                array('%d', '%d', '%f', '%s', '%s', '%s', '%s')
+            );
+
+            if ($wpdb->insert_id) {
+                $subscription_count++;
+            }
+        }
+    }
+
+    echo '<p style="color: green;">✅ تم إنشاء <strong>' . $subscription_count . '</strong> اشتراك تجريبي للطلاب المسجلين</p>';
+
     // تنظيف شامل للـ cache بعد إنشاء كل المحتوى
     wp_cache_flush();
     echo '<p style="color: green;">✅ تم تنظيف الـ cache - الدروس متاحة الآن!</p>';
 
-    // 7. ملخص نهائي
+    // 8. ملخص نهائي
     echo '<h2>✅ اكتمل إنشاء المحتوى التجريبي!</h2>';
     echo '<div class="updated"><p><strong>تم بنجاح!</strong> تم إنشاء محتوى تجريبي كامل بالبيانات الحقيقية. جميع الدروس مرتبطة بمقرراتها وجاهزة للعرض.</p></div>';
 
@@ -1203,6 +1250,7 @@ function fiqh_generate_demo_content($delete_old = false) {
     echo '<li>✅ <strong>15</strong> طالب/ة في المستوى الأول</li>';
     echo '<li>✅ <strong>' . count($detailed_courses) . '</strong> مقرر دراسي مفصل</li>';
     echo '<li>✅ <strong>' . $total_lessons . '</strong> محاضرة مع روابط يوتيوب</li>';
+    echo '<li>✅ <strong>' . $subscription_count . '</strong> اشتراك شهري للطلاب المسجلين</li>';
     echo '</ul>';
 
     echo '<h3>تفصيل المقررات حسب العلوم:</h3>';
