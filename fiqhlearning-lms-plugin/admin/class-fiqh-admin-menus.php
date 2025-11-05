@@ -49,11 +49,6 @@ class FiqhLearning_Admin_Menus {
             exit;
         }
 
-        // معالجة تصدير تقرير شامل
-        if (isset($_GET['export']) && $_GET['export'] === 'full_report' && isset($_GET['export_nonce']) && wp_verify_nonce($_GET['export_nonce'], 'export_full_report')) {
-            $this->export_full_report_csv();
-            exit;
-        }
     }
 
     /**
@@ -1175,13 +1170,9 @@ class FiqhLearning_Admin_Menus {
             <a href="#" class="page-title-action" id="add-subscription-btn">
                 <?php _e('+ إضافة اشتراك جديد', 'fiqh-lms'); ?>
             </a>
-            <a href="<?php echo wp_nonce_url(admin_url('edit.php?post_type=fiqh_course&page=fiqh-subscriptions&export=subscriptions'), 'export_subscriptions', 'export_nonce'); ?>" class="page-title-action">
+            <a href="#" class="page-title-action" id="export-subscriptions-btn">
                 <span class="dashicons dashicons-download" style="vertical-align: middle;"></span>
                 <?php _e('تصدير الاشتراكات', 'fiqh-lms'); ?>
-            </a>
-            <a href="<?php echo wp_nonce_url(admin_url('edit.php?post_type=fiqh_course&page=fiqh-subscriptions&export=full_report'), 'export_full_report', 'export_nonce'); ?>" class="page-title-action">
-                <span class="dashicons dashicons-media-spreadsheet" style="vertical-align: middle;"></span>
-                <?php _e('تصدير تقرير شامل', 'fiqh-lms'); ?>
             </a>
 
             <hr class="wp-header-end">
@@ -1300,7 +1291,7 @@ class FiqhLearning_Admin_Menus {
                     <div class="stat-label"><?php _e('الاشتراكات النشطة', 'fiqh-lms'); ?></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value"><?php echo number_format($month_revenue ? $month_revenue : 0, 2); ?> <?php _e('د.م', 'fiqh-lms'); ?></div>
+                    <div class="stat-value"><?php echo number_format($month_revenue ? $month_revenue : 0, 2); ?> <?php _e('د.ج', 'fiqh-lms'); ?></div>
                     <div class="stat-label"><?php echo sprintf(__('إيرادات %s', 'fiqh-lms'), $selected_month); ?></div>
                 </div>
                 <div class="stat-card">
@@ -1336,11 +1327,11 @@ class FiqhLearning_Admin_Menus {
                                 <small><?php echo esc_html($sub->user_email); ?></small>
                             </td>
                             <td><?php echo $sub->batch_name ? esc_html($sub->batch_name) : '<span style="color: #999;">تلقائي</span>'; ?></td>
-                            <td><strong><?php echo number_format($sub->monthly_amount, 2); ?></strong> <?php _e('د.م', 'fiqh-lms'); ?></td>
+                            <td><strong><?php echo number_format($sub->monthly_amount, 2); ?></strong> <?php _e('د.ج', 'fiqh-lms'); ?></td>
                             <td>
                                 <?php if ($paid_for_month): ?>
                                     <span class="status-badge status-active">
-                                        ✓ <?php _e('مدفوع', 'fiqh-lms'); ?> (<?php echo number_format($paid_for_month, 2); ?> د.م)
+                                        ✓ <?php _e('مدفوع', 'fiqh-lms'); ?> (<?php echo number_format($paid_for_month, 2); ?> د.ج)
                                     </span>
                                 <?php else: ?>
                                     <span class="status-badge status-expired">
@@ -1396,7 +1387,7 @@ class FiqhLearning_Admin_Menus {
                                 <th><label for="monthly_amount"><?php _e('قيمة الاشتراك الشهري', 'fiqh-lms'); ?> *</label></th>
                                 <td>
                                     <input type="number" name="monthly_amount" id="monthly_amount" step="0.01" min="0" required style="width: 200px;">
-                                    <span><?php _e('د.م', 'fiqh-lms'); ?></span>
+                                    <span><?php _e('د.ج', 'fiqh-lms'); ?></span>
                                 </td>
                             </tr>
                             <tr>
@@ -1433,7 +1424,7 @@ class FiqhLearning_Admin_Menus {
                                 <th><label for="payment_amount"><?php _e('المبلغ المدفوع', 'fiqh-lms'); ?> *</label></th>
                                 <td>
                                     <input type="number" name="payment_amount" id="payment_amount" step="0.01" min="0" required style="width: 200px;">
-                                    <span><?php _e('د.م', 'fiqh-lms'); ?></span>
+                                    <span><?php _e('د.ج', 'fiqh-lms'); ?></span>
                                 </td>
                             </tr>
                             <tr>
@@ -1484,7 +1475,7 @@ class FiqhLearning_Admin_Menus {
                                 <th><label for="edit_monthly_amount"><?php _e('قيمة الاشتراك الشهري', 'fiqh-lms'); ?> *</label></th>
                                 <td>
                                     <input type="number" name="monthly_amount" id="edit_monthly_amount" step="0.01" min="0" required style="width: 200px;">
-                                    <span><?php _e('د.م', 'fiqh-lms'); ?></span>
+                                    <span><?php _e('د.ج', 'fiqh-lms'); ?></span>
                                 </td>
                             </tr>
                             <tr>
@@ -1545,6 +1536,15 @@ class FiqhLearning_Admin_Menus {
             $('#add-subscription-btn').on('click', function(e) {
                 e.preventDefault();
                 $('#add-subscription-modal').show();
+            });
+
+            // تصدير الاشتراكات حسب الشهر المختار
+            $('#export-subscriptions-btn').on('click', function(e) {
+                e.preventDefault();
+                var filterMonth = $('#filter_month').val() || '<?php echo date('Y-m'); ?>';
+                var exportUrl = '<?php echo admin_url('edit.php?post_type=fiqh_course&page=fiqh-subscriptions&export=subscriptions'); ?>';
+                exportUrl += '&filter_month=' + filterMonth + '&export_nonce=<?php echo wp_create_nonce('export_subscriptions'); ?>';
+                window.location.href = exportUrl;
             });
 
             // فتح modal تسجيل دفعة
@@ -1896,10 +1896,13 @@ class FiqhLearning_Admin_Menus {
     }
 
     /**
-     * تصدير الاشتراكات إلى CSV
+     * تصدير الاشتراكات إلى CSV حسب الشهر المختار
      */
     private function export_subscriptions_csv() {
         global $wpdb;
+
+        // الحصول على الشهر المختار
+        $selected_month = isset($_GET['filter_month']) ? sanitize_text_field($_GET['filter_month']) : date('Y-m');
 
         // جلب البيانات
         $subscriptions = $wpdb->get_results(
@@ -1907,17 +1910,16 @@ class FiqhLearning_Admin_Menus {
                 s.*,
                 u.display_name as student_name,
                 u.user_email,
-                b.name as batch_name,
-                (SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE subscription_id = s.id) as total_payments,
-                (SELECT SUM(amount) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE subscription_id = s.id) as total_paid
+                b.name as batch_name
             FROM {$wpdb->prefix}fiqh_subscriptions s
             LEFT JOIN {$wpdb->users} u ON s.user_id = u.ID
             LEFT JOIN {$wpdb->prefix}fiqh_batches b ON s.batch_id = b.id
-            ORDER BY s.created_at DESC"
+            WHERE s.status = 'active'
+            ORDER BY u.display_name"
         );
 
         // تحديد headers للتحميل
-        $filename = 'subscriptions-' . date('Y-m-d') . '.csv';
+        $filename = 'subscriptions-' . $selected_month . '.csv';
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename=' . $filename);
         header('Pragma: no-cache');
@@ -1929,41 +1931,75 @@ class FiqhLearning_Admin_Menus {
         // إضافة BOM لدعم UTF-8 في Excel
         fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
 
+        // عنوان التقرير
+        fputcsv($output, array('تقرير اشتراكات شهر ' . $selected_month));
+        fputcsv($output, array('تاريخ التقرير: ' . date('Y-m-d H:i:s')));
+        fputcsv($output, array(''));
+
         // كتابة الرؤوس
         fputcsv($output, array(
             'الطالب',
             'البريد الإلكتروني',
             'المستوى الدراسي',
             'الاشتراك الشهري',
-            'تاريخ البداية',
-            'تاريخ النهاية',
-            'عدد الدفعات',
-            'المجموع المدفوع',
-            'الحالة',
+            'حالة الدفع',
+            'المبلغ المدفوع',
+            'تاريخ الدفع',
             'ملاحظات'
         ));
 
         // كتابة البيانات
         foreach ($subscriptions as $sub) {
-            $status_text = array(
-                'active' => 'نشط',
-                'suspended' => 'معلق',
-                'expired' => 'منتهي'
-            );
+            // جلب دفعة الشهر المختار
+            $payment = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}fiqh_subscription_payments
+                WHERE subscription_id = %d AND payment_month = %s
+                LIMIT 1",
+                $sub->id, $selected_month
+            ));
+
+            $payment_status = $payment ? 'مدفوع' : 'لم يدفع';
+            $amount_paid = $payment ? number_format($payment->amount, 2) : '0.00';
+            $payment_date = $payment ? $payment->payment_date : '-';
+            $payment_notes = $payment ? $payment->notes : '';
 
             fputcsv($output, array(
                 $sub->student_name,
                 $sub->user_email,
                 $sub->batch_name ? $sub->batch_name : '-',
-                number_format($sub->monthly_amount, 2) . ' د.م',
-                $sub->start_date,
-                $sub->end_date ? $sub->end_date : '-',
-                $sub->total_payments,
-                number_format($sub->total_paid, 2) . ' د.م',
-                $status_text[$sub->status],
-                $sub->notes
+                number_format($sub->monthly_amount, 2) . ' د.ج',
+                $payment_status,
+                $amount_paid . ' د.ج',
+                $payment_date,
+                $payment_notes
             ));
         }
+
+        // إحصائيات
+        $total_subscriptions = count($subscriptions);
+        $total_paid = 0;
+        $paid_count = 0;
+
+        foreach ($subscriptions as $sub) {
+            $payment = $wpdb->get_var($wpdb->prepare(
+                "SELECT amount FROM {$wpdb->prefix}fiqh_subscription_payments
+                WHERE subscription_id = %d AND payment_month = %s
+                LIMIT 1",
+                $sub->id, $selected_month
+            ));
+
+            if ($payment) {
+                $total_paid += $payment;
+                $paid_count++;
+            }
+        }
+
+        fputcsv($output, array(''));
+        fputcsv($output, array('===== الإحصائيات ====='));
+        fputcsv($output, array('إجمالي الاشتراكات النشطة:', $total_subscriptions));
+        fputcsv($output, array('عدد من دفعوا:', $paid_count));
+        fputcsv($output, array('عدد المتأخرين:', ($total_subscriptions - $paid_count)));
+        fputcsv($output, array('إجمالي الإيرادات:', number_format($total_paid, 2) . ' د.ج'));
 
         fclose($output);
     }
@@ -2015,7 +2051,7 @@ class FiqhLearning_Admin_Menus {
         // معلومات الاشتراك في الأعلى
         fputcsv($output, array('معلومات الاشتراك'));
         fputcsv($output, array('الطالب:', $subscription->student_name));
-        fputcsv($output, array('الاشتراك الشهري:', number_format($subscription->monthly_amount, 2) . ' د.م'));
+        fputcsv($output, array('الاشتراك الشهري:', number_format($subscription->monthly_amount, 2) . ' د.ج'));
         fputcsv($output, array('تاريخ البداية:', $subscription->start_date));
         fputcsv($output, array(''));
 
@@ -2041,7 +2077,7 @@ class FiqhLearning_Admin_Menus {
         foreach ($payments as $payment) {
             fputcsv($output, array(
                 $payment->payment_month,
-                number_format($payment->amount, 2) . ' د.م',
+                number_format($payment->amount, 2) . ' د.ج',
                 $payment->payment_date,
                 isset($payment_methods[$payment->payment_method]) ? $payment_methods[$payment->payment_method] : $payment->payment_method,
                 $payment->status === 'paid' ? 'مدفوع' : 'معلق',
@@ -2053,102 +2089,6 @@ class FiqhLearning_Admin_Menus {
         fclose($output);
     }
 
-    /**
-     * تصدير تقرير شامل (اشتراكات + دفعات) إلى CSV
-     */
-    private function export_full_report_csv() {
-        global $wpdb;
-
-        // جلب جميع الاشتراكات مع دفعاتها
-        $subscriptions = $wpdb->get_results(
-            "SELECT
-                s.*,
-                u.display_name as student_name,
-                u.user_email,
-                b.name as batch_name
-            FROM {$wpdb->prefix}fiqh_subscriptions s
-            LEFT JOIN {$wpdb->users} u ON s.user_id = u.ID
-            LEFT JOIN {$wpdb->prefix}fiqh_batches b ON s.batch_id = b.id
-            ORDER BY u.display_name"
-        );
-
-        // تحديد headers للتحميل
-        $filename = 'full-report-' . date('Y-m-d') . '.csv';
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename=' . $filename);
-        header('Pragma: no-cache');
-        header('Expires: 0');
-
-        // فتح output stream
-        $output = fopen('php://output', 'w');
-
-        // إضافة BOM لدعم UTF-8 في Excel
-        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-
-        // عنوان التقرير
-        fputcsv($output, array('تقرير الاشتراكات والدفعات الشامل'));
-        fputcsv($output, array('تاريخ التقرير: ' . date('Y-m-d H:i:s')));
-        fputcsv($output, array(''));
-
-        $payment_methods = array(
-            'cash' => 'نقداً',
-            'bank_transfer' => 'تحويل بنكي',
-            'check' => 'شيك',
-            'online' => 'دفع إلكتروني'
-        );
-
-        // لكل اشتراك
-        foreach ($subscriptions as $sub) {
-            // معلومات الطالب
-            fputcsv($output, array('===== ' . $sub->student_name . ' ====='));
-            fputcsv($output, array('البريد الإلكتروني:', $sub->user_email));
-            fputcsv($output, array('المستوى:', $sub->batch_name ? $sub->batch_name : '-'));
-            fputcsv($output, array('الاشتراك الشهري:', number_format($sub->monthly_amount, 2) . ' د.م'));
-            fputcsv($output, array('تاريخ البداية:', $sub->start_date));
-            fputcsv($output, array(''));
-
-            // جلب دفعات هذا الاشتراك
-            $payments = $wpdb->get_results($wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}fiqh_subscription_payments
-                WHERE subscription_id = %d
-                ORDER BY payment_date DESC",
-                $sub->id
-            ));
-
-            if ($payments) {
-                fputcsv($output, array('الشهر', 'المبلغ', 'تاريخ الدفع', 'طريقة الدفع', 'الحالة'));
-                $total = 0;
-                foreach ($payments as $payment) {
-                    fputcsv($output, array(
-                        $payment->payment_month,
-                        number_format($payment->amount, 2) . ' د.م',
-                        $payment->payment_date,
-                        isset($payment_methods[$payment->payment_method]) ? $payment_methods[$payment->payment_method] : $payment->payment_method,
-                        $payment->status === 'paid' ? 'مدفوع' : 'معلق'
-                    ));
-                    $total += $payment->amount;
-                }
-                fputcsv($output, array('المجموع:', number_format($total, 2) . ' د.م'));
-            } else {
-                fputcsv($output, array('لا توجد دفعات مسجلة'));
-            }
-
-            fputcsv($output, array(''));
-            fputcsv($output, array(''));
-        }
-
-        // إحصائيات عامة في النهاية
-        $total_active = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_subscriptions WHERE status = 'active'");
-        $total_revenue = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}fiqh_subscription_payments");
-        $monthly_revenue = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE MONTH(payment_date) = MONTH(CURRENT_DATE()) AND YEAR(payment_date) = YEAR(CURRENT_DATE())");
-
-        fputcsv($output, array('===== إحصائيات عامة ====='));
-        fputcsv($output, array('إجمالي الاشتراكات النشطة:', $total_active));
-        fputcsv($output, array('إجمالي الإيرادات:', number_format($total_revenue, 2) . ' د.م'));
-        fputcsv($output, array('إيرادات هذا الشهر:', number_format($monthly_revenue, 2) . ' د.م'));
-
-        fclose($output);
-    }
 
     /**
      * إخفاء الدروس من القائمة الجانبية
