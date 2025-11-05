@@ -46,7 +46,7 @@ class FiqhLearning_Levels_Admin {
      */
     public function render_levels_page() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'fiqh_levels';
+        $table_name = $wpdb->prefix . 'fiqh_batches';
 
         // الإجراء
         $action = isset($_GET['action']) ? $_GET['action'] : 'list';
@@ -68,9 +68,9 @@ class FiqhLearning_Levels_Admin {
      */
     private function render_levels_list() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'fiqh_levels';
+        $table_name = $wpdb->prefix . 'fiqh_batches';
 
-        $levels = $wpdb->get_results("SELECT * FROM $table_name ORDER BY created_at DESC");
+        $levels = $wpdb->get_results("SELECT * FROM $table_name ORDER BY level_order ASC, created_at DESC");
         ?>
         <div class="wrap">
             <h1 class="wp-heading-inline">
@@ -100,6 +100,7 @@ class FiqhLearning_Levels_Admin {
                     <thead>
                         <tr>
                             <th style="width: 60px;"><?php _e('الرقم', 'fiqh-lms'); ?></th>
+                            <th style="width: 70px;"><?php _e('الترتيب', 'fiqh-lms'); ?></th>
                             <th><?php _e('اسم المستوى', 'fiqh-lms'); ?></th>
                             <th><?php _e('الوصف', 'fiqh-lms'); ?></th>
                             <th><?php _e('تاريخ البداية', 'fiqh-lms'); ?></th>
@@ -130,6 +131,7 @@ class FiqhLearning_Levels_Admin {
                             ?>
                             <tr>
                                 <td><?php echo $level->id; ?></td>
+                                <td><strong><?php echo intval($level->level_order); ?></strong></td>
                                 <td><strong><?php echo esc_html($level->name); ?></strong></td>
                                 <td><?php echo esc_html(wp_trim_words($level->description, 10)); ?></td>
                                 <td><?php echo $level->start_date ? date_i18n('Y-m-d', strtotime($level->start_date)) : '-'; ?></td>
@@ -204,7 +206,17 @@ class FiqhLearning_Levels_Admin {
                             </th>
                             <td>
                                 <input type="text" id="level_name" name="level_name" class="regular-text" required>
-                                <p class="description"><?php _e('مثال: مستوى 2024-2025', 'fiqh-lms'); ?></p>
+                                <p class="description"><?php _e('مثال: المستوى الأول - خريف 2024', 'fiqh-lms'); ?></p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">
+                                <label for="level_order"><?php _e('ترتيب المستوى', 'fiqh-lms'); ?> <span class="required" style="color: red;">*</span></label>
+                            </th>
+                            <td>
+                                <input type="number" id="level_order" name="level_order" class="small-text" value="1" min="1" required>
+                                <p class="description"><?php _e('رقم ترتيب المستوى (1 = الأدنى، الأرقام الأكبر = مستويات أعلى). الطالب في المستوى الأعلى يمكنه الوصول للمقررات في مستواه والمستويات الأقل.', 'fiqh-lms'); ?></p>
                             </td>
                         </tr>
 
@@ -297,6 +309,16 @@ class FiqhLearning_Levels_Admin {
 
                         <tr>
                             <th scope="row">
+                                <label for="level_order"><?php _e('ترتيب المستوى', 'fiqh-lms'); ?> <span class="required" style="color: red;">*</span></label>
+                            </th>
+                            <td>
+                                <input type="number" id="level_order" name="level_order" class="small-text" value="<?php echo esc_attr($level->level_order); ?>" min="1" required>
+                                <p class="description"><?php _e('رقم ترتيب المستوى (1 = الأدنى، الأرقام الأكبر = مستويات أعلى). الطالب في المستوى الأعلى يمكنه الوصول للمقررات في مستواه والمستويات الأقل.', 'fiqh-lms'); ?></p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">
                                 <label for="level_description"><?php _e('الوصف', 'fiqh-lms'); ?></label>
                             </th>
                             <td>
@@ -359,11 +381,12 @@ class FiqhLearning_Levels_Admin {
         check_admin_referer('fiqh_add_level', 'fiqh_level_nonce');
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'fiqh_levels';
+        $table_name = $wpdb->prefix . 'fiqh_batches';
 
         $data = array(
             'name' => sanitize_text_field($_POST['level_name']),
             'description' => sanitize_textarea_field($_POST['level_description']),
+            'level_order' => intval($_POST['level_order']),
             'start_date' => sanitize_text_field($_POST['level_start_date']),
             'end_date' => sanitize_text_field($_POST['level_end_date']),
             'status' => sanitize_text_field($_POST['level_status']),
@@ -387,11 +410,12 @@ class FiqhLearning_Levels_Admin {
         check_admin_referer('fiqh_edit_level_' . $level_id, 'fiqh_level_nonce');
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'fiqh_levels';
+        $table_name = $wpdb->prefix . 'fiqh_batches';
 
         $data = array(
             'name' => sanitize_text_field($_POST['level_name']),
             'description' => sanitize_textarea_field($_POST['level_description']),
+            'level_order' => intval($_POST['level_order']),
             'start_date' => sanitize_text_field($_POST['level_start_date']),
             'end_date' => sanitize_text_field($_POST['level_end_date']),
             'status' => sanitize_text_field($_POST['level_status']),
@@ -415,7 +439,7 @@ class FiqhLearning_Levels_Admin {
         check_admin_referer('delete_level_' . $level_id);
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'fiqh_levels';
+        $table_name = $wpdb->prefix . 'fiqh_batches';
 
         $wpdb->delete($table_name, array('id' => $level_id));
 
@@ -479,6 +503,10 @@ class FiqhLearning_Levels_Admin {
                         <tr>
                             <th scope="row"><?php _e('الاسم', 'fiqh-lms'); ?></th>
                             <td><strong><?php echo esc_html($level->name); ?></strong></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php _e('ترتيب المستوى', 'fiqh-lms'); ?></th>
+                            <td><strong><?php echo intval($level->level_order); ?></strong> <small style="color: #666;">(<?php _e('الطالب في هذا المستوى يمكنه الوصول لجميع المقررات في المستويات من 1 إلى', 'fiqh-lms'); ?> <?php echo intval($level->level_order); ?>)</small></td>
                         </tr>
                         <?php if ($level->description) : ?>
                         <tr>
