@@ -130,15 +130,6 @@
                                 </button>
 
                                 <div class="user-dropdown">
-                                    <a href="<?php echo esc_url($dashboard_link); ?>" class="dropdown-item">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="3" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="3" width="7" height="7"></rect>
-                                            <rect x="14" y="14" width="7" height="7"></rect>
-                                            <rect x="3" y="14" width="7" height="7"></rect>
-                                        </svg>
-                                        <?php echo esc_html(get_theme_mod('header_dashboard_text', __('لوحة التحكم', 'fiqhlearning'))); ?>
-                                    </a>
                                     <a href="<?php echo esc_url(get_edit_profile_url()); ?>" class="dropdown-item">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
