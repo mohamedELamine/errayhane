@@ -1288,5 +1288,222 @@ function fiqhlearning_customize_register($wp_customize) {
         'section'     => 'fiqh_single_post_section',
         'type'        => 'text',
     ));
+
+    // ==========================================================================
+    // صفحة اتصل بنا (Contact Page)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_contact_page_section', array(
+        'title'       => __('صفحة اتصل بنا', 'fiqhlearning'),
+        'description' => __('تخصيص جميع عناصر صفحة اتصل بنا', 'fiqhlearning'),
+        'priority'    => 175,
+    ));
+
+    // رأس الصفحة - العنوان
+    $wp_customize->add_setting('contact_page_title', array(
+        'default'           => 'اتصل بنا',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_page_title', array(
+        'label'       => __('عنوان الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // رأس الصفحة - الوصف
+    $wp_customize->add_setting('contact_page_description', array(
+        'default'           => 'نسعد بتواصلكم واستفساراتكم',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_page_description', array(
+        'label'       => __('وصف الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // قسم النموذج - العنوان
+    $wp_customize->add_setting('contact_form_title', array(
+        'default'           => 'إرسال رسالة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_form_title', array(
+        'label'       => __('عنوان قسم النموذج', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // تسميات الحقول
+    $contact_labels = array(
+        'contact_label_name'    => array('label' => 'تسمية حقل الاسم', 'default' => 'الاسم الكامل'),
+        'contact_label_email'   => array('label' => 'تسمية حقل البريد', 'default' => 'البريد الإلكتروني'),
+        'contact_label_phone'   => array('label' => 'تسمية حقل الهاتف', 'default' => 'رقم الهاتف'),
+        'contact_label_subject' => array('label' => 'تسمية حقل الموضوع', 'default' => 'الموضوع'),
+        'contact_label_message' => array('label' => 'تسمية حقل الرسالة', 'default' => 'الرسالة'),
+    );
+
+    foreach ($contact_labels as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_contact_page_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // خيارات الموضوع
+    $wp_customize->add_setting('contact_subject_placeholder', array(
+        'default'           => 'اختر الموضوع',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_subject_placeholder', array(
+        'label'       => __('نص "اختر الموضوع"', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    $subject_options = array(
+        'contact_subject_enrollment' => array('label' => 'خيار "استفسار عن التسجيل"', 'default' => 'استفسار عن التسجيل'),
+        'contact_subject_courses'    => array('label' => 'خيار "استفسار عن المقررات"', 'default' => 'استفسار عن المقررات'),
+        'contact_subject_technical'  => array('label' => 'خيار "مشكلة تقنية"', 'default' => 'مشكلة تقنية'),
+        'contact_subject_complaint'  => array('label' => 'خيار "شكوى"', 'default' => 'شكوى'),
+        'contact_subject_suggestion' => array('label' => 'خيار "اقتراح"', 'default' => 'اقتراح'),
+        'contact_subject_other'      => array('label' => 'خيار "أخرى"', 'default' => 'أخرى'),
+    );
+
+    foreach ($subject_options as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_contact_page_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // نص اتفاقية الخصوصية
+    $wp_customize->add_setting('contact_privacy_text', array(
+        'default'           => 'أوافق على سياسة الخصوصية',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_privacy_text', array(
+        'label'       => __('نص اتفاقية الخصوصية', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // نص زر الإرسال
+    $wp_customize->add_setting('contact_button_submit', array(
+        'default'           => 'إرسال الرسالة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_button_submit', array(
+        'label'       => __('نص زر الإرسال', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // رسائل النموذج
+    $contact_messages = array(
+        'contact_msg_sending'          => array('label' => 'رسالة "جاري الإرسال..."', 'default' => 'جاري الإرسال...'),
+        'contact_msg_success'          => array('label' => 'رسالة النجاح', 'default' => 'تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.'),
+        'contact_msg_error'            => array('label' => 'رسالة الخطأ', 'default' => 'حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.'),
+        'contact_msg_connection_error' => array('label' => 'رسالة خطأ الاتصال', 'default' => 'حدث خطأ في الاتصال. يرجى المحاولة لاحقاً.'),
+    );
+
+    foreach ($contact_messages as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_contact_page_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // تسميات بطاقات المعلومات
+    $info_labels = array(
+        'contact_label_address'     => array('label' => 'تسمية "العنوان"', 'default' => 'العنوان'),
+        'contact_label_phone_info'  => array('label' => 'تسمية "الهاتف"', 'default' => 'الهاتف'),
+        'contact_label_email_info'  => array('label' => 'تسمية "البريد الإلكتروني"', 'default' => 'البريد الإلكتروني'),
+        'contact_label_work_hours'  => array('label' => 'تسمية "أوقات العمل"', 'default' => 'أوقات العمل'),
+    );
+
+    foreach ($info_labels as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_contact_page_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // البريد الإلكتروني الرئيسي
+    $wp_customize->add_setting('contact_email_primary', array(
+        'default'           => 'rayhaneschool@gmail.com',
+        'sanitize_callback' => 'sanitize_email',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_email_primary', array(
+        'label'       => __('البريد الإلكتروني الرئيسي', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'email',
+    ));
+
+    // عنوان قسم وسائل التواصل
+    $wp_customize->add_setting('contact_social_title', array(
+        'default'           => 'تابعنا على',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_social_title', array(
+        'label'       => __('عنوان قسم وسائل التواصل', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان قسم الخريطة
+    $wp_customize->add_setting('contact_map_title', array(
+        'default'           => 'موقعنا على الخريطة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_map_title', array(
+        'label'       => __('عنوان قسم الخريطة', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
 }
 add_action('customize_register', 'fiqhlearning_customize_register');

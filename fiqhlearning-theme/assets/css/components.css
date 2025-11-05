@@ -153,14 +153,12 @@
    Spacing Fixes
    ========================================================================== */
 
-/* صفحة المقررات - المسافة بين العنوان والنافبار */
-.post-type-archive-fiqh_course .site-main,
-.tax-fiqh_course_science .site-main {
+/* المسافة بين عنوان الصفحة والنافبار - لجميع الصفحات */
+.site-main {
     padding-top: var(--spacing-3xl);
 }
 
-.post-type-archive-fiqh_course .page-header,
-.tax-fiqh_course_science .page-header {
+.page-header {
     margin-top: var(--spacing-2xl);
     margin-bottom: var(--spacing-2xl);
 }
@@ -196,4 +194,34 @@
 .cta-box p,
 .cta-section p {
     margin-bottom: var(--spacing-xl);
+}
+
+/* صفحة الأسئلة - المسافة بين العنوان والزر ومربع البحث */
+.page-template-page-questions .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--color-light-gray);
+}
+
+.page-template-page-questions .page-title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.page-template-page-questions .questions-container {
+    margin-top: var(--spacing-xl);
+}
+
+.page-template-page-questions .questions-filters {
+    margin-top: 0;
+}
+
+.page-template-page-questions .filter-group:first-child {
+    margin-top: 0;
 }
