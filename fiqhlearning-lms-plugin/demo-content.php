@@ -1227,4 +1227,42 @@ function fiqh_generate_demo_content($delete_old = false) {
 
     echo '<p style="margin-top: 20px;"><a href="' . home_url() . '" class="button button-primary button-large">زيارة الموقع</a> ';
     echo '<a href="' . admin_url('edit.php?post_type=fiqh_course&page=fiqh-levels') . '" class="button button-large">إدارة المستويات</a></p>';
+
+    // تشغيل التشخيص التلقائي
+    echo '<hr style="margin: 40px 0;">';
+    echo '<h2>🔍 التشخيص التلقائي</h2>';
+
+    // تضمين ملف التشخيص
+    require_once plugin_dir_path(__FILE__) . 'admin/diagnose-system.php';
+
+    // تشغيل التشخيص (عرض الأخطاء فقط)
+    $results = fiqh_diagnose_system(true, true);
+
+    // عرض الأخطاء فقط
+    if (!empty($results['errors'])) {
+        echo '<div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 20px; border-radius: 5px; margin: 20px 0;">';
+        echo '<h3 style="color: #721c24; margin-top: 0;">❌ تم العثور على أخطاء:</h3>';
+        echo '<ul>';
+        foreach ($results['errors'] as $error) {
+            echo '<li style="color: #721c24; font-weight: bold;">' . $error . '</li>';
+        }
+        echo '</ul>';
+        echo '<p><a href="' . admin_url('edit.php?post_type=fiqh_course&page=diagnose-system') . '" class="button button-secondary">🔧 إصلاح المشاكل</a></p>';
+        echo '</div>';
+    } elseif (!empty($results['warnings'])) {
+        echo '<div style="background: #fff3cd; border: 1px solid #ffc107; padding: 20px; border-radius: 5px; margin: 20px 0;">';
+        echo '<h3 style="color: #856404; margin-top: 0;">⚠️ تحذيرات:</h3>';
+        echo '<ul>';
+        foreach ($results['warnings'] as $warning) {
+            echo '<li style="color: #856404;">' . $warning . '</li>';
+        }
+        echo '</ul>';
+        echo '<p><a href="' . admin_url('edit.php?post_type=fiqh_course&page=diagnose-system') . '" class="button button-secondary">عرض التفاصيل</a></p>';
+        echo '</div>';
+    } else {
+        echo '<div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 20px; border-radius: 5px; margin: 20px 0;">';
+        echo '<h3 style="color: #155724; margin-top: 0;">✅ كل شيء تمام!</h3>';
+        echo '<p style="color: #155724;">لم يتم العثور على أي أخطاء. النظام يعمل بشكل صحيح.</p>';
+        echo '</div>';
+    }
 }
