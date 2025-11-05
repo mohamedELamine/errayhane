@@ -73,6 +73,29 @@ function fiqh_generate_demo_content() {
 
     echo '<div class="updated"><p><strong>' . __('بدأ إنشاء المحتوى التجريبي...', 'fiqh-lms') . '</strong></p></div>';
 
+    // 0. التأكد من وجود دور الطالب
+    echo '<h2>0️⃣ التحقق من أدوار المستخدمين</h2>';
+
+    // حذف وإعادة إنشاء دور الطالب لضمان الصلاحيات الصحيحة
+    remove_role('student');
+    add_role(
+        'student',
+        __('طالب', 'fiqh-lms'),
+        array(
+            'read' => true,
+            'edit_posts' => false,
+            'delete_posts' => false,
+            'publish_posts' => false,
+            'upload_files' => false,
+            'view_courses' => true,
+            'view_lessons' => true,
+            'submit_questions' => true,
+            'take_notes' => true,
+            'track_progress' => true,
+        )
+    );
+    echo '<p style="color: green;">✅ تم إنشاء/تحديث دور الطالب مع الصلاحيات المناسبة</p>';
+
     // 1. إنشاء التصنيفات والعلوم الشرعية
     echo '<h2>1️⃣ إنشاء العلوم الشرعية</h2>';
     $sciences_data = array(
@@ -112,6 +135,79 @@ function fiqh_generate_demo_content() {
                 'category_nicename' => sanitize_title($cat_name)
             ));
             echo '<p style="color: green;">✅ تم إنشاء تصنيف: <strong>' . $cat_name . '</strong></p>';
+        }
+    }
+
+    // 1.5 إنشاء الصفحات الأساسية
+    echo '<h2>📄 إنشاء الصفحات الأساسية</h2>';
+    $pages = array(
+        array(
+            'title' => 'تسجيل الدخول',
+            'slug' => 'login',
+            'template' => 'page-login.php',
+            'content' => '<!-- صفحة تسجيل الدخول -->'
+        ),
+        array(
+            'title' => 'استعادة كلمة المرور',
+            'slug' => 'forgot-password',
+            'template' => 'page-forgot-password.php',
+            'content' => '<!-- صفحة استعادة كلمة المرور -->'
+        ),
+        array(
+            'title' => 'لوحة التحكم',
+            'slug' => 'dashboard',
+            'template' => 'page-dashboard.php',
+            'content' => '<!-- لوحة تحكم الطالب -->'
+        ),
+        array(
+            'title' => 'من نحن',
+            'slug' => 'about',
+            'template' => 'page-about.php',
+            'content' => '<p>صفحة تعريفية عن المنصة</p>'
+        ),
+        array(
+            'title' => 'اتصل بنا',
+            'slug' => 'contact',
+            'template' => 'page-contact.php',
+            'content' => '<!-- صفحة الاتصال -->'
+        ),
+        array(
+            'title' => 'الأسئلة',
+            'slug' => 'questions',
+            'template' => 'page-questions.php',
+            'content' => '<!-- صفحة الأسئلة والأجوبة -->'
+        ),
+        array(
+            'title' => 'خطة الدراسة',
+            'slug' => 'study-plan',
+            'template' => 'page-study-plan.php',
+            'content' => '<!-- خطة الدراسة -->'
+        ),
+    );
+
+    foreach ($pages as $page_data) {
+        // التحقق من عدم وجود الصفحة
+        $existing_page = get_page_by_path($page_data['slug']);
+
+        if (!$existing_page) {
+            $page_id = wp_insert_post(array(
+                'post_title' => $page_data['title'],
+                'post_name' => $page_data['slug'],
+                'post_content' => $page_data['content'],
+                'post_status' => 'publish',
+                'post_type' => 'page',
+                'post_author' => 1,
+            ));
+
+            if ($page_id && !is_wp_error($page_id)) {
+                // تعيين template الصفحة
+                update_post_meta($page_id, '_wp_page_template', $page_data['template']);
+                echo '<p style="color: green;">✅ تم إنشاء صفحة: <strong>' . $page_data['title'] . '</strong> (/' . $page_data['slug'] . ')</p>';
+            }
+        } else {
+            // تحديث template إذا كانت الصفحة موجودة
+            update_post_meta($existing_page->ID, '_wp_page_template', $page_data['template']);
+            echo '<p style="color: orange;">⚠️ الصفحة موجودة مسبقاً: ' . $page_data['title'] . ' (تم تحديث القالب)</p>';
         }
     }
 
