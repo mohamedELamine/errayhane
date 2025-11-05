@@ -2054,5 +2054,204 @@ function fiqhlearning_customize_register($wp_customize) {
 
         $wp_customize->add_control($key, $control_args);
     }
+
+    // ==========================================================================
+    // قسم صفحة لوحة التحكم (Dashboard Page Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_dashboard_texts', array(
+        'title'       => __('صفحة لوحة التحكم', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص الظاهرة في لوحة تحكم الطالب', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 90,
+    ));
+
+    $dashboard_texts = array(
+        // نصوص تبويب التقدم الدراسي
+        'dashboard_progress_title' => array(
+            'label'   => 'عنوان تبويب التقدم الدراسي',
+            'default' => 'التقدم الدراسي',
+        ),
+        'dashboard_progress_subtitle' => array(
+            'label'   => 'وصف تبويب التقدم الدراسي',
+            'default' => 'تتبع تقدمك الأكاديمي وإحصائياتك',
+        ),
+        'dashboard_current_batch_label' => array(
+            'label'   => 'تسمية المستوى الدراسي الحالي',
+            'default' => 'المستوى الدراسي الحالي',
+        ),
+        'dashboard_batch_status_active' => array(
+            'label'   => 'نص حالة المستوى النشط',
+            'default' => 'نشط',
+        ),
+        'dashboard_batch_start_date' => array(
+            'label'   => 'تسمية تاريخ البداية',
+            'default' => 'تاريخ البداية',
+        ),
+        'dashboard_batch_end_date' => array(
+            'label'   => 'تسمية تاريخ النهاية',
+            'default' => 'تاريخ النهاية',
+        ),
+        'dashboard_overall_progress_label' => array(
+            'label'   => 'تسمية التقدم الإجمالي',
+            'default' => 'التقدم الإجمالي',
+        ),
+        'dashboard_progress_of' => array(
+            'label'   => 'كلمة "من" في التقدم',
+            'default' => 'من',
+        ),
+        'dashboard_progress_lessons' => array(
+            'label'   => 'كلمة "درس"',
+            'default' => 'درس',
+        ),
+        'dashboard_no_batch_title' => array(
+            'label'   => 'عنوان عدم التسجيل في مستوى',
+            'default' => 'لم تسجل في أي مستوى دراسي بعد',
+        ),
+        'dashboard_no_batch_message' => array(
+            'label'   => 'رسالة عدم التسجيل في مستوى',
+            'default' => 'يرجى التواصل مع الإدارة للتسجيل في مستوى دراسي',
+        ),
+        'dashboard_my_stats_title' => array(
+            'label'   => 'عنوان قسم الإحصائيات',
+            'default' => 'إحصائياتي',
+        ),
+        'dashboard_stat_enrolled_courses' => array(
+            'label'   => 'تسمية المقررات المسجلة',
+            'default' => 'المقررات المسجلة',
+        ),
+        'dashboard_stat_completed_lessons' => array(
+            'label'   => 'تسمية الدروس المكتملة',
+            'default' => 'الدروس المكتملة',
+        ),
+        'dashboard_stat_questions_asked' => array(
+            'label'   => 'تسمية الأسئلة المطروحة',
+            'default' => 'الأسئلة المطروحة',
+        ),
+        'dashboard_stat_notes_count' => array(
+            'label'   => 'تسمية الملاحظات',
+            'default' => 'الملاحظات',
+        ),
+        'dashboard_courses_progress_title' => array(
+            'label'   => 'عنوان تقدم المقررات',
+            'default' => 'تقدمك في المقررات',
+        ),
+
+        // نصوص تبويب الإعدادات
+        'dashboard_settings_title' => array(
+            'label'   => 'عنوان تبويب الإعدادات',
+            'default' => 'الإعدادات',
+        ),
+        'dashboard_settings_subtitle' => array(
+            'label'   => 'وصف تبويب الإعدادات',
+            'default' => 'إدارة معلوماتك الشخصية وتفضيلات حسابك',
+        ),
+        'dashboard_profile_section_title' => array(
+            'label'   => 'عنوان قسم المعلومات الشخصية',
+            'default' => 'المعلومات الشخصية',
+        ),
+        'dashboard_label_display_name' => array(
+            'label'   => 'تسمية الاسم الكامل',
+            'default' => 'الاسم الكامل',
+        ),
+        'dashboard_label_email' => array(
+            'label'   => 'تسمية البريد الإلكتروني',
+            'default' => 'البريد الإلكتروني',
+        ),
+        'dashboard_label_username' => array(
+            'label'   => 'تسمية اسم المستخدم',
+            'default' => 'اسم المستخدم',
+        ),
+        'dashboard_save_profile_btn' => array(
+            'label'   => 'نص زر حفظ التغييرات',
+            'default' => 'حفظ التغييرات',
+        ),
+        'dashboard_password_section_title' => array(
+            'label'   => 'عنوان قسم تغيير كلمة المرور',
+            'default' => 'تغيير كلمة المرور',
+        ),
+        'dashboard_label_current_password' => array(
+            'label'   => 'تسمية كلمة المرور الحالية',
+            'default' => 'كلمة المرور الحالية',
+        ),
+        'dashboard_label_new_password' => array(
+            'label'   => 'تسمية كلمة المرور الجديدة',
+            'default' => 'كلمة المرور الجديدة',
+        ),
+        'dashboard_label_confirm_password' => array(
+            'label'   => 'تسمية تأكيد كلمة المرور',
+            'default' => 'تأكيد كلمة المرور',
+        ),
+        'dashboard_change_password_btn' => array(
+            'label'   => 'نص زر تغيير كلمة المرور',
+            'default' => 'تغيير كلمة المرور',
+        ),
+        'dashboard_notifications_section_title' => array(
+            'label'   => 'عنوان قسم الإشعارات',
+            'default' => 'إعدادات الإشعارات',
+        ),
+        'dashboard_notif_new_lessons' => array(
+            'label'   => 'عنوان إشعارات الدروس الجديدة',
+            'default' => 'دروس جديدة',
+        ),
+        'dashboard_notif_new_lessons_desc' => array(
+            'label'   => 'وصف إشعارات الدروس الجديدة',
+            'default' => 'تلقي إشعار عند إضافة دروس جديدة في مقرراتك',
+        ),
+        'dashboard_notif_answers' => array(
+            'label'   => 'عنوان إشعارات الإجابات',
+            'default' => 'إجابات الأسئلة',
+        ),
+        'dashboard_notif_answers_desc' => array(
+            'label'   => 'وصف إشعارات الإجابات',
+            'default' => 'تلقي إشعار عند الرد على أسئلتك',
+        ),
+        'dashboard_notif_announcements' => array(
+            'label'   => 'عنوان إشعارات الإعلانات',
+            'default' => 'الإعلانات المهمة',
+        ),
+        'dashboard_notif_announcements_desc' => array(
+            'label'   => 'وصف إشعارات الإعلانات',
+            'default' => 'تلقي إشعار عند نشر إعلانات أو أحداث جديدة',
+        ),
+        'dashboard_save_notifications_btn' => array(
+            'label'   => 'نص زر حفظ الإعدادات',
+            'default' => 'حفظ الإعدادات',
+        ),
+        'dashboard_account_info_title' => array(
+            'label'   => 'عنوان قسم معلومات الحساب',
+            'default' => 'معلومات الحساب',
+        ),
+        'dashboard_account_status' => array(
+            'label'   => 'تسمية حالة الحساب',
+            'default' => 'حالة الحساب',
+        ),
+        'dashboard_account_type' => array(
+            'label'   => 'تسمية نوع الحساب',
+            'default' => 'نوع الحساب',
+        ),
+        'dashboard_account_status_active' => array(
+            'label'   => 'نص حالة الحساب النشط',
+            'default' => 'نشط',
+        ),
+        'dashboard_account_type_student' => array(
+            'label'   => 'نص نوع حساب الطالب',
+            'default' => 'طالب',
+        ),
+    );
+
+    foreach ($dashboard_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_dashboard_texts',
+            'type'    => 'text',
+        ));
+    }
 }
 add_action('customize_register', 'fiqhlearning_customize_register');
