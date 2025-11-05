@@ -46,12 +46,23 @@ function fiqh_create_demo_content_page() {
         <?php
         // التحقق من POST بدلاً من GET
         if (isset($_POST['generate_demo']) && check_admin_referer('fiqh_demo_content_action', 'fiqh_demo_content_nonce')) {
-            fiqh_generate_demo_content();
+            $delete_old = isset($_POST['delete_old_content']) && $_POST['delete_old_content'] === '1';
+            fiqh_generate_demo_content($delete_old);
         } else {
             ?>
             <form method="post" action="">
                 <?php wp_nonce_field('fiqh_demo_content_action', 'fiqh_demo_content_nonce'); ?>
                 <input type="hidden" name="generate_demo" value="1">
+
+                <p>
+                    <label style="display: block; margin-bottom: 15px;">
+                        <input type="checkbox" name="delete_old_content" value="1" style="margin-left: 5px;">
+                        <strong><?php _e('حذف المقررات والدروس القديمة قبل الإنشاء', 'fiqh-lms'); ?></strong>
+                        <br>
+                        <small style="color: #666; display: block; margin-right: 25px;"><?php _e('تحذير: سيتم حذف جميع المقررات والدروس الموجودة حالياً', 'fiqh-lms'); ?></small>
+                    </label>
+                </p>
+
                 <p>
                     <input type="submit" class="button button-primary button-large" value="<?php _e('إنشاء المحتوى التجريبي الآن', 'fiqh-lms'); ?>">
                 </p>
@@ -65,13 +76,48 @@ function fiqh_create_demo_content_page() {
 
 /**
  * إنشاء المحتوى التجريبي الكامل بالبيانات الحقيقية
+ *
+ * @param bool $delete_old حذف المحتوى القديم قبل الإنشاء
  */
-function fiqh_generate_demo_content() {
+function fiqh_generate_demo_content($delete_old = false) {
     global $wpdb;
 
     set_time_limit(300); // 5 دقائق
 
     echo '<div class="updated"><p><strong>' . __('بدأ إنشاء المحتوى التجريبي...', 'fiqh-lms') . '</strong></p></div>';
+
+    // حذف المحتوى القديم إذا طُلب
+    if ($delete_old) {
+        echo '<h2>🗑️ حذف المحتوى القديم</h2>';
+
+        // حذف جميع الدروس
+        $lessons = get_posts(array(
+            'post_type' => 'fiqh_lesson',
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+            'post_status' => 'any'
+        ));
+        foreach ($lessons as $lesson_id) {
+            wp_delete_post($lesson_id, true);
+        }
+        echo '<p style="color: green;">✅ تم حذف ' . count($lessons) . ' درس</p>';
+
+        // حذف جميع المقررات
+        $courses = get_posts(array(
+            'post_type' => 'fiqh_course',
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+            'post_status' => 'any'
+        ));
+        foreach ($courses as $course_id) {
+            wp_delete_post($course_id, true);
+        }
+        echo '<p style="color: green;">✅ تم حذف ' . count($courses) . ' مقرر</p>';
+
+        // تنظيف الـ cache
+        wp_cache_flush();
+        echo '<p style="color: green;">✅ تم تنظيف الـ cache</p>';
+    }
 
     // 0. التأكد من وجود دور الطالب
     echo '<h2>0️⃣ التحقق من أدوار المستخدمين</h2>';
@@ -1023,24 +1069,41 @@ function fiqh_generate_demo_content() {
                         'post_type' => 'fiqh_lesson',
                         'post_author' => 1,
                         'menu_order' => $index + 1,
-                    ));
+                    ), true); // true = wp_error on failure
 
                     if ($lesson_id && !is_wp_error($lesson_id)) {
-                        update_post_meta($lesson_id, '_fiqh_lesson_course_id', $course_id);
-                        update_post_meta($lesson_id, '_fiqh_lesson_video_url', $lesson['url']);
-                        update_post_meta($lesson_id, '_fiqh_lesson_duration', '30-45 دقيقة');
+                        // استخدام add_post_meta بدلاً من update للتأكد من الإدخال الصحيح
+                        add_post_meta($lesson_id, '_fiqh_lesson_course_id', intval($course_id), true);
+                        add_post_meta($lesson_id, '_fiqh_lesson_video_url', esc_url_raw($lesson['url']), true);
+                        add_post_meta($lesson_id, '_fiqh_lesson_duration', '30-45 دقيقة', true);
+                        add_post_meta($lesson_id, '_fiqh_lesson_order', $index + 1, true);
+
+                        // تحديث الدرس لتشغيل save_post hooks
+                        wp_update_post(array(
+                            'ID' => $lesson_id,
+                            'post_modified' => current_time('mysql'),
+                            'post_modified_gmt' => current_time('mysql', 1)
+                        ));
+
                         $total_lessons++;
                     }
                 }
+
+                // تنظيف الـ cache بعد إنشاء كل دروس المقرر
+                clean_post_cache($course_id);
             }
 
             echo '<p style="color: green;">✅ تم إنشاء مقرر: <strong>' . $course_data['title'] . '</strong> مع <strong>' . count($course_data['lessons']) . '</strong> محاضرة (' . $course_data['level'] . ')</p>';
         }
     }
 
+    // تنظيف شامل للـ cache بعد إنشاء كل المحتوى
+    wp_cache_flush();
+    echo '<p style="color: green;">✅ تم تنظيف الـ cache - الدروس متاحة الآن!</p>';
+
     // 7. ملخص نهائي
     echo '<h2>✅ اكتمل إنشاء المحتوى التجريبي!</h2>';
-    echo '<div class="updated"><p><strong>تم بنجاح!</strong> تم إنشاء محتوى تجريبي كامل بالبيانات الحقيقية.</p></div>';
+    echo '<div class="updated"><p><strong>تم بنجاح!</strong> تم إنشاء محتوى تجريبي كامل بالبيانات الحقيقية. جميع الدروس مرتبطة بمقرراتها وجاهزة للعرض.</p></div>';
 
     echo '<h3>ملخص المحتوى المنشأ:</h3>';
     echo '<ul>';
