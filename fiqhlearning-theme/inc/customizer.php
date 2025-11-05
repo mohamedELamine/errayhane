@@ -1740,6 +1740,16 @@ function fiqhlearning_customize_register($wp_customize) {
             'default'     => 'عن المدرسة',
             'description' => 'النص في شارة قسم عن المدرسة',
         ),
+        'about_title' => array(
+            'label'       => 'عنوان قسم "عن المدرسة"',
+            'default'     => 'مدرسة الريحان للعلوم الشرعية',
+            'description' => 'العنوان الرئيسي (h2) في قسم عن المدرسة',
+        ),
+        'about_description' => array(
+            'label'       => 'وصف قسم "عن المدرسة"',
+            'default'     => 'مدرسة الريحان منصة تعليمية متخصصة في تعليم الفقه المالكي والعلوم الشرعية. نسعى لتقديم تعليم عالي الجودة يجمع بين الأصالة والمعاصرة، من خلال دروس مرئية ومسموعة ومواد تعليمية متنوعة.',
+            'description' => 'الفقرة التوضيحية في قسم عن المدرسة',
+        ),
         'about_learn_more_text' => array(
             'label'       => 'نص زر "اعرف المزيد"',
             'default'     => 'اعرف المزيد',
@@ -1812,16 +1822,26 @@ function fiqhlearning_customize_register($wp_customize) {
     );
 
     foreach ($frontpage_texts as $key => $data) {
+        // استخدام sanitize_textarea_field للنصوص الطويلة
+        $sanitize_callback = ($key === 'about_description' || $key === 'cta_description')
+            ? 'sanitize_textarea_field'
+            : 'sanitize_text_field';
+
         $wp_customize->add_setting($key, array(
             'default'           => $data['default'],
-            'sanitize_callback' => 'sanitize_text_field',
+            'sanitize_callback' => $sanitize_callback,
             'transport'         => 'refresh',
         ));
+
+        // استخدام textarea للنصوص الطويلة
+        $control_type = ($key === 'about_description' || $key === 'cta_description')
+            ? 'textarea'
+            : 'text';
 
         $control_args = array(
             'label'   => __($data['label'], 'fiqhlearning'),
             'section' => 'fiqh_frontpage_texts',
-            'type'    => 'text',
+            'type'    => $control_type,
         );
 
         // إضافة وصف إذا كان موجوداً
