@@ -1653,5 +1653,61 @@ function fiqhlearning_customize_register($wp_customize) {
 
         $wp_customize->add_control($key, $control_args);
     }
+
+    // ==========================================================================
+    // قسم نصوص الإحصائيات (Statistics Texts Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_stats_texts', array(
+        'title'       => __('نصوص الإحصائيات', 'fiqhlearning'),
+        'description' => __('تخصيص نصوص قسم الإحصائيات في الصفحة الرئيسية', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 30,
+    ));
+
+    // نصوص الإحصائيات - 4 نصوص
+    $stats_texts = array(
+        'stat_student_label' => array(
+            'label'       => 'تسمية الطلاب',
+            'default'     => 'طالب',
+            'description' => 'النص الذي يظهر تحت عدد الطلاب',
+        ),
+        'stat_course_label' => array(
+            'label'       => 'تسمية المقررات',
+            'default'     => 'مقرر',
+            'description' => 'النص الذي يظهر تحت عدد المقررات',
+        ),
+        'stat_lesson_label' => array(
+            'label'       => 'تسمية الدروس',
+            'default'     => 'درس',
+            'description' => 'النص الذي يظهر تحت عدد الدروس',
+        ),
+        'stat_science_label' => array(
+            'label'       => 'تسمية العلوم',
+            'default'     => 'علم',
+            'description' => 'النص الذي يظهر تحت عدد العلوم',
+        ),
+    );
+
+    foreach ($stats_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $control_args = array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_stats_texts',
+            'type'        => 'text',
+        );
+
+        // إضافة وصف إذا كان موجوداً
+        if (isset($data['description'])) {
+            $control_args['description'] = __($data['description'], 'fiqhlearning');
+        }
+
+        $wp_customize->add_control($key, $control_args);
+    }
 }
 add_action('customize_register', 'fiqhlearning_customize_register');
