@@ -79,21 +79,40 @@ class FiqhLearning_Access_Control {
             return;
         }
 
-        // إضافة meta query للفلترة
-        $meta_query = array(
-            array(
-                'key' => '_fiqh_course_levels',
-                'value' => serialize($accessible_levels),
-                'compare' => 'REGEXP'
-            )
-        );
+        // جلب جميع المقررات التي تتطابق مع المستويات المتاحة
+        $all_courses = get_posts(array(
+            'post_type' => 'fiqh_course',
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+            'post_status' => 'publish'
+        ));
 
-        $existing_meta_query = $query->get('meta_query');
-        if (!empty($existing_meta_query)) {
-            $meta_query = array_merge($existing_meta_query, $meta_query);
+        $accessible_course_ids = array();
+        foreach ($all_courses as $course_id) {
+            $course_levels = get_post_meta($course_id, '_fiqh_course_levels', true);
+
+            // إذا لم يتم تحديد مستوى للمقرر، فهو متاح للجميع
+            if (!is_array($course_levels) || empty($course_levels)) {
+                $accessible_course_ids[] = $course_id;
+                continue;
+            }
+
+            // التحقق من وجود مستوى متاح
+            foreach ($course_levels as $course_level_id) {
+                if (in_array($course_level_id, $accessible_levels)) {
+                    $accessible_course_ids[] = $course_id;
+                    break;
+                }
+            }
         }
 
-        $query->set('meta_query', $meta_query);
+        // فلترة الاستعلام بناءً على المقررات المتاحة
+        if (empty($accessible_course_ids)) {
+            // لا توجد مقررات متاحة - إعادة قائمة فارغة
+            $query->set('post__in', array(0));
+        } else {
+            $query->set('post__in', $accessible_course_ids);
+        }
     }
 
     /**
