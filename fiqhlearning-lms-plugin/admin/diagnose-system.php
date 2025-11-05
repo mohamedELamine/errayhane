@@ -66,8 +66,11 @@ if ($students) {
     echo '<thead><tr><th>ID</th><th>الاسم</th><th>البريد</th><th>المستوى</th><th>التسجيلات</th></tr></thead><tbody>';
     foreach ($students as $student) {
         $level = get_user_meta($student->ID, '_fiqh_student_level', true);
+        // عد فقط التسجيلات للمقررات المنشورة
         $enrollments_count = $wpdb->get_var($wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_enrollments WHERE user_id = %d AND status = 'active'",
+            "SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_enrollments e
+            INNER JOIN {$wpdb->posts} p ON e.course_id = p.ID
+            WHERE e.user_id = %d AND e.status = 'active' AND p.post_status = 'publish'",
             $student->ID
         ));
 
@@ -201,11 +204,31 @@ if ($test_user) {
     if ($enrollments) {
         echo '<h4>المقررات المسجلة فيها:</h4>';
         echo '<ul>';
+        $valid_enrollments = 0;
+        $invalid_enrollments = 0;
         foreach ($enrollments as $enr) {
             $course = get_post($enr->course_id);
-            echo '<li>' . ($course ? $course->post_title : 'N/A') . ' - حالة: ' . $enr->status . '</li>';
+            if ($course && $course->post_status === 'publish') {
+                echo '<li style="color: green;">✓ ' . $course->post_title . ' - حالة التسجيل: ' . $enr->status . '</li>';
+                $valid_enrollments++;
+            } else {
+                echo '<li style="color: red;">❌ [مقرر محذوف - ID: ' . $enr->course_id . '] - حالة التسجيل: ' . $enr->status . '</li>';
+                $invalid_enrollments++;
+            }
         }
         echo '</ul>';
+        echo '<p><strong>ملخص:</strong></p>';
+        echo '<ul>';
+        echo '<li style="color: green;">✓ تسجيلات صحيحة: ' . $valid_enrollments . '</li>';
+        echo '<li style="color: red;">❌ تسجيلات لمقررات محذوفة: ' . $invalid_enrollments . '</li>';
+        echo '</ul>';
+
+        if ($invalid_enrollments > 0) {
+            echo '<div style="background: #fff3cd; padding: 15px; margin: 10px 0; border: 1px solid #ffc107; border-radius: 5px;">';
+            echo '<p style="color: #856404; margin: 0;"><strong>⚠️ تحذير:</strong> توجد ' . $invalid_enrollments . ' تسجيلات لمقررات محذوفة. ';
+            echo 'استخدم "تنظيف التسجيلات القديمة" أدناه لحذفها.</p>';
+            echo '</div>';
+        }
     } else {
         echo '<p style="color: red; font-weight: bold;">❌ لا توجد تسجيلات لهذه الطالبة!</p>';
         echo '<p style="background: yellow; padding: 10px;"><strong>هذه هي المشكلة!</strong> الطالبة غير مسجلة في أي مقرر.</p>';
@@ -303,6 +326,37 @@ if (isset($_POST['quick_fix']) && check_admin_referer('quick_fix_action', 'quick
     echo '<form method="post">';
     wp_nonce_field('quick_fix_action', 'quick_fix_nonce');
     echo '<button type="submit" name="quick_fix" class="button button-primary button-large">⚡ إصلاح سريع - تسجيل جميع الطلاب</button>';
+    echo '</form>';
+}
+
+echo '</div>';
+
+// 7. زر تنظيف التسجيلات القديمة
+echo '<div style="background: #f8d7da; padding: 20px; margin: 20px 0; border: 1px solid #f5c6cb; border-radius: 5px;">';
+echo '<h2>7️⃣ تنظيف التسجيلات القديمة</h2>';
+
+if (isset($_POST['clean_old_enrollments']) && check_admin_referer('clean_old_enrollments_action', 'clean_old_enrollments_nonce')) {
+    echo '<h3 style="color: #721c24;">جاري التنظيف...</h3>';
+
+    // حذف التسجيلات للمقررات المحذوفة أو غير المنشورة
+    $deleted_count = $wpdb->query("
+        DELETE e FROM {$wpdb->prefix}fiqh_enrollments e
+        LEFT JOIN {$wpdb->posts} p ON e.course_id = p.ID
+        WHERE p.ID IS NULL OR p.post_status != 'publish'
+    ");
+
+    if ($deleted_count === false) {
+        echo '<p style="color: #721c24; font-size: 18px; font-weight: bold;">❌ حدث خطأ أثناء التنظيف</p>';
+    } else {
+        echo '<p style="color: #155724; font-size: 18px; font-weight: bold;">✅ تم حذف ' . $deleted_count . ' تسجيل قديم</p>';
+    }
+    echo '<p><a href="' . admin_url('admin.php?page=diagnose-system') . '" class="button button-primary">تحديث الصفحة</a></p>';
+} else {
+    echo '<p>⚠️ هذا الزر سيحذف جميع التسجيلات التي تشير لمقررات محذوفة أو غير منشورة.</p>';
+    echo '<p>استخدمه إذا وجدت تسجيلات لمقررات "N/A" أو محذوفة.</p>';
+    echo '<form method="post">';
+    wp_nonce_field('clean_old_enrollments_action', 'clean_old_enrollments_nonce');
+    echo '<button type="submit" name="clean_old_enrollments" class="button button-secondary button-large" onclick="return confirm(\'هل أنت متأكد من حذف جميع التسجيلات القديمة؟\');">🧹 تنظيف التسجيلات القديمة</button>';
     echo '</form>';
 }
 
