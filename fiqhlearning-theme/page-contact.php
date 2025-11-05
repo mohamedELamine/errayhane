@@ -210,21 +210,36 @@ get_header();
         </div>
 
         <!-- الخريطة (اختياري) -->
+        <?php if (get_theme_mod('contact_map_enabled', true)) :
+            $map_url = get_theme_mod('contact_map_url', '');
+        ?>
         <div class="map-section">
             <h2 class="section-title"><?php echo get_theme_mod('contact_map_title', __('موقعنا على الخريطة', 'fiqhlearning')); ?></h2>
             <div class="map-container">
-                <!-- يمكن إضافة Google Maps أو OpenStreetMap هنا -->
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3307.9599999999996!2d-6.8498!3d34.0132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDAwJzQ3LjUiTiA2wrA1MCc1OS4zIlc!5e0!3m2!1sen!2sma!4v1234567890"
-                    width="100%"
-                    height="400"
-                    style="border:0; border-radius: 12px;"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+                <?php if ($map_url) : ?>
+                    <iframe
+                        src="<?php echo esc_url($map_url); ?>"
+                        width="100%"
+                        height="400"
+                        style="border:0; border-radius: 12px;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                <?php else : ?>
+                    <div class="map-placeholder" style="background-color: var(--color-light); padding: var(--spacing-3xl); text-align: center; border-radius: 12px;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto var(--spacing-md); color: var(--color-border);">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <p style="color: var(--color-dark-gray);">
+                            <?php _e('لم يتم تحديد موقع على الخريطة بعد. يرجى إضافة رابط الخريطة من إعدادات التخصيص.', 'fiqhlearning'); ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
+        <?php endif; ?>
 
     </div>
 </main>

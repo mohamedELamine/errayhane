@@ -35,6 +35,7 @@ Tags: rtl-language-support, education, lms, arabic, islamic, two-columns, custom
     --color-dark-gray: #4A5568;
     --color-dark: #1A202C;
     --color-black: #000000;
+    --color-border: #E2E8F0;
 
     /* ألوان الحالات */
     --color-success: #14B171;
@@ -90,35 +91,41 @@ Tags: rtl-language-support, education, lms, arabic, islamic, two-columns, custom
 
 /* وضع الظلام - ألوان محسنة للقراءة والراحة */
 body.dark-mode {
-    /* الخلفيات - أغمق وأكثر تباين مع لمسة زرقاء دافئة */
-    --color-white: #0d1117;
-    --color-light: #161b22;
-    --color-light-gray: #21262d;
+    /* الخلفيات - أكثر ظلمة وراحة للعين */
+    --color-white: #0a0e13;
+    --color-light: #141821;
+    --color-light-gray: #1e2430;
 
-    /* النصوص - أفضل تباين وأقل إجهاد */
-    --color-black: #f0f6fc;
-    --color-dark: #c9d1d9;
-    --color-dark-gray: #8b949e;
-    --color-gray: #6e7681;
+    /* النصوص - وضوح عالي وتباين ممتاز */
+    --color-black: #e8edf3;
+    --color-dark: #c4cdd6;
+    --color-dark-gray: #8b95a1;
+    --color-gray: #6c7784;
 
-    /* الألوان الأساسية - أخضر زمردي متوازن */
+    /* الألوان الأساسية - أخضر زمردي ساطع */
     --color-primary: #3fb950;
     --color-primary-dark: #2ea043;
     --color-primary-light: #56d364;
     --color-accent: #56d364;
 
-    /* ألوان الحالات */
+    /* ألوان الحالات - ساطعة وواضحة */
     --color-success: #3fb950;
-    --color-warning: #d29922;
-    --color-error: #f85149;
+    --color-warning: #e5a50a;
+    --color-error: #ff5a54;
     --color-info: #58a6ff;
 
+    /* متغيرات إضافية للوضع الليلي */
+    --color-border: #2d3748;
+    --color-dark-bg: #0a0e13;
+    --color-dark-card: #141821;
+    --color-dark-border: #2d3748;
+
     /* الظلال في الوضع الليلي */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.7);
-    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.7), 0 1px 2px 0 rgba(0, 0, 0, 0.6);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.8), 0 2px 4px -1px rgba(0, 0, 0, 0.6);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.9), 0 4px 6px -2px rgba(0, 0, 0, 0.7);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.9), 0 10px 10px -5px rgba(0, 0, 0, 0.8);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.8);
+    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.8), 0 1px 2px 0 rgba(0, 0, 0, 0.7);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.9), 0 2px 4px -1px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.95), 0 4px 6px -2px rgba(0, 0, 0, 0.8);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.95), 0 10px 10px -5px rgba(0, 0, 0, 0.85);
 }
 
 body.dark-mode .card {

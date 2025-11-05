@@ -1668,6 +1668,33 @@ function fiqhlearning_customize_register($wp_customize) {
         'type'        => 'text',
     ));
 
+    // رابط الخريطة (Google Maps Embed URL)
+    $wp_customize->add_setting('contact_map_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_map_url', array(
+        'label'       => __('رابط الخريطة (Google Maps)', 'fiqhlearning'),
+        'description' => __('اذهب إلى Google Maps، ابحث عن موقعك، اضغط "مشاركة" ← "تضمين خريطة" ← انسخ رابط src من الكود', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'url',
+    ));
+
+    // إظهار/إخفاء الخريطة
+    $wp_customize->add_setting('contact_map_enabled', array(
+        'default'           => true,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_map_enabled', array(
+        'label'       => __('إظهار الخريطة', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'checkbox',
+    ));
+
     // ==========================================================================
     // قسم صفحة تسجيل الدخول (Login Page)
     // ==========================================================================

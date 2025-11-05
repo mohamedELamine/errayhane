@@ -72,15 +72,7 @@ class FiqhLearning_Admin_Menus {
             array($this, 'reports_page')
         );
 
-        // قائمة الإعدادات
-        add_submenu_page(
-            'edit.php?post_type=fiqh_course',
-            __('إعدادات FiqhLearning', 'fiqh-lms'),
-            __('الإعدادات', 'fiqh-lms'),
-            'manage_options',
-            'fiqh-settings',
-            array($this, 'settings_page')
-        );
+        // تم إزالة قائمة الإعدادات - الإعدادات متوفرة في WordPress Customizer
     }
 
     /**
@@ -473,16 +465,7 @@ class FiqhLearning_Admin_Menus {
             ORDER BY date ASC"
         );
 
-        // المقررات الأكثر تسجيلاً
-        $popular_courses = $wpdb->get_results(
-            "SELECT c.ID, c.post_title, COUNT(e.id) as enrollment_count
-            FROM {$wpdb->posts} c
-            LEFT JOIN {$wpdb->prefix}fiqh_enrollments e ON c.ID = e.course_id
-            WHERE c.post_type = 'fiqh_course' AND c.post_status = 'publish'
-            GROUP BY c.ID
-            ORDER BY enrollment_count DESC
-            LIMIT 5"
-        );
+        // تم إزالة المقررات الأكثر تسجيلاً
 
         // إحصائيات الأسئلة
         $questions_stats = $wpdb->get_results(
@@ -669,12 +652,6 @@ class FiqhLearning_Admin_Menus {
                     </div>
                 </div>
 
-                <!-- المقررات الأكثر شعبية -->
-                <div class="chart-container">
-                    <h2><?php _e('المقررات الأكثر تسجيلاً', 'fiqh-lms'); ?></h2>
-                    <canvas id="popularCoursesChart"></canvas>
-                </div>
-
                 <!-- محدد الطالب -->
                 <div class="student-selector">
                     <h2><?php _e('تقرير مفصل لطالب', 'fiqh-lms'); ?></h2>
@@ -775,46 +752,6 @@ class FiqhLearning_Admin_Menus {
                     maintainAspectRatio: true,
                     plugins: {
                         legend: { position: 'bottom' }
-                    }
-                }
-            });
-
-            // مخطط المقررات الأكثر شعبية
-            const popularCoursesCtx = document.getElementById('popularCoursesChart');
-            new Chart(popularCoursesCtx, {
-                type: 'bar',
-                data: {
-                    labels: [
-                        <?php
-                        foreach ($popular_courses as $course) {
-                            echo '"' . esc_js($course->post_title) . '",';
-                        }
-                        ?>
-                    ],
-                    datasets: [{
-                        label: '<?php _e('عدد الطلاب المسجلين', 'fiqh-lms'); ?>',
-                        data: [
-                            <?php
-                            foreach ($popular_courses as $course) {
-                                echo $course->enrollment_count . ',';
-                            }
-                            ?>
-                        ],
-                        backgroundColor: '#2271b1'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: { stepSize: 1 }
-                        }
                     }
                 }
             });
