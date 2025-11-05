@@ -87,6 +87,7 @@ function fiqh_generate_demo_content() {
         array('name' => '🧮 علم الميراث', 'desc' => 'علم الفرائض أو علم المواريث هو العلم الذي يعنى بأحوال تَرِكة الميت وميراثه من حيث تقسيمها على مستحقيها.'),
         array('name' => '✍️ علم النحو', 'desc' => 'هو علم يعصم اللسان من اللحن.'),
         array('name' => '🔠 علم الصرف', 'desc' => 'علم بأصول يُعرف بها أحوال بِنْيَة الكلمة التي ليست بإعراب ولا بناء.'),
+        array('name' => '🎓 مسار تعليمي', 'desc' => 'محاضرات تحفيزية وإرشادية لطلبة العلم الشرعي.'),
     );
 
     foreach ($sciences_data as $science) {
@@ -623,6 +624,270 @@ function fiqh_generate_demo_content() {
                 array('title' => 'المنكر والمتروك والموضوع ثم خاتمة النظم', 'url' => 'https://youtu.be/dbPpdEdphqk'),
             )
         ),
+        // أصول الفقه
+        array(
+            'title' => 'متن نظم الورقات',
+            'science' => '⚖️ أصول الفقه',
+            'content' => '<p>شرح متن نظم الورقات في أصول الفقه</p>',
+            'excerpt' => 'متن نظم الورقات في أصول الفقه',
+            'duration' => '54 محاضرة',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'المحاضرة الأولى', 'url' => 'https://youtu.be/8pQiXOCjmw8'),
+                array('title' => 'المحاضرة الثانية', 'url' => 'https://youtu.be/HYkYWm0teCk'),
+                array('title' => 'المحاضرة الثالثة - الجزء الأول', 'url' => 'https://youtu.be/oCxV3TS6-sE'),
+                array('title' => 'المحاضرة الثالثة - الجزء الثاني', 'url' => 'https://youtu.be/QN3byHIBG5U'),
+                array('title' => 'المحاضرة الرابعة', 'url' => 'https://youtu.be/VWwwtIOLZDk'),
+                array('title' => 'المحاضرة الخامسة', 'url' => 'https://youtu.be/kTdRTbFkXF8'),
+                array('title' => 'المحاضرة السادسة', 'url' => 'https://youtu.be/s8y2rYQJpEg'),
+                array('title' => 'المحاضرة السابعة', 'url' => 'https://youtu.be/O5VVH-124P8'),
+                array('title' => 'المحاضرة الثامنة - الجزء الأول', 'url' => 'https://youtu.be/QK_Fl7ee_6Q'),
+                array('title' => 'المحاضرة الثامنة - الجزء الثاني', 'url' => 'https://youtu.be/Y0JK_wVE0w0'),
+                array('title' => 'المحاضرة التاسعة', 'url' => 'https://youtu.be/1l5d-WnVHgo'),
+                array('title' => 'المحاضرة العاشرة', 'url' => 'https://youtu.be/withCllHn_Y'),
+                array('title' => 'المحاضرة الحادية عشرة', 'url' => 'https://youtu.be/no_sVAbuers'),
+                array('title' => 'المحاضرة الثانية عشرة', 'url' => 'https://youtu.be/FYQ_F1AU_3A'),
+                array('title' => 'المحاضرة الثالثة عشرة', 'url' => 'https://youtu.be/wf8G0N5k7_Y'),
+                array('title' => 'المحاضرة الرابعة عشرة - الجزء الأول', 'url' => 'https://youtu.be/Nwm4oZJTLd0'),
+                array('title' => 'المحاضرة الرابعة عشرة - الجزء الثاني', 'url' => 'https://youtu.be/6TsvVfF5f6s'),
+                array('title' => 'المحاضرة الخامسة عشرة', 'url' => 'https://youtu.be/8s9oDivNQaM'),
+                array('title' => 'المحاضرة السادسة عشرة', 'url' => 'https://youtu.be/107mffO3xmk'),
+                array('title' => 'المحاضرة السابعة عشرة', 'url' => 'https://youtu.be/8hqUC-1azNQ'),
+                array('title' => 'المحاضرة الثامنة عشرة', 'url' => 'https://youtu.be/K3E_T1Jazbo'),
+                array('title' => 'المحاضرة التاسعة عشرة', 'url' => 'https://youtu.be/r4y9dbu2wNU'),
+                array('title' => 'المحاضرة العشرون', 'url' => 'https://youtu.be/F9DN31yTjoc'),
+                array('title' => 'المحاضرة الحادية و العشرون', 'url' => 'https://youtu.be/DgJoawrwLao'),
+                array('title' => 'المحاضرة الثانية و عشرون', 'url' => 'https://youtu.be/r9ELsDxETSE'),
+                array('title' => 'المحاضرة الثالثة و عشرون', 'url' => 'https://youtu.be/46K0YmOrDv8'),
+                array('title' => 'المحاضرة الرابعة و عشرون', 'url' => 'https://youtu.be/8PnFSwmbFBg'),
+                array('title' => 'المحاضرة الخامسة و العشرون', 'url' => 'https://youtu.be/uIa3d96EWZc'),
+                array('title' => 'المحاضرة السادسة و العشرون', 'url' => 'https://youtu.be/SioECHTXcm0'),
+                array('title' => 'المحاضرة السابعة و العشرون', 'url' => 'https://youtu.be/LmlrQ6DFfCE'),
+                array('title' => 'المحاضرة الثامنة و العشرون', 'url' => 'https://youtu.be/WDfgRnC5cQA'),
+                array('title' => 'المحاضرة التاسعة و العشرون', 'url' => 'https://youtu.be/lcHpIi8ewYY'),
+                array('title' => 'المحاضرة الثلاثون', 'url' => 'https://youtu.be/AS5C-0G40eI'),
+                array('title' => 'المحاضرة الحادية و الثلاثون', 'url' => 'https://youtu.be/S0lp-LMoJ6w'),
+                array('title' => 'المحاضرة الثانية و الثلاثون', 'url' => 'https://youtu.be/XbiPEReCqyM'),
+                array('title' => 'المحاضرة الثالثة و الثلاثون', 'url' => 'https://youtu.be/qfSbtefh32g'),
+                array('title' => 'المحاضرة الرابعة و الثلاثون', 'url' => 'https://youtu.be/4Mbt1NICf1A'),
+                array('title' => 'المحاضرة الخامسة و الثلاثون', 'url' => 'https://youtu.be/xo9UOgWsfz8'),
+                array('title' => 'المحاضرة السادسة و الثلاثون', 'url' => 'https://youtu.be/K4r7xeob6_M'),
+                array('title' => 'المحاضرة السابعة و الثلاثون', 'url' => 'https://youtu.be/Io4PfdZ854Y'),
+                array('title' => 'المحاضرة الثامنة و الثلاثون', 'url' => 'https://youtu.be/l213dEaAE5I'),
+                array('title' => 'المحاضرة التاسعة و الثلاثون', 'url' => 'https://youtu.be/KIdu5WnjUpU'),
+                array('title' => 'المحاضرة الأربعون', 'url' => 'https://youtu.be/G4p5kGGw0oo'),
+                array('title' => 'المحاضرة الحادية و الأربعون', 'url' => 'https://youtu.be/hUY3_xPWjq4'),
+                array('title' => 'المحاضرة الثانية و الأربعون', 'url' => 'https://youtu.be/4LMiS2Qr-lY'),
+                array('title' => 'المحاضرة الثالثة و الأربعون', 'url' => 'https://youtu.be/hRBZ12sQITM'),
+                array('title' => 'المحاضرة الرابعة و الأربعون', 'url' => 'https://youtu.be/zNbr3g5paCg'),
+                array('title' => 'المحاضرة الخامسة و الأربعون', 'url' => 'https://youtu.be/SU9nYKPOjLo'),
+                array('title' => 'المحاضرة السادسة و الأربعون', 'url' => 'https://youtu.be/rMQVXNmZTv4'),
+                array('title' => 'المحاضرة السابعة و الأربعون', 'url' => 'https://youtu.be/JSMzLDWCX0U'),
+                array('title' => 'المحاضرة الثامنة و الأربعون', 'url' => 'https://youtu.be/Ric6ZCPqyUk'),
+                array('title' => 'المحاضرة التاسعة و الأربعون', 'url' => 'https://youtu.be/vs3IXjrfbu8'),
+                array('title' => 'المحاضرة الخمسون', 'url' => 'https://youtu.be/VpeFba5HZFM'),
+                array('title' => 'المحاضرة الحادية و الخمسون', 'url' => 'https://youtu.be/o07pJoWXR-M'),
+                array('title' => 'المحاضرة الثانية و الخمسون', 'url' => 'https://youtu.be/N_6rDnTmXB0'),
+                array('title' => 'المحاضرة الثالثة و الستون', 'url' => 'https://youtu.be/nNR2zDxgaOg'),
+                array('title' => 'المحاضرة الرابعة و الستون', 'url' => 'https://youtu.be/aIWf2ScRA1E'),
+            )
+        ),
+        array(
+            'title' => 'مذكرة في أصول الفقه',
+            'science' => '⚖️ أصول الفقه',
+            'content' => '<p>دراسة مذكرة مختصرة في أصول الفقه</p>',
+            'excerpt' => 'مذكرة في أصول الفقه',
+            'duration' => '13 حصة',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/06Id2lHReuU'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/HR3xGtM4RJ0'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/t1goyav1pxs'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/_CZTbX-2Id4'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/GrT9z9kmCuo'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/qWFJ8j4tu6Q'),
+                array('title' => 'الحصة الثامنة', 'url' => 'https://youtu.be/7WY9GFiVEn8'),
+                array('title' => 'الحصة التاسعة', 'url' => 'https://youtu.be/_qBZftC0xug'),
+                array('title' => 'الحصة العاشرة', 'url' => 'https://youtu.be/syra_mk_U-8'),
+                array('title' => 'الحصة الحادية عشر', 'url' => 'https://youtu.be/1EDBTGSkhHY'),
+                array('title' => 'الحصة الثانية عشرة', 'url' => 'https://youtu.be/BnUmk_SeHJI'),
+                array('title' => 'الحصة الثالثة عشرة', 'url' => 'https://youtu.be/as9YHWhf1_I'),
+                array('title' => 'تصحيح وقراءة لأبيات مراقي السعود', 'url' => 'https://youtu.be/AktFJGHNjz4'),
+            )
+        ),
+        array(
+            'title' => 'شرح نظم الورقات للعمريطي',
+            'science' => '⚖️ أصول الفقه',
+            'content' => '<p>شرح مبسط لنظم الورقات للعمريطي</p>',
+            'excerpt' => 'شرح نظم الورقات للعمريطي',
+            'duration' => '19 حصة',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/0O2AyBIWBbg'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/TA8G1RD0bmc'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/k9apqAf84qI'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/YAauh36za_A'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/NCZL3lr2aT'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/ZI9xayD_eyw'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/2G-Dn-jUZ6M'),
+                array('title' => 'الحصة الثامنة', 'url' => 'https://youtu.be/98fwqadgw7M'),
+                array('title' => 'الحصة التاسعة', 'url' => 'https://youtu.be/ZxSUr_dVVx0'),
+                array('title' => 'الحصة العاشرة', 'url' => 'https://youtu.be/J9gCxGhnTcE'),
+                array('title' => 'الحصة الحادية عشرة', 'url' => 'https://youtu.be/AMiM-HBxweU'),
+                array('title' => 'الحصة الثانية عشرة', 'url' => 'https://youtu.be/ZOc0tPJ8bWw'),
+                array('title' => 'الحصة الثالثة عشرة', 'url' => 'https://youtu.be/ZOc0tPJ8bWd'),
+                array('title' => 'الحصة الرابعة عشرة', 'url' => 'https://youtu.be/QRqyRGPNFgw'),
+                array('title' => 'الحصة الخامسة عشرة', 'url' => 'https://youtu.be/iDavp_VoHWc'),
+                array('title' => 'الحصة السادسة عشرة', 'url' => 'https://youtu.be/cU9Omw_21hk'),
+                array('title' => 'الحصة السابعة عشر', 'url' => 'https://youtu.be/mNLONm11MLk'),
+                array('title' => 'الحصة الثامنة عشرة', 'url' => 'https://youtu.be/I0FCRlE_GNk'),
+                array('title' => 'الحصة الأخيرة', 'url' => 'https://youtu.be/rx0BJZnD87Y'),
+            )
+        ),
+        // علم العقيدة (علم الكلام)
+        array(
+            'title' => 'شرح رسالة أبي زيد القيرواني',
+            'science' => '🕋 علم العقيدة (علم الكلام)',
+            'content' => '<p>شرح رسالة أبي زيد القيرواني في العقيدة</p>',
+            'excerpt' => 'شرح رسالة أبي زيد القيرواني',
+            'duration' => '5 حصص',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/t3h8ty-iL1g'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/cri8cResyPE'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/9Oatfc-pEfE'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/bRKQBudVcmc'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/pXGoMW4cVwU'),
+            )
+        ),
+        // علم التزكية
+        array(
+            'title' => 'شرح كتاب "مبادئ التصوف وهوادي التعرف" من متن ابن عاشر',
+            'science' => '🌿 علم التزكية',
+            'content' => '<p>شرح كتاب مبادئ التصوف وهوادي التعرف من متن ابن عاشر</p>',
+            'excerpt' => 'مبادئ التصوف وهوادي التعرف',
+            'duration' => 'حصتان',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/Aff79iMY3XI'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/3mvGvyQe-NU'),
+            )
+        ),
+        // مطالعة (كتاب مختار)
+        array(
+            'title' => 'شرح كتاب حلية طالب العلم',
+            'science' => '📚 مطالعة (كتاب مختار)',
+            'content' => '<p>شرح كتاب حلية طالب العلم للشيخ بكر أبو زيد</p>',
+            'excerpt' => 'شرح كتاب حلية طالب العلم',
+            'duration' => '5 حصص',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/d31wjBfoMWU'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/ebw3Wfe8-Q4'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/-rxkz2EKfaY'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/h_J5rkUHtO4'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/CvlboGOzrHY'),
+            )
+        ),
+        array(
+            'title' => 'قراءة في كتاب حِلية طالب العِلم',
+            'science' => '📚 مطالعة (كتاب مختار)',
+            'content' => '<p>قراءة موجهة في كتاب حلية طالب العلم</p>',
+            'excerpt' => 'قراءة في كتاب حلية طالب العلم',
+            'duration' => '6 حصص',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/5C-Wg5yb09s'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/f9yitm66g3g'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/EPR2E3HsMv4'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/iS8qdXFzF7E'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/ugK6nlvR6Fs'),
+                array('title' => 'الحصة السادسة والأخيرة', 'url' => 'https://youtu.be/wFgENz7vE0Y'),
+            )
+        ),
+        array(
+            'title' => 'كتاب التعالم لبكر أبو زيد',
+            'science' => '📚 مطالعة (كتاب مختار)',
+            'content' => '<p>قراءة وشرح كتاب التعالم للشيخ بكر أبو زيد</p>',
+            'excerpt' => 'كتاب التعالم لبكر أبو زيد',
+            'duration' => '8 حصص',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/2W5LDn4_gQk'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/LU0FWBjMja4'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/f6TrHohLKKY'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/iAruBdu2Iks'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/cHkcrKbkLUs'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/ZHaWc0-FcI0'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/fA0NYoANhBk'),
+                array('title' => 'الحصة الثامنة والاخيرة', 'url' => 'https://youtu.be/SEs3pT2ZVik'),
+            )
+        ),
+        array(
+            'title' => 'شرح الشمقمية',
+            'science' => '📚 مطالعة (كتاب مختار)',
+            'content' => '<p>شرح الشمقمية في الآداب والأخلاق</p>',
+            'excerpt' => 'شرح الشمقمية',
+            'duration' => '17 حصة',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/KL_1M8NpHz4'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/nKoKd1iqglA'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/o4EV6Sf6N4o'),
+                array('title' => 'الحصة الرابعة', 'url' => 'https://youtu.be/nHVoGUIYryo'),
+                array('title' => 'الحصة الخامسة', 'url' => 'https://youtu.be/tdVJajkOwds'),
+                array('title' => 'الحصة السادسة', 'url' => 'https://youtu.be/RRXMhkXN2rY'),
+                array('title' => 'الحصة السابعة', 'url' => 'https://youtu.be/App5Rx8-FwE'),
+                array('title' => 'الحصة الثامنة', 'url' => 'https://youtu.be/hSjzirNYiWI'),
+                array('title' => 'الحصة التاسعة', 'url' => 'https://youtu.be/bugM-OvJJok'),
+                array('title' => 'الحصة العاشرة', 'url' => 'https://youtu.be/xbwSkl9SovM'),
+                array('title' => 'الحصة الحادية عشرة', 'url' => 'https://youtu.be/HONlqc6Csq4'),
+                array('title' => 'الحصة الثانية عشرة', 'url' => 'https://youtu.be/pE4upUegoO0'),
+                array('title' => 'الحصة الثالثة عشرة', 'url' => 'https://youtu.be/7WmsdzEAhBA'),
+                array('title' => 'الحصة الرابعة عشرة', 'url' => 'https://youtu.be/FC73f95j-_I'),
+                array('title' => 'الحصة الخامسة عشرة', 'url' => 'https://youtu.be/f79f0xMBPv0'),
+                array('title' => 'الحصة السادسة عشرة', 'url' => 'https://youtu.be/quDafaQSCjM'),
+                array('title' => 'الحصة السابعة عشرة', 'url' => 'https://youtu.be/KkFL41cMAT8'),
+            )
+        ),
+        array(
+            'title' => 'شرح قطر الندى',
+            'science' => '📚 مطالعة (كتاب مختار)',
+            'content' => '<p>شرح كتاب قطر الندى في النحو</p>',
+            'excerpt' => 'شرح قطر الندى',
+            'duration' => '3 حصص',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/yFE7nOinulU'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/IwhkWSKYJ6E'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/unwnOKVl19k'),
+            )
+        ),
+        array(
+            'title' => 'قراءة في مقالات البشير الإبراهيمي',
+            'science' => '📚 مطالعة (كتاب مختار)',
+            'content' => '<p>قراءة موجهة في مقالات البشير الإبراهيمي</p>',
+            'excerpt' => 'قراءة في مقالات البشير الإبراهيمي',
+            'duration' => '3 حصص',
+            'level' => 'المستوى الأول',
+            'lessons' => array(
+                array('title' => 'الحصة الأولى', 'url' => 'https://youtu.be/didsPF-DNIQ'),
+                array('title' => 'الحصة الثانية', 'url' => 'https://youtu.be/eMo0rwIZrnE'),
+                array('title' => 'الحصة الثالثة', 'url' => 'https://youtu.be/JCf1DQzsLMk'),
+            )
+        ),
+        // مسار تعليمي
+        array(
+            'title' => 'محاضرة تحفيزية وكلام مجمل عن المقرر',
+            'science' => '🎓 مسار تعليمي',
+            'content' => '<p>محاضرة تحفيزية للطلاب مع كلام مجمل عن المقرر الدراسي</p>',
+            'excerpt' => 'محاضرة تحفيزية وكلام مجمل عن المقرر',
+            'duration' => 'محاضرة واحدة',
+            'level' => 'المستوى الثاني',
+            'lessons' => array(
+                array('title' => 'مقدمة حوارية تحفيزية وكلام مجمل عن المقرر', 'url' => 'https://youtu.be/MPnmiG-rpC8'),
+            )
+        ),
     );
 
     $total_lessons = 0;
@@ -683,16 +948,16 @@ function fiqh_generate_demo_content() {
 
     echo '<h3>ملخص المحتوى المنشأ:</h3>';
     echo '<ul>';
-    echo '<li>✅ <strong>11</strong> علم شرعي</li>';
+    echo '<li>✅ <strong>12</strong> علم شرعي</li>';
     echo '<li>✅ <strong>2</strong> مستوى دراسي (الأول والثاني)</li>';
     echo '<li>✅ <strong>3</strong> مدراء</li>';
     echo '<li>✅ <strong>12</strong> طالبة في المستوى الثاني</li>';
     echo '<li>✅ <strong>15</strong> طالب/ة في المستوى الأول</li>';
-    echo '<li>✅ <strong>' . count($detailed_courses) . '</strong> مقررات دراسية مفصلة</li>';
+    echo '<li>✅ <strong>' . count($detailed_courses) . '</strong> مقرر دراسي مفصل</li>';
     echo '<li>✅ <strong>' . $total_lessons . '</strong> محاضرة مع روابط يوتيوب</li>';
     echo '</ul>';
 
-    echo '<h3>تفصيل المقررات:</h3>';
+    echo '<h3>تفصيل المقررات حسب العلوم:</h3>';
     echo '<ul>';
     echo '<li>📚 <strong>علم الفقه:</strong> 4 مقررات (2 للمستوى الأول، 2 للمستوى الثاني)</li>';
     echo '<li>📚 <strong>علم الميراث:</strong> 1 مقرر (المستوى الثاني)</li>';
@@ -701,6 +966,11 @@ function fiqh_generate_demo_content() {
     echo '<li>📚 <strong>علم التفسير:</strong> 2 مقرر (المستوى الثاني)</li>';
     echo '<li>📚 <strong>علم المنطق:</strong> 2 مقرر (1 لكل مستوى)</li>';
     echo '<li>📚 <strong>علم مصطلح الحديث:</strong> 3 مقررات (1 للمستوى الأول، 2 للمستوى الثاني)</li>';
+    echo '<li>📚 <strong>أصول الفقه:</strong> 3 مقررات (1 للمستوى الأول، 2 للمستوى الثاني)</li>';
+    echo '<li>📚 <strong>علم العقيدة (علم الكلام):</strong> 1 مقرر (المستوى الثاني)</li>';
+    echo '<li>📚 <strong>علم التزكية:</strong> 1 مقرر (المستوى الثاني)</li>';
+    echo '<li>📚 <strong>مطالعة (كتاب مختار):</strong> 6 مقررات (3 لكل مستوى)</li>';
+    echo '<li>📚 <strong>مسار تعليمي:</strong> 1 مقرر (المستوى الثاني)</li>';
     echo '</ul>';
 
     echo '<h3>معلومات تسجيل الدخول:</h3>';
