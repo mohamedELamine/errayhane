@@ -72,6 +72,16 @@ class FiqhLearning_Admin_Menus {
             array($this, 'reports_page')
         );
 
+        // قائمة الاشتراكات
+        add_submenu_page(
+            'edit.php?post_type=fiqh_course',
+            __('إدارة الاشتراكات', 'fiqh-lms'),
+            __('الاشتراكات', 'fiqh-lms'),
+            'manage_options',
+            'fiqh-subscriptions',
+            array($this, 'subscriptions_page')
+        );
+
         // تم إزالة قائمة الإعدادات - الإعدادات متوفرة في WordPress Customizer
     }
 
@@ -952,6 +962,425 @@ class FiqhLearning_Admin_Menus {
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
+        <?php
+    }
+
+    /**
+     * صفحة إدارة الاشتراكات
+     */
+    public function subscriptions_page() {
+        global $wpdb;
+
+        // معالجة إضافة اشتراك جديد
+        if (isset($_POST['add_subscription']) && check_admin_referer('add_subscription_action', 'subscription_nonce')) {
+            $user_id = intval($_POST['user_id']);
+            $batch_id = !empty($_POST['batch_id']) ? intval($_POST['batch_id']) : null;
+            $monthly_amount = floatval($_POST['monthly_amount']);
+            $start_date = sanitize_text_field($_POST['start_date']);
+            $notes = sanitize_textarea_field($_POST['notes']);
+
+            $result = $wpdb->insert(
+                $wpdb->prefix . 'fiqh_subscriptions',
+                array(
+                    'user_id' => $user_id,
+                    'batch_id' => $batch_id,
+                    'monthly_amount' => $monthly_amount,
+                    'start_date' => $start_date,
+                    'status' => 'active',
+                    'notes' => $notes
+                ),
+                array('%d', '%d', '%f', '%s', '%s', '%s')
+            );
+
+            if ($result) {
+                echo '<div class="notice notice-success is-dismissible"><p>' . __('تم إضافة الاشتراك بنجاح', 'fiqh-lms') . '</p></div>';
+            }
+        }
+
+        // معالجة تسجيل دفعة
+        if (isset($_POST['add_payment']) && check_admin_referer('add_payment_action', 'payment_nonce')) {
+            $subscription_id = intval($_POST['subscription_id']);
+            $amount = floatval($_POST['payment_amount']);
+            $payment_month = sanitize_text_field($_POST['payment_month']);
+            $payment_date = sanitize_text_field($_POST['payment_date']);
+            $payment_method = sanitize_text_field($_POST['payment_method']);
+            $payment_notes = sanitize_textarea_field($_POST['payment_notes']);
+
+            // الحصول على معلومات الاشتراك
+            $subscription = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}fiqh_subscriptions WHERE id = %d",
+                $subscription_id
+            ));
+
+            if ($subscription) {
+                $result = $wpdb->insert(
+                    $wpdb->prefix . 'fiqh_subscription_payments',
+                    array(
+                        'subscription_id' => $subscription_id,
+                        'user_id' => $subscription->user_id,
+                        'amount' => $amount,
+                        'payment_month' => $payment_month,
+                        'payment_date' => $payment_date,
+                        'payment_method' => $payment_method,
+                        'status' => 'paid',
+                        'notes' => $payment_notes,
+                        'created_by' => get_current_user_id()
+                    ),
+                    array('%d', '%d', '%f', '%s', '%s', '%s', '%s', '%s', '%d')
+                );
+
+                if ($result) {
+                    echo '<div class="notice notice-success is-dismissible"><p>' . __('تم تسجيل الدفعة بنجاح', 'fiqh-lms') . '</p></div>';
+                }
+            }
+        }
+
+        // معالجة تعديل حالة اشتراك
+        if (isset($_POST['update_subscription_status']) && check_admin_referer('update_status_action', 'status_nonce')) {
+            $subscription_id = intval($_POST['subscription_id']);
+            $new_status = sanitize_text_field($_POST['new_status']);
+
+            $wpdb->update(
+                $wpdb->prefix . 'fiqh_subscriptions',
+                array('status' => $new_status),
+                array('id' => $subscription_id),
+                array('%s'),
+                array('%d')
+            );
+
+            echo '<div class="notice notice-success is-dismissible"><p>' . __('تم تحديث حالة الاشتراك', 'fiqh-lms') . '</p></div>';
+        }
+
+        // جلب قائمة الطلاب
+        $students = get_users(array('role' => 'student', 'orderby' => 'display_name'));
+
+        // جلب قائمة المستويات
+        $batches = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}fiqh_batches WHERE status = 'active' ORDER BY level_order");
+
+        // جلب الاشتراكات مع تفاصيل الطالب
+        $subscriptions = $wpdb->get_results(
+            "SELECT
+                s.*,
+                u.display_name as student_name,
+                u.user_email,
+                b.name as batch_name,
+                (SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE subscription_id = s.id) as total_payments,
+                (SELECT SUM(amount) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE subscription_id = s.id) as total_paid
+            FROM {$wpdb->prefix}fiqh_subscriptions s
+            LEFT JOIN {$wpdb->users} u ON s.user_id = u.ID
+            LEFT JOIN {$wpdb->prefix}fiqh_batches b ON s.batch_id = b.id
+            ORDER BY s.created_at DESC"
+        );
+
+        ?>
+        <div class="wrap fiqh-subscriptions-page">
+            <h1 class="wp-heading-inline">
+                <span class="dashicons dashicons-money-alt" style="font-size: 28px; vertical-align: middle;"></span>
+                <?php _e('إدارة الاشتراكات', 'fiqh-lms'); ?>
+            </h1>
+            <a href="#" class="page-title-action" id="add-subscription-btn">
+                <?php _e('+ إضافة اشتراك جديد', 'fiqh-lms'); ?>
+            </a>
+
+            <hr class="wp-header-end">
+
+            <style>
+                .fiqh-subscriptions-page .subscriptions-stats {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                    margin: 20px 0;
+                }
+                .fiqh-subscriptions-page .stat-card {
+                    background: #fff;
+                    padding: 20px;
+                    border-radius: 8px;
+                    border: 1px solid #dcdcde;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                }
+                .fiqh-subscriptions-page .stat-value {
+                    font-size: 32px;
+                    font-weight: 700;
+                    color: #2271b1;
+                }
+                .fiqh-subscriptions-page .stat-label {
+                    color: #646970;
+                    font-size: 14px;
+                }
+                .subscription-modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 100000;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0,0,0,0.5);
+                }
+                .subscription-modal-content {
+                    background-color: #fefefe;
+                    margin: 5% auto;
+                    padding: 30px;
+                    border: 1px solid #888;
+                    width: 80%;
+                    max-width: 600px;
+                    border-radius: 8px;
+                }
+                .subscription-modal-close {
+                    color: #aaa;
+                    float: left;
+                    font-size: 28px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+                .subscription-modal-close:hover {
+                    color: #000;
+                }
+                .status-badge {
+                    display: inline-block;
+                    padding: 4px 12px;
+                    border-radius: 12px;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+                .status-active {
+                    background: #d4edda;
+                    color: #155724;
+                }
+                .status-suspended {
+                    background: #fff3cd;
+                    color: #856404;
+                }
+                .status-expired {
+                    background: #f8d7da;
+                    color: #721c24;
+                }
+            </style>
+
+            <!-- إحصائيات سريعة -->
+            <?php
+            $total_active = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_subscriptions WHERE status = 'active'");
+            $total_revenue = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE MONTH(payment_date) = MONTH(CURRENT_DATE()) AND YEAR(payment_date) = YEAR(CURRENT_DATE())");
+            $pending_count = $wpdb->get_var("SELECT COUNT(DISTINCT s.user_id) FROM {$wpdb->prefix}fiqh_subscriptions s WHERE s.status = 'active' AND s.id NOT IN (SELECT subscription_id FROM {$wpdb->prefix}fiqh_subscription_payments WHERE payment_month = DATE_FORMAT(CURRENT_DATE(), '%Y-%m'))");
+            ?>
+            <div class="subscriptions-stats">
+                <div class="stat-card">
+                    <div class="stat-value"><?php echo number_format_i18n($total_active); ?></div>
+                    <div class="stat-label"><?php _e('الاشتراكات النشطة', 'fiqh-lms'); ?></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value"><?php echo number_format($total_revenue, 2); ?> <?php _e('د.م', 'fiqh-lms'); ?></div>
+                    <div class="stat-label"><?php _e('إيرادات هذا الشهر', 'fiqh-lms'); ?></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #d63638;"><?php echo number_format_i18n($pending_count); ?></div>
+                    <div class="stat-label"><?php _e('متأخرون عن الدفع', 'fiqh-lms'); ?></div>
+                </div>
+            </div>
+
+            <!-- جدول الاشتراكات -->
+            <table class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th><?php _e('الطالب', 'fiqh-lms'); ?></th>
+                        <th><?php _e('المستوى', 'fiqh-lms'); ?></th>
+                        <th><?php _e('الاشتراك الشهري', 'fiqh-lms'); ?></th>
+                        <th><?php _e('تاريخ البداية', 'fiqh-lms'); ?></th>
+                        <th><?php _e('عدد الدفعات', 'fiqh-lms'); ?></th>
+                        <th><?php _e('المجموع المدفوع', 'fiqh-lms'); ?></th>
+                        <th><?php _e('الحالة', 'fiqh-lms'); ?></th>
+                        <th><?php _e('إجراءات', 'fiqh-lms'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($subscriptions): ?>
+                        <?php foreach ($subscriptions as $sub): ?>
+                        <tr>
+                            <td>
+                                <strong><?php echo esc_html($sub->student_name); ?></strong><br>
+                                <small><?php echo esc_html($sub->user_email); ?></small>
+                            </td>
+                            <td><?php echo $sub->batch_name ? esc_html($sub->batch_name) : '-'; ?></td>
+                            <td><strong><?php echo number_format($sub->monthly_amount, 2); ?></strong> <?php _e('د.م', 'fiqh-lms'); ?></td>
+                            <td><?php echo esc_html($sub->start_date); ?></td>
+                            <td><?php echo number_format_i18n($sub->total_payments); ?></td>
+                            <td><strong><?php echo number_format($sub->total_paid, 2); ?></strong> <?php _e('د.م', 'fiqh-lms'); ?></td>
+                            <td>
+                                <?php
+                                $status_class = 'status-' . $sub->status;
+                                $status_text = array(
+                                    'active' => __('نشط', 'fiqh-lms'),
+                                    'suspended' => __('معلق', 'fiqh-lms'),
+                                    'expired' => __('منتهي', 'fiqh-lms')
+                                );
+                                ?>
+                                <span class="status-badge <?php echo $status_class; ?>">
+                                    <?php echo $status_text[$sub->status]; ?>
+                                </span>
+                            </td>
+                            <td>
+                                <button type="button" class="button button-small add-payment-btn" data-subscription-id="<?php echo $sub->id; ?>" data-student-name="<?php echo esc_attr($sub->student_name); ?>" data-amount="<?php echo $sub->monthly_amount; ?>">
+                                    <?php _e('تسجيل دفعة', 'fiqh-lms'); ?>
+                                </button>
+                                <a href="?post_type=fiqh_course&page=fiqh-subscriptions&view_payments=<?php echo $sub->id; ?>" class="button button-small">
+                                    <?php _e('عرض الدفعات', 'fiqh-lms'); ?>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="8"><?php _e('لا توجد اشتراكات حالياً', 'fiqh-lms'); ?></td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+
+            <!-- Modal إضافة اشتراك -->
+            <div id="add-subscription-modal" class="subscription-modal">
+                <div class="subscription-modal-content">
+                    <span class="subscription-modal-close">&times;</span>
+                    <h2><?php _e('إضافة اشتراك جديد', 'fiqh-lms'); ?></h2>
+                    <form method="post" action="">
+                        <?php wp_nonce_field('add_subscription_action', 'subscription_nonce'); ?>
+
+                        <table class="form-table">
+                            <tr>
+                                <th><label for="user_id"><?php _e('الطالب', 'fiqh-lms'); ?> *</label></th>
+                                <td>
+                                    <select name="user_id" id="user_id" required style="width: 100%;">
+                                        <option value=""><?php _e('-- اختر طالباً --', 'fiqh-lms'); ?></option>
+                                        <?php foreach ($students as $student): ?>
+                                            <option value="<?php echo $student->ID; ?>">
+                                                <?php echo esc_html($student->display_name); ?> (<?php echo esc_html($student->user_email); ?>)
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="batch_id"><?php _e('المستوى الدراسي', 'fiqh-lms'); ?></label></th>
+                                <td>
+                                    <select name="batch_id" id="batch_id" style="width: 100%;">
+                                        <option value=""><?php _e('-- اختياري --', 'fiqh-lms'); ?></option>
+                                        <?php foreach ($batches as $batch): ?>
+                                            <option value="<?php echo $batch->id; ?>"><?php echo esc_html($batch->name); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="monthly_amount"><?php _e('قيمة الاشتراك الشهري', 'fiqh-lms'); ?> *</label></th>
+                                <td>
+                                    <input type="number" name="monthly_amount" id="monthly_amount" step="0.01" min="0" required style="width: 200px;">
+                                    <span><?php _e('د.م', 'fiqh-lms'); ?></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="start_date"><?php _e('تاريخ البداية', 'fiqh-lms'); ?> *</label></th>
+                                <td><input type="date" name="start_date" id="start_date" required value="<?php echo date('Y-m-d'); ?>"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="notes"><?php _e('ملاحظات', 'fiqh-lms'); ?></label></th>
+                                <td><textarea name="notes" id="notes" rows="3" style="width: 100%;"></textarea></td>
+                            </tr>
+                        </table>
+
+                        <p class="submit">
+                            <button type="submit" name="add_subscription" class="button button-primary">
+                                <?php _e('إضافة الاشتراك', 'fiqh-lms'); ?>
+                            </button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal تسجيل دفعة -->
+            <div id="add-payment-modal" class="subscription-modal">
+                <div class="subscription-modal-content">
+                    <span class="subscription-modal-close">&times;</span>
+                    <h2><?php _e('تسجيل دفعة شهرية', 'fiqh-lms'); ?></h2>
+                    <p id="payment-student-name" style="font-weight: 600; color: #2271b1;"></p>
+                    <form method="post" action="">
+                        <?php wp_nonce_field('add_payment_action', 'payment_nonce'); ?>
+                        <input type="hidden" name="subscription_id" id="payment_subscription_id">
+
+                        <table class="form-table">
+                            <tr>
+                                <th><label for="payment_amount"><?php _e('المبلغ المدفوع', 'fiqh-lms'); ?> *</label></th>
+                                <td>
+                                    <input type="number" name="payment_amount" id="payment_amount" step="0.01" min="0" required style="width: 200px;">
+                                    <span><?php _e('د.م', 'fiqh-lms'); ?></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="payment_month"><?php _e('الشهر', 'fiqh-lms'); ?> *</label></th>
+                                <td><input type="month" name="payment_month" id="payment_month" required value="<?php echo date('Y-m'); ?>"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="payment_date"><?php _e('تاريخ الدفع', 'fiqh-lms'); ?> *</label></th>
+                                <td><input type="date" name="payment_date" id="payment_date" required value="<?php echo date('Y-m-d'); ?>"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="payment_method"><?php _e('طريقة الدفع', 'fiqh-lms'); ?></label></th>
+                                <td>
+                                    <select name="payment_method" id="payment_method" style="width: 200px;">
+                                        <option value="cash"><?php _e('نقداً', 'fiqh-lms'); ?></option>
+                                        <option value="bank_transfer"><?php _e('تحويل بنكي', 'fiqh-lms'); ?></option>
+                                        <option value="check"><?php _e('شيك', 'fiqh-lms'); ?></option>
+                                        <option value="online"><?php _e('دفع إلكتروني', 'fiqh-lms'); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="payment_notes"><?php _e('ملاحظات', 'fiqh-lms'); ?></label></th>
+                                <td><textarea name="payment_notes" id="payment_notes" rows="2" style="width: 100%;"></textarea></td>
+                            </tr>
+                        </table>
+
+                        <p class="submit">
+                            <button type="submit" name="add_payment" class="button button-primary">
+                                <?php _e('تسجيل الدفعة', 'fiqh-lms'); ?>
+                            </button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        jQuery(document).ready(function($) {
+            // فتح modal إضافة اشتراك
+            $('#add-subscription-btn').on('click', function(e) {
+                e.preventDefault();
+                $('#add-subscription-modal').show();
+            });
+
+            // فتح modal تسجيل دفعة
+            $('.add-payment-btn').on('click', function() {
+                var subscriptionId = $(this).data('subscription-id');
+                var studentName = $(this).data('student-name');
+                var amount = $(this).data('amount');
+
+                $('#payment_subscription_id').val(subscriptionId);
+                $('#payment_amount').val(amount);
+                $('#payment-student-name').text('<?php _e('الطالب:', 'fiqh-lms'); ?> ' + studentName);
+                $('#add-payment-modal').show();
+            });
+
+            // إغلاق modals
+            $('.subscription-modal-close').on('click', function() {
+                $(this).closest('.subscription-modal').hide();
+            });
+
+            // إغلاق عند النقر خارج المحتوى
+            $('.subscription-modal').on('click', function(e) {
+                if (e.target === this) {
+                    $(this).hide();
+                }
+            });
+        });
+        </script>
         <?php
     }
 
