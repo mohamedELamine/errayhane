@@ -1469,6 +1469,74 @@ class FiqhLearning_Admin_Menus {
                     </form>
                 </div>
             </div>
+
+            <!-- Modal تعديل اشتراك -->
+            <div id="edit-subscription-modal" class="subscription-modal">
+                <div class="subscription-modal-content">
+                    <span class="subscription-modal-close">&times;</span>
+                    <h2><?php _e('تعديل الاشتراك', 'fiqh-lms'); ?></h2>
+                    <form method="post" action="">
+                        <?php wp_nonce_field('edit_subscription_action', 'edit_subscription_nonce'); ?>
+                        <input type="hidden" name="subscription_id" id="edit_subscription_id">
+
+                        <table class="form-table">
+                            <tr>
+                                <th><label for="edit_monthly_amount"><?php _e('قيمة الاشتراك الشهري', 'fiqh-lms'); ?> *</label></th>
+                                <td>
+                                    <input type="number" name="monthly_amount" id="edit_monthly_amount" step="0.01" min="0" required style="width: 200px;">
+                                    <span><?php _e('د.م', 'fiqh-lms'); ?></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="edit_status"><?php _e('الحالة', 'fiqh-lms'); ?></label></th>
+                                <td>
+                                    <select name="status" id="edit_status" style="width: 200px;">
+                                        <option value="active"><?php _e('نشط', 'fiqh-lms'); ?></option>
+                                        <option value="suspended"><?php _e('معلق', 'fiqh-lms'); ?></option>
+                                        <option value="expired"><?php _e('منتهي', 'fiqh-lms'); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="edit_notes"><?php _e('ملاحظات', 'fiqh-lms'); ?></label></th>
+                                <td><textarea name="notes" id="edit_notes" rows="3" style="width: 100%;"></textarea></td>
+                            </tr>
+                        </table>
+
+                        <p class="submit">
+                            <button type="submit" name="edit_subscription" class="button button-primary">
+                                <?php _e('حفظ التغييرات', 'fiqh-lms'); ?>
+                            </button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal حذف اشتراك -->
+            <div id="delete-subscription-modal" class="subscription-modal">
+                <div class="subscription-modal-content">
+                    <span class="subscription-modal-close">&times;</span>
+                    <h2 style="color: #d63638;"><?php _e('تأكيد الحذف', 'fiqh-lms'); ?></h2>
+                    <p id="delete-confirmation-text" style="font-size: 16px; margin: 20px 0;"></p>
+                    <p style="color: #d63638;">
+                        <strong><?php _e('تحذير:', 'fiqh-lms'); ?></strong>
+                        <?php _e('سيتم حذف جميع الدفعات المرتبطة بهذا الاشتراك أيضاً!', 'fiqh-lms'); ?>
+                    </p>
+                    <form method="post" action="">
+                        <?php wp_nonce_field('delete_subscription_action', 'delete_subscription_nonce'); ?>
+                        <input type="hidden" name="subscription_id" id="delete_subscription_id">
+
+                        <p class="submit" style="display: flex; gap: 10px;">
+                            <button type="submit" name="delete_subscription" class="button button-primary" style="background: #d63638; border-color: #d63638;">
+                                <?php _e('نعم، احذف الاشتراك', 'fiqh-lms'); ?>
+                            </button>
+                            <button type="button" class="button subscription-modal-close">
+                                <?php _e('إلغاء', 'fiqh-lms'); ?>
+                            </button>
+                        </p>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -1489,6 +1557,30 @@ class FiqhLearning_Admin_Menus {
                 $('#payment_amount').val(amount);
                 $('#payment-student-name').text('<?php _e('الطالب:', 'fiqh-lms'); ?> ' + studentName);
                 $('#add-payment-modal').show();
+            });
+
+            // فتح modal تعديل اشتراك
+            $('.edit-subscription-btn').on('click', function() {
+                var subscriptionId = $(this).data('subscription-id');
+                var amount = $(this).data('amount');
+                var notes = $(this).data('notes');
+
+                $('#edit_subscription_id').val(subscriptionId);
+                $('#edit_monthly_amount').val(amount);
+                $('#edit_notes').val(notes);
+                $('#edit-subscription-modal').show();
+            });
+
+            // فتح modal حذف اشتراك
+            $('.delete-subscription-btn').on('click', function() {
+                var subscriptionId = $(this).data('subscription-id');
+                var studentName = $(this).data('student-name');
+
+                $('#delete_subscription_id').val(subscriptionId);
+                $('#delete-confirmation-text').html(
+                    '<?php _e('هل أنت متأكد من حذف اشتراك', 'fiqh-lms'); ?> <strong>' + studentName + '</strong>؟'
+                );
+                $('#delete-subscription-modal').show();
             });
 
             // إغلاق modals
