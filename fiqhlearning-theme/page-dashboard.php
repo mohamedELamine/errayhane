@@ -136,7 +136,7 @@ get_header();
 
                 // عدد الملاحظات
                 $notes_count = $wpdb->get_var($wpdb->prepare(
-                    "SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_notes WHERE user_id = %d",
+                    "SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_lesson_notes WHERE user_id = %d",
                     $user_id
                 ));
                 ?>
