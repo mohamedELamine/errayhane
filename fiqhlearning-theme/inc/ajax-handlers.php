@@ -360,7 +360,7 @@ function fiqh_contact_form() {
     $subject_text = isset($subject_translations[$subject]) ? $subject_translations[$subject] : $subject;
 
     // إعداد البريد الإلكتروني
-    $to = 'rayhaneschool@gmail.com'; // البريد المحدد من المستخدم
+    $to = get_theme_mod('contact_email_primary', get_bloginfo('admin_email'));
     $email_subject = sprintf('[%s] رسالة جديدة من %s - %s', get_bloginfo('name'), $name, $subject_text);
 
     $email_body = sprintf(
