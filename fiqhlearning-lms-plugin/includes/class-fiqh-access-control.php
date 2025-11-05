@@ -158,10 +158,23 @@ class FiqhLearning_Access_Control {
     public static function can_student_access_course($user_id, $course_id) {
         global $wpdb;
 
+        // التحقق من التسجيل في المقرر أولاً
+        $is_enrolled = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_enrollments
+            WHERE user_id = %d AND course_id = %d AND status = 'active'",
+            $user_id,
+            $course_id
+        ));
+
+        if (!$is_enrolled) {
+            // الطالب غير مسجل في المقرر - منع الوصول
+            return false;
+        }
+
         // جلب مستوى الطالب
         $student_level = get_user_meta($user_id, '_fiqh_student_level', true);
         if (!$student_level) {
-            // الطالب ليس لديه مستوى محدد - السماح بالوصول مؤقتاً
+            // الطالب ليس لديه مستوى محدد - السماح بالوصول (مسجل في المقرر)
             return true;
         }
 
