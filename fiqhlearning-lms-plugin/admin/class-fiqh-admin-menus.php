@@ -971,6 +971,26 @@ class FiqhLearning_Admin_Menus {
     public function subscriptions_page() {
         global $wpdb;
 
+        // معالجة تصدير الاشتراكات إلى CSV
+        if (isset($_GET['export']) && $_GET['export'] === 'subscriptions' && check_admin_referer('export_subscriptions', 'export_nonce')) {
+            $this->export_subscriptions_csv();
+            exit;
+        }
+
+        // معالجة تصدير دفعات طالب إلى CSV
+        if (isset($_GET['export']) && $_GET['export'] === 'payments' && isset($_GET['subscription_id'])) {
+            check_admin_referer('export_payments', 'export_nonce');
+            $subscription_id = intval($_GET['subscription_id']);
+            $this->export_payments_csv($subscription_id);
+            exit;
+        }
+
+        // معالجة تصدير تقرير شامل
+        if (isset($_GET['export']) && $_GET['export'] === 'full_report' && check_admin_referer('export_full_report', 'export_nonce')) {
+            $this->export_full_report_csv();
+            exit;
+        }
+
         // معالجة إضافة اشتراك جديد
         if (isset($_POST['add_subscription']) && check_admin_referer('add_subscription_action', 'subscription_nonce')) {
             $user_id = intval($_POST['user_id']);
@@ -1080,6 +1100,14 @@ class FiqhLearning_Admin_Menus {
             </h1>
             <a href="#" class="page-title-action" id="add-subscription-btn">
                 <?php _e('+ إضافة اشتراك جديد', 'fiqh-lms'); ?>
+            </a>
+            <a href="<?php echo wp_nonce_url(admin_url('edit.php?post_type=fiqh_course&page=fiqh-subscriptions&export=subscriptions'), 'export_subscriptions', 'export_nonce'); ?>" class="page-title-action">
+                <span class="dashicons dashicons-download" style="vertical-align: middle;"></span>
+                <?php _e('تصدير الاشتراكات', 'fiqh-lms'); ?>
+            </a>
+            <a href="<?php echo wp_nonce_url(admin_url('edit.php?post_type=fiqh_course&page=fiqh-subscriptions&export=full_report'), 'export_full_report', 'export_nonce'); ?>" class="page-title-action">
+                <span class="dashicons dashicons-media-spreadsheet" style="vertical-align: middle;"></span>
+                <?php _e('تصدير تقرير شامل', 'fiqh-lms'); ?>
             </a>
 
             <hr class="wp-header-end">
@@ -1224,6 +1252,9 @@ class FiqhLearning_Admin_Menus {
                                 </button>
                                 <a href="?post_type=fiqh_course&page=fiqh-subscriptions&view_payments=<?php echo $sub->id; ?>" class="button button-small">
                                     <?php _e('عرض الدفعات', 'fiqh-lms'); ?>
+                                </a>
+                                <a href="<?php echo wp_nonce_url(admin_url('edit.php?post_type=fiqh_course&page=fiqh-subscriptions&export=payments&subscription_id=' . $sub->id), 'export_payments', 'export_nonce'); ?>" class="button button-small" title="<?php _e('تصدير دفعات هذا الطالب', 'fiqh-lms'); ?>">
+                                    <span class="dashicons dashicons-download" style="vertical-align: middle; font-size: 13px;"></span>
                                 </a>
                             </td>
                         </tr>
@@ -1678,6 +1709,261 @@ class FiqhLearning_Admin_Menus {
         });
         </script>
         <?php
+    }
+
+    /**
+     * تصدير الاشتراكات إلى CSV
+     */
+    private function export_subscriptions_csv() {
+        global $wpdb;
+
+        // جلب البيانات
+        $subscriptions = $wpdb->get_results(
+            "SELECT
+                s.*,
+                u.display_name as student_name,
+                u.user_email,
+                b.name as batch_name,
+                (SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE subscription_id = s.id) as total_payments,
+                (SELECT SUM(amount) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE subscription_id = s.id) as total_paid
+            FROM {$wpdb->prefix}fiqh_subscriptions s
+            LEFT JOIN {$wpdb->users} u ON s.user_id = u.ID
+            LEFT JOIN {$wpdb->prefix}fiqh_batches b ON s.batch_id = b.id
+            ORDER BY s.created_at DESC"
+        );
+
+        // تحديد headers للتحميل
+        $filename = 'subscriptions-' . date('Y-m-d') . '.csv';
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        // فتح output stream
+        $output = fopen('php://output', 'w');
+
+        // إضافة BOM لدعم UTF-8 في Excel
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+
+        // كتابة الرؤوس
+        fputcsv($output, array(
+            'الطالب',
+            'البريد الإلكتروني',
+            'المستوى الدراسي',
+            'الاشتراك الشهري',
+            'تاريخ البداية',
+            'تاريخ النهاية',
+            'عدد الدفعات',
+            'المجموع المدفوع',
+            'الحالة',
+            'ملاحظات'
+        ));
+
+        // كتابة البيانات
+        foreach ($subscriptions as $sub) {
+            $status_text = array(
+                'active' => 'نشط',
+                'suspended' => 'معلق',
+                'expired' => 'منتهي'
+            );
+
+            fputcsv($output, array(
+                $sub->student_name,
+                $sub->user_email,
+                $sub->batch_name ? $sub->batch_name : '-',
+                number_format($sub->monthly_amount, 2) . ' د.م',
+                $sub->start_date,
+                $sub->end_date ? $sub->end_date : '-',
+                $sub->total_payments,
+                number_format($sub->total_paid, 2) . ' د.م',
+                $status_text[$sub->status],
+                $sub->notes
+            ));
+        }
+
+        fclose($output);
+    }
+
+    /**
+     * تصدير دفعات اشتراك معين إلى CSV
+     */
+    private function export_payments_csv($subscription_id) {
+        global $wpdb;
+
+        // جلب معلومات الاشتراك
+        $subscription = $wpdb->get_row($wpdb->prepare(
+            "SELECT s.*, u.display_name as student_name
+            FROM {$wpdb->prefix}fiqh_subscriptions s
+            LEFT JOIN {$wpdb->users} u ON s.user_id = u.ID
+            WHERE s.id = %d",
+            $subscription_id
+        ));
+
+        if (!$subscription) {
+            wp_die(__('الاشتراك غير موجود', 'fiqh-lms'));
+        }
+
+        // جلب الدفعات
+        $payments = $wpdb->get_results($wpdb->prepare(
+            "SELECT
+                p.*,
+                u.display_name as created_by_name
+            FROM {$wpdb->prefix}fiqh_subscription_payments p
+            LEFT JOIN {$wpdb->users} u ON p.created_by = u.ID
+            WHERE p.subscription_id = %d
+            ORDER BY p.payment_date DESC",
+            $subscription_id
+        ));
+
+        // تحديد headers للتحميل
+        $filename = 'payments-' . sanitize_title($subscription->student_name) . '-' . date('Y-m-d') . '.csv';
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        // فتح output stream
+        $output = fopen('php://output', 'w');
+
+        // إضافة BOM لدعم UTF-8 في Excel
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+
+        // معلومات الاشتراك في الأعلى
+        fputcsv($output, array('معلومات الاشتراك'));
+        fputcsv($output, array('الطالب:', $subscription->student_name));
+        fputcsv($output, array('الاشتراك الشهري:', number_format($subscription->monthly_amount, 2) . ' د.م'));
+        fputcsv($output, array('تاريخ البداية:', $subscription->start_date));
+        fputcsv($output, array(''));
+
+        // كتابة الرؤوس
+        fputcsv($output, array(
+            'الشهر',
+            'المبلغ',
+            'تاريخ الدفع',
+            'طريقة الدفع',
+            'الحالة',
+            'سجّلها',
+            'ملاحظات'
+        ));
+
+        // كتابة البيانات
+        $payment_methods = array(
+            'cash' => 'نقداً',
+            'bank_transfer' => 'تحويل بنكي',
+            'check' => 'شيك',
+            'online' => 'دفع إلكتروني'
+        );
+
+        foreach ($payments as $payment) {
+            fputcsv($output, array(
+                $payment->payment_month,
+                number_format($payment->amount, 2) . ' د.م',
+                $payment->payment_date,
+                isset($payment_methods[$payment->payment_method]) ? $payment_methods[$payment->payment_method] : $payment->payment_method,
+                $payment->status === 'paid' ? 'مدفوع' : 'معلق',
+                $payment->created_by_name,
+                $payment->notes
+            ));
+        }
+
+        fclose($output);
+    }
+
+    /**
+     * تصدير تقرير شامل (اشتراكات + دفعات) إلى CSV
+     */
+    private function export_full_report_csv() {
+        global $wpdb;
+
+        // جلب جميع الاشتراكات مع دفعاتها
+        $subscriptions = $wpdb->get_results(
+            "SELECT
+                s.*,
+                u.display_name as student_name,
+                u.user_email,
+                b.name as batch_name
+            FROM {$wpdb->prefix}fiqh_subscriptions s
+            LEFT JOIN {$wpdb->users} u ON s.user_id = u.ID
+            LEFT JOIN {$wpdb->prefix}fiqh_batches b ON s.batch_id = b.id
+            ORDER BY u.display_name"
+        );
+
+        // تحديد headers للتحميل
+        $filename = 'full-report-' . date('Y-m-d') . '.csv';
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        // فتح output stream
+        $output = fopen('php://output', 'w');
+
+        // إضافة BOM لدعم UTF-8 في Excel
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+
+        // عنوان التقرير
+        fputcsv($output, array('تقرير الاشتراكات والدفعات الشامل'));
+        fputcsv($output, array('تاريخ التقرير: ' . date('Y-m-d H:i:s')));
+        fputcsv($output, array(''));
+
+        $payment_methods = array(
+            'cash' => 'نقداً',
+            'bank_transfer' => 'تحويل بنكي',
+            'check' => 'شيك',
+            'online' => 'دفع إلكتروني'
+        );
+
+        // لكل اشتراك
+        foreach ($subscriptions as $sub) {
+            // معلومات الطالب
+            fputcsv($output, array('===== ' . $sub->student_name . ' ====='));
+            fputcsv($output, array('البريد الإلكتروني:', $sub->user_email));
+            fputcsv($output, array('المستوى:', $sub->batch_name ? $sub->batch_name : '-'));
+            fputcsv($output, array('الاشتراك الشهري:', number_format($sub->monthly_amount, 2) . ' د.م'));
+            fputcsv($output, array('تاريخ البداية:', $sub->start_date));
+            fputcsv($output, array(''));
+
+            // جلب دفعات هذا الاشتراك
+            $payments = $wpdb->get_results($wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}fiqh_subscription_payments
+                WHERE subscription_id = %d
+                ORDER BY payment_date DESC",
+                $sub->id
+            ));
+
+            if ($payments) {
+                fputcsv($output, array('الشهر', 'المبلغ', 'تاريخ الدفع', 'طريقة الدفع', 'الحالة'));
+                $total = 0;
+                foreach ($payments as $payment) {
+                    fputcsv($output, array(
+                        $payment->payment_month,
+                        number_format($payment->amount, 2) . ' د.م',
+                        $payment->payment_date,
+                        isset($payment_methods[$payment->payment_method]) ? $payment_methods[$payment->payment_method] : $payment->payment_method,
+                        $payment->status === 'paid' ? 'مدفوع' : 'معلق'
+                    ));
+                    $total += $payment->amount;
+                }
+                fputcsv($output, array('المجموع:', number_format($total, 2) . ' د.م'));
+            } else {
+                fputcsv($output, array('لا توجد دفعات مسجلة'));
+            }
+
+            fputcsv($output, array(''));
+            fputcsv($output, array(''));
+        }
+
+        // إحصائيات عامة في النهاية
+        $total_active = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_subscriptions WHERE status = 'active'");
+        $total_revenue = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}fiqh_subscription_payments");
+        $monthly_revenue = $wpdb->get_var("SELECT SUM(amount) FROM {$wpdb->prefix}fiqh_subscription_payments WHERE MONTH(payment_date) = MONTH(CURRENT_DATE()) AND YEAR(payment_date) = YEAR(CURRENT_DATE())");
+
+        fputcsv($output, array('===== إحصائيات عامة ====='));
+        fputcsv($output, array('إجمالي الاشتراكات النشطة:', $total_active));
+        fputcsv($output, array('إجمالي الإيرادات:', number_format($total_revenue, 2) . ' د.م'));
+        fputcsv($output, array('إيرادات هذا الشهر:', number_format($monthly_revenue, 2) . ' د.م'));
+
+        fclose($output);
     }
 
     /**
