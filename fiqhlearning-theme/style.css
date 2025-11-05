@@ -89,43 +89,43 @@ Tags: rtl-language-support, education, lms, arabic, islamic, two-columns, custom
     --radius-full: 9999px;
 }
 
-/* وضع الظلام - ألوان محسنة للقراءة والراحة */
+/* وضع الظلام - متناسق مع الهوية الأصلية */
 body.dark-mode {
-    /* الخلفيات - أكثر ظلمة وراحة للعين */
-    --color-white: #0a0e13;
-    --color-light: #141821;
-    --color-light-gray: #1e2430;
+    /* الخلفيات - أخضر داكن مريح للعين */
+    --color-white: #0D1512;
+    --color-light: #172A23;
+    --color-light-gray: #12201B;
 
-    /* النصوص - وضوح عالي وتباين ممتاز */
-    --color-black: #e8edf3;
-    --color-dark: #c4cdd6;
-    --color-dark-gray: #8b95a1;
-    --color-gray: #6c7784;
+    /* النصوص - وضوح عالي مع لمسة خضراء */
+    --color-black: #E7F6EE;
+    --color-dark: #C2D6CC;
+    --color-dark-gray: #8FA69A;
+    --color-gray: #6B7F74;
 
-    /* الألوان الأساسية - أخضر زمردي ساطع */
-    --color-primary: #3fb950;
-    --color-primary-dark: #2ea043;
-    --color-primary-light: #56d364;
-    --color-accent: #56d364;
+    /* الألوان الأساسية - هوية الريحان الخضراء */
+    --color-primary: #20A36C;
+    --color-primary-dark: #167A52;
+    --color-primary-light: #34C585;
+    --color-accent: #4BE49C;
 
-    /* ألوان الحالات - ساطعة وواضحة */
-    --color-success: #3fb950;
-    --color-warning: #e5a50a;
-    --color-error: #ff5a54;
-    --color-info: #58a6ff;
+    /* ألوان الحالات - ناعمة ومتناسقة */
+    --color-success: #34C585;
+    --color-warning: #E3A74D;
+    --color-error: #E06A6A;
+    --color-info: #4BA7E4;
 
     /* متغيرات إضافية للوضع الليلي */
-    --color-border: #2d3748;
-    --color-dark-bg: #0a0e13;
-    --color-dark-card: #141821;
-    --color-dark-border: #2d3748;
+    --color-border: #1F3A2F;
+    --color-dark-bg: #0D1512;
+    --color-dark-card: #172A23;
+    --color-dark-border: #1F3A2F;
 
-    /* الظلال في الوضع الليلي */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.8);
-    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.8), 0 1px 2px 0 rgba(0, 0, 0, 0.7);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.9), 0 2px 4px -1px rgba(0, 0, 0, 0.7);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.95), 0 4px 6px -2px rgba(0, 0, 0, 0.8);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.95), 0 10px 10px -5px rgba(0, 0, 0, 0.85);
+    /* الظلال في الوضع الليلي - ناعمة */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.45);
+    --shadow-base: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.45), 0 2px 4px -1px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.45), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 10px 10px -5px rgba(0, 0, 0, 0.25);
 }
 
 body.dark-mode .card {
@@ -154,8 +154,8 @@ body.dark-mode .main-header {
 }
 
 body.dark-mode .site-footer {
-    background-color: #15191f;
-    border-top: 1px solid var(--color-light-gray);
+    background-color: #0D1512;
+    border-top: 1px solid var(--color-border);
 }
 
 /* تحسينات الوضع الليلي للأسئلة والأجوبة */
