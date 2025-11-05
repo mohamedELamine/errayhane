@@ -3092,6 +3092,403 @@ body.dark-mode .post-navigation-link {
     font-size: var(--text-sm);
 }
 
+/* Enhanced Dashboard Components */
+
+/* Batch Header */
+.batch-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.batch-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.batch-info {
+    flex: 1;
+}
+
+.batch-info h3 {
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+}
+
+.batch-status {
+    flex-shrink: 0;
+}
+
+.batch-dates {
+    display: flex;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.batch-date-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.batch-date-item svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.date-label {
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+}
+
+.date-value {
+    font-size: var(--text-sm);
+    color: var(--color-dark);
+    font-weight: 600;
+}
+
+/* Overall Progress */
+.overall-progress {
+    margin-top: var(--spacing-lg);
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.progress-label {
+    font-size: var(--text-base);
+    color: var(--color-dark);
+    font-weight: 600;
+}
+
+.progress-percentage {
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background-color: var(--color-light);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-sm);
+}
+
+.progress-stats-inline {
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+}
+
+/* No Batch Card */
+.no-batch-card {
+    padding: var(--spacing-3xl);
+    text-align: center;
+}
+
+.no-batch-icon {
+    color: var(--color-border);
+    margin-bottom: var(--spacing-xl);
+}
+
+.no-batch-card h3 {
+    font-size: var(--text-xl);
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-md);
+}
+
+.no-batch-card p {
+    color: var(--color-dark-gray);
+    font-size: var(--text-base);
+}
+
+/* Enhanced Stat Icons */
+.progress-stat-item {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.progress-stat-item .stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-stat-item .stat-content {
+    text-align: center;
+}
+
+/* Courses Progress Section */
+.courses-progress-section {
+    margin-top: var(--spacing-2xl);
+}
+
+.courses-progress-section h3 {
+    font-size: var(--text-xl);
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-lg);
+}
+
+.courses-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.course-progress-item {
+    padding: var(--spacing-lg);
+}
+
+.course-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-md);
+}
+
+.course-info h4 {
+    font-size: var(--text-lg);
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-xs);
+}
+
+.course-stats {
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+}
+
+.course-percentage {
+    flex-shrink: 0;
+}
+
+.percentage-value {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+/* Settings Forms */
+.settings-section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.settings-section-header svg {
+    color: var(--color-primary);
+}
+
+.settings-section-header h3 {
+    font-size: var(--text-xl);
+    color: var(--color-dark);
+    margin: 0;
+}
+
+.settings-form {
+    margin-top: var(--spacing-lg);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.form-actions {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-border);
+    transition: 0.3s;
+    border-radius: 34px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: var(--color-primary);
+}
+
+.toggle-switch input:focus + .toggle-slider {
+    box-shadow: 0 0 1px var(--color-primary);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* Notification Options */
+.notification-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background-color: var(--color-light);
+    border-radius: var(--radius-md);
+}
+
+.notification-info h4 {
+    font-size: var(--text-base);
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-xs);
+}
+
+.notification-info p {
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+    margin: 0;
+}
+
+/* Account Info Grid */
+.account-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.account-info-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background-color: var(--color-light);
+    border-radius: var(--radius-md);
+}
+
+.account-info-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.account-info-content {
+    flex: 1;
+}
+
+.account-info-content .info-label {
+    font-size: var(--text-sm);
+    color: var(--color-dark-gray);
+    margin-bottom: var(--spacing-xs);
+}
+
+.account-info-content .info-value {
+    font-size: var(--text-base);
+    color: var(--color-dark);
+    font-weight: 600;
+}
+
+/* Dashboard Subtitle */
+.dashboard-subtitle {
+    font-size: var(--text-base);
+    color: var(--color-dark-gray);
+    margin-top: var(--spacing-xs);
+}
+
+/* Dark Mode Support */
+body.dark-mode .batch-header {
+    border-bottom-color: var(--color-dark-border);
+}
+
+body.dark-mode .batch-dates {
+    border-bottom-color: var(--color-dark-border);
+}
+
+body.dark-mode .settings-section-header {
+    border-bottom-color: var(--color-dark-border);
+}
+
+body.dark-mode .form-actions {
+    border-top-color: var(--color-dark-border);
+}
+
+body.dark-mode .notification-item {
+    background-color: var(--color-dark-card);
+}
+
+body.dark-mode .account-info-item {
+    background-color: var(--color-dark-card);
+}
+
+body.dark-mode .toggle-slider {
+    background-color: var(--color-dark-border);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .dashboard-container {
