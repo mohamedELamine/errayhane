@@ -32,6 +32,16 @@ class FiqhLearning_Admin_Menus {
     public function add_admin_menus() {
         // تم حذف قائمة التسجيل العام - النظام يعتمد على: العلوم ← المقررات ← المستويات ← الطلاب
 
+        // أداة إصلاح التسجيلات
+        add_submenu_page(
+            'edit.php?post_type=fiqh_course',
+            __('إصلاح التسجيلات', 'fiqh-lms'),
+            __('🔧 إصلاح التسجيلات', 'fiqh-lms'),
+            'manage_options',
+            'fix-enrollments',
+            array($this, 'fix_enrollments_page')
+        );
+
         // قائمة الأسئلة والإجابات
         add_submenu_page(
             'edit.php?post_type=fiqh_course',
@@ -61,6 +71,13 @@ class FiqhLearning_Admin_Menus {
             'fiqh-settings',
             array($this, 'settings_page')
         );
+    }
+
+    /**
+     * صفحة إصلاح التسجيلات
+     */
+    public function fix_enrollments_page() {
+        include_once plugin_dir_path(__FILE__) . 'fix-enrollments.php';
     }
 
     /**
