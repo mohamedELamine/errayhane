@@ -114,6 +114,13 @@ function fiqh_generate_demo_content($delete_old = false) {
         }
         echo '<p style="color: green;">✅ تم حذف ' . count($courses) . ' مقرر</p>';
 
+        // حذف صفحة student-dashboard إذا كانت موجودة
+        $student_dashboard_page = get_page_by_path('student-dashboard');
+        if ($student_dashboard_page) {
+            wp_delete_post($student_dashboard_page->ID, true);
+            echo '<p style="color: green;">✅ تم حذف صفحة student-dashboard</p>';
+        }
+
         // تنظيف الـ cache
         wp_cache_flush();
         echo '<p style="color: green;">✅ تم تنظيف الـ cache</p>';
@@ -1096,6 +1103,88 @@ function fiqh_generate_demo_content($delete_old = false) {
             echo '<p style="color: green;">✅ تم إنشاء مقرر: <strong>' . $course_data['title'] . '</strong> مع <strong>' . count($course_data['lessons']) . '</strong> محاضرة (' . $course_data['level'] . ')</p>';
         }
     }
+
+    // 6.5 تسجيل الطلاب تلقائياً في المقررات حسب مستواهم
+    echo '<h2>6️⃣➕ تسجيل الطلاب في المقررات</h2>';
+
+    $enrollments_table = $wpdb->prefix . 'fiqh_enrollments';
+    $enrolled_count = 0;
+
+    // جلب جميع المقررات المنشأة
+    $all_courses = get_posts(array(
+        'post_type' => 'fiqh_course',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'post_status' => 'publish'
+    ));
+
+    // تسجيل كل طالب في المقررات المناسبة لمستواه
+    foreach ($all_student_ids as $student_id) {
+        $student_level = get_user_meta($student_id, '_fiqh_student_level', true);
+
+        if (!$student_level) {
+            continue;
+        }
+
+        // جلب ترتيب مستوى الطالب
+        $student_level_order = $wpdb->get_var($wpdb->prepare(
+            "SELECT level_order FROM {$wpdb->prefix}fiqh_batches WHERE id = %d",
+            $student_level
+        ));
+
+        if ($student_level_order === null) {
+            continue;
+        }
+
+        // التسجيل في كل المقررات المناسبة
+        foreach ($all_courses as $course_id) {
+            $course_levels = get_post_meta($course_id, '_fiqh_course_levels', true);
+
+            if (!is_array($course_levels) || empty($course_levels)) {
+                // المقرر بدون مستوى محدد - تسجيل الجميع
+                $can_enroll = true;
+            } else {
+                // التحقق من أن أحد مستويات المقرر أقل أو يساوي مستوى الطالب
+                $can_enroll = false;
+                foreach ($course_levels as $course_level_id) {
+                    $course_level_order = $wpdb->get_var($wpdb->prepare(
+                        "SELECT level_order FROM {$wpdb->prefix}fiqh_batches WHERE id = %d",
+                        $course_level_id
+                    ));
+
+                    if ($course_level_order !== null && $course_level_order <= $student_level_order) {
+                        $can_enroll = true;
+                        break;
+                    }
+                }
+            }
+
+            if ($can_enroll) {
+                // التحقق من عدم التسجيل المسبق
+                $exists = $wpdb->get_var($wpdb->prepare(
+                    "SELECT id FROM $enrollments_table WHERE user_id = %d AND course_id = %d",
+                    $student_id,
+                    $course_id
+                ));
+
+                if (!$exists) {
+                    $wpdb->insert(
+                        $enrollments_table,
+                        array(
+                            'user_id' => $student_id,
+                            'course_id' => $course_id,
+                            'status' => 'active',
+                            'enrolled_at' => current_time('mysql'),
+                        ),
+                        array('%d', '%d', '%s', '%s')
+                    );
+                    $enrolled_count++;
+                }
+            }
+        }
+    }
+
+    echo '<p style="color: green;">✅ تم تسجيل الطلاب في المقررات المناسبة: <strong>' . $enrolled_count . '</strong> تسجيل</p>';
 
     // تنظيف شامل للـ cache بعد إنشاء كل المحتوى
     wp_cache_flush();
