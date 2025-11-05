@@ -3132,3 +3132,120 @@ body.dark-mode .post-navigation-link {
         padding: var(--spacing-lg);
     }
 }
+
+/* ==========================================================================
+   PDF Modal - عارض الكتب
+   ========================================================================== */
+
+.pdf-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 99999;
+    overflow: auto;
+    padding: 20px;
+}
+
+.pdf-modal-content {
+    background-color: var(--color-white);
+    margin: auto;
+    max-width: 1200px;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+}
+
+.pdf-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.pdf-modal-header h3 {
+    margin: 0;
+    font-size: var(--text-xl);
+}
+
+.pdf-modal-close {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 32px;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    transition: background-color var(--transition-base);
+}
+
+.pdf-modal-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pdf-modal-body {
+    padding: 0;
+    min-height: 600px;
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+    background-color: var(--color-gray-100);
+}
+
+.pdf-modal-body iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    border: none;
+}
+
+/* Dark Mode */
+body.dark-mode .pdf-modal-content {
+    background-color: var(--color-dark-card);
+}
+
+body.dark-mode .pdf-modal-header {
+    background-color: var(--color-primary-dark);
+}
+
+body.dark-mode .pdf-modal-body {
+    background-color: var(--color-dark-bg);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .pdf-modal {
+        padding: 10px;
+    }
+
+    .pdf-modal-content {
+        max-width: 100%;
+    }
+
+    .pdf-modal-header {
+        padding: var(--spacing-md);
+    }
+
+    .pdf-modal-header h3 {
+        font-size: var(--text-lg);
+    }
+
+    .pdf-modal-body {
+        min-height: 400px;
+        max-height: calc(100vh - 100px);
+    }
+
+    .pdf-modal-body iframe {
+        min-height: 400px;
+    }
+}

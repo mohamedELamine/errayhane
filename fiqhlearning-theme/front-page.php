@@ -193,7 +193,7 @@ get_header();
                         echo number_format_i18n($students);
                         ?>+
                     </div>
-                    <div class="stat-label"><?php _e('طالب', 'fiqhlearning'); ?></div>
+                    <div class="stat-label"><?php echo get_theme_mod('stat_student_label', __('طالب', 'fiqhlearning')); ?></div>
                 </div>
 
                 <div class="stat-card">
@@ -209,7 +209,7 @@ get_header();
                         echo number_format_i18n($courses->publish);
                         ?>+
                     </div>
-                    <div class="stat-label"><?php _e('مقرر', 'fiqhlearning'); ?></div>
+                    <div class="stat-label"><?php echo get_theme_mod('stat_course_label', __('مقرر', 'fiqhlearning')); ?></div>
                 </div>
 
                 <div class="stat-card">
@@ -225,7 +225,7 @@ get_header();
                         echo number_format_i18n($lessons->publish);
                         ?>+
                     </div>
-                    <div class="stat-label"><?php _e('درس', 'fiqhlearning'); ?></div>
+                    <div class="stat-label"><?php echo get_theme_mod('stat_lesson_label', __('درس', 'fiqhlearning')); ?></div>
                 </div>
 
                 <div class="stat-card">
@@ -241,7 +241,7 @@ get_header();
                         echo number_format_i18n($sciences);
                         ?>+
                     </div>
-                    <div class="stat-label"><?php _e('علم', 'fiqhlearning'); ?></div>
+                    <div class="stat-label"><?php echo get_theme_mod('stat_science_label', __('علم', 'fiqhlearning')); ?></div>
                 </div>
             </div>
         </div>
@@ -285,11 +285,11 @@ get_header();
                             <line x1="8" y1="2" x2="8" y2="6"></line>
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
-                        <?php _e('الأحداث والفعاليات', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('events_section_title', __('الأحداث والفعاليات', 'fiqhlearning')); ?>
                     </h2>
                     <?php if ($events_cat) : ?>
                         <a href="<?php echo get_category_link($events_cat->term_id); ?>" class="btn btn-outline">
-                            <?php _e('جميع الأحداث', 'fiqhlearning'); ?>
+                            <?php echo get_theme_mod('events_button_text', __('جميع الأحداث', 'fiqhlearning')); ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -307,7 +307,7 @@ get_header();
                                 </h3>
                                 <p class="event-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 15); ?></p>
                                 <a href="<?php the_permalink(); ?>" class="event-link">
-                                    <?php _e('معرفة المزيد', 'fiqhlearning'); ?>
+                                    <?php echo get_theme_mod('event_read_more_text', __('معرفة المزيد', 'fiqhlearning')); ?>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -339,10 +339,10 @@ get_header();
                             <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                             <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                         </svg>
-                        <?php _e('العلوم الشرعية', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('sciences_section_title', __('العلوم الشرعية', 'fiqhlearning')); ?>
                     </h2>
                     <a href="<?php echo get_post_type_archive_link('fiqh_course'); ?>" class="btn btn-outline">
-                        <?php _e('عرض الكل', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('sciences_view_all_text', __('عرض الكل', 'fiqhlearning')); ?>
                     </a>
                 </div>
 
@@ -356,7 +356,7 @@ get_header();
                                 </svg>
                             </div>
                             <h3 class="science-name"><?php echo esc_html($science->name); ?></h3>
-                            <p class="science-count"><?php echo $science->count; ?> <?php _e('مقرر', 'fiqhlearning'); ?></p>
+                            <p class="science-count"><?php echo $science->count; ?> <?php echo get_theme_mod('science_course_label', __('مقرر', 'fiqhlearning')); ?></p>
                             <?php if ($science->description) : ?>
                                 <p class="science-description"><?php echo esc_html(wp_trim_words($science->description, 12)); ?></p>
                             <?php endif; ?>
@@ -390,10 +390,10 @@ get_header();
                             <line x1="16" y1="17" x2="8" y2="17"></line>
                             <polyline points="10 9 9 9 8 9"></polyline>
                         </svg>
-                        <?php _e('آخر المقالات', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('blog_section_title', __('آخر المقالات', 'fiqhlearning')); ?>
                     </h2>
                     <a href="<?php echo get_permalink(get_option('page_for_posts')); ?>" class="btn btn-outline">
-                        <?php _e('جميع المقالات', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('blog_view_all_text', __('جميع المقالات', 'fiqhlearning')); ?>
                     </a>
                 </div>
 
@@ -432,7 +432,7 @@ get_header();
                                     <?php echo wp_trim_words(get_the_excerpt($post->ID), 20); ?>
                                 </p>
                                 <a href="<?php echo get_permalink($post->ID); ?>" class="read-more-link">
-                                    <?php _e('اقرأ المزيد', 'fiqhlearning'); ?>
+                                    <?php echo get_theme_mod('blog_read_more_text', __('اقرأ المزيد', 'fiqhlearning')); ?>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -454,14 +454,14 @@ get_header();
                     <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                     <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                 </svg>
-                <h2><?php _e('ابدأ رحلتك التعليمية اليوم', 'fiqhlearning'); ?></h2>
-                <p><?php _e('انضم إلى آلاف الطلاب واحصل على تعليم فقهي متميز في الفقه المالكي', 'fiqhlearning'); ?></p>
+                <h2><?php echo get_theme_mod('cta_title', __('ابدأ رحلتك التعليمية اليوم', 'fiqhlearning')); ?></h2>
+                <p><?php echo get_theme_mod('cta_description', __('انضم إلى آلاف الطلاب واحصل على تعليم فقهي متميز في الفقه المالكي', 'fiqhlearning')); ?></p>
                 <a href="<?php echo get_post_type_archive_link('fiqh_course'); ?>" class="btn btn-primary btn-lg">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
-                    <?php _e('ابدأ الآن', 'fiqhlearning'); ?>
+                    <?php echo get_theme_mod('cta_button_text', __('ابدأ الآن', 'fiqhlearning')); ?>
                 </a>
             </div>
         </div>
