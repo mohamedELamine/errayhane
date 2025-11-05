@@ -1505,5 +1505,153 @@ function fiqhlearning_customize_register($wp_customize) {
         'section'     => 'fiqh_contact_page_section',
         'type'        => 'text',
     ));
+
+    // ==========================================================================
+    // لوحة تخصيص النصوص (Text Customization Panel)
+    // ==========================================================================
+
+    $wp_customize->add_panel('fiqh_texts_panel', array(
+        'title'       => __('تخصيص النصوص', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص الظاهرة في الموقع بدون الحاجة لتعديل الكود', 'fiqhlearning'),
+        'priority'    => 25,
+    ));
+
+    // ==========================================================================
+    // قسم نصوص الهيدر (Header Texts Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_header_texts', array(
+        'title'       => __('نصوص الهيدر', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص الظاهرة في رأس الموقع (Header)', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 10,
+    ));
+
+    // نصوص الهيدر - 12 نص
+    $header_texts = array(
+        'header_telegram_text' => array(
+            'label'   => 'نص قناة التليجرام',
+            'default' => 'قناة التليجرام',
+        ),
+        'header_whatsapp_text' => array(
+            'label'   => 'نص واتساب',
+            'default' => 'واتساب',
+        ),
+        'header_menu_text' => array(
+            'label'   => 'نص القائمة',
+            'default' => 'القائمة',
+        ),
+        'header_search_label' => array(
+            'label'   => 'تسمية البحث',
+            'default' => 'بحث',
+        ),
+        'header_dark_mode_label' => array(
+            'label'   => 'تسمية تبديل الوضع الليلي',
+            'default' => 'تبديل الوضع الليلي',
+        ),
+        'header_my_account_label' => array(
+            'label'   => 'تسمية حسابي',
+            'default' => 'حسابي',
+        ),
+        'header_dashboard_text' => array(
+            'label'   => 'نص لوحة التحكم',
+            'default' => 'لوحة التحكم',
+        ),
+        'header_profile_text' => array(
+            'label'   => 'نص الملف الشخصي',
+            'default' => 'الملف الشخصي',
+        ),
+        'header_logout_text' => array(
+            'label'   => 'نص تسجيل الخروج',
+            'default' => 'تسجيل الخروج',
+        ),
+        'header_login_text' => array(
+            'label'   => 'نص تسجيل الدخول',
+            'default' => 'تسجيل الدخول',
+        ),
+        'header_close_label' => array(
+            'label'   => 'تسمية إغلاق',
+            'default' => 'إغلاق',
+        ),
+        'header_search_placeholder' => array(
+            'label'   => 'نص البحث (Placeholder)',
+            'default' => 'ابحث عن مقررات، دروس، مقالات...',
+        ),
+    );
+
+    foreach ($header_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_header_texts',
+            'type'        => 'text',
+        ));
+    }
+
+    // ==========================================================================
+    // قسم نصوص الفوتر (Footer Texts Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_footer_texts', array(
+        'title'       => __('نصوص الفوتر', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص الظاهرة في تذييل الموقع (Footer)', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 20,
+    ));
+
+    // نصوص الفوتر - 6 نصوص
+    $footer_texts = array(
+        'footer_copyright_text' => array(
+            'label'       => 'نص حقوق النشر',
+            'default'     => '&copy; %1$s %2$s. جميع الحقوق محفوظة.',
+            'description' => 'استخدم %1$s للسنة و %2$s لاسم الموقع',
+        ),
+        'footer_telegram_label' => array(
+            'label'   => 'تسمية تليجرام (Aria Label)',
+            'default' => 'تليجرام',
+        ),
+        'footer_whatsapp_label' => array(
+            'label'   => 'تسمية واتساب (Aria Label)',
+            'default' => 'واتساب',
+        ),
+        'footer_facebook_label' => array(
+            'label'   => 'تسمية فيسبوك (Aria Label)',
+            'default' => 'فيسبوك',
+        ),
+        'footer_twitter_label' => array(
+            'label'   => 'تسمية تويتر (Aria Label)',
+            'default' => 'تويتر',
+        ),
+        'footer_back_to_top_label' => array(
+            'label'   => 'تسمية زر العودة للأعلى',
+            'default' => 'العودة للأعلى',
+        ),
+    );
+
+    foreach ($footer_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $control_args = array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_footer_texts',
+            'type'    => 'text',
+        );
+
+        // إضافة وصف إذا كان موجوداً
+        if (isset($data['description'])) {
+            $control_args['description'] = __($data['description'], 'fiqhlearning');
+        }
+
+        $wp_customize->add_control($key, $control_args);
+    }
 }
 add_action('customize_register', 'fiqhlearning_customize_register');
