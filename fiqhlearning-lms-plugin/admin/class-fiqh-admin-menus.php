@@ -42,6 +42,16 @@ class FiqhLearning_Admin_Menus {
             array($this, 'fix_enrollments_page')
         );
 
+        // أداة التشخيص الكامل
+        add_submenu_page(
+            'edit.php?post_type=fiqh_course',
+            __('تشخيص النظام', 'fiqh-lms'),
+            __('🔍 تشخيص النظام', 'fiqh-lms'),
+            'manage_options',
+            'diagnose-system',
+            array($this, 'diagnose_system_page')
+        );
+
         // قائمة الأسئلة والإجابات
         add_submenu_page(
             'edit.php?post_type=fiqh_course',
@@ -78,6 +88,13 @@ class FiqhLearning_Admin_Menus {
      */
     public function fix_enrollments_page() {
         include_once plugin_dir_path(__FILE__) . 'fix-enrollments.php';
+    }
+
+    /**
+     * صفحة التشخيص الكامل
+     */
+    public function diagnose_system_page() {
+        include_once plugin_dir_path(__FILE__) . 'diagnose-system.php';
     }
 
     /**
