@@ -19,7 +19,7 @@ get_header();
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                     </svg>
-                    <?php _e('عن المدرسة', 'fiqhlearning'); ?>
+                    <?php echo esc_html(get_theme_mod('about_hero_badge', __('عن المدرسة', 'fiqhlearning'))); ?>
                 </div>
                 <h1 class="page-title">
                     <?php echo get_theme_mod('about_page_title', __('مدرسة الريحان للعلوم الشرعية', 'fiqhlearning')); ?>
@@ -37,7 +37,7 @@ get_header();
             <div class="about-intro-grid">
                 <div class="intro-image">
                     <?php if (get_theme_mod('about_intro_image')) : ?>
-                        <img src="<?php echo esc_url(get_theme_mod('about_intro_image')); ?>" alt="<?php _e('عن المدرسة', 'fiqhlearning'); ?>">
+                        <img src="<?php echo esc_url(get_theme_mod('about_intro_image')); ?>" alt="<?php echo esc_attr(get_theme_mod('about_hero_badge', __('عن المدرسة', 'fiqhlearning'))); ?>">
                     <?php else : ?>
                         <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
                             <rect x="50" y="50" width="400" height="300" rx="20" fill="var(--color-primary)" opacity="0.1"/>
@@ -57,28 +57,28 @@ get_header();
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
-                            <span><?php _e('منهج أصيل ومعتمد', 'fiqhlearning'); ?></span>
+                            <span><?php echo esc_html(get_theme_mod('about_intro_feature_1', __('منهج أصيل ومعتمد', 'fiqhlearning'))); ?></span>
                         </div>
                         <div class="intro-feature">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
-                            <span><?php _e('أساتذة متخصصون', 'fiqhlearning'); ?></span>
+                            <span><?php echo esc_html(get_theme_mod('about_intro_feature_2', __('أساتذة متخصصون', 'fiqhlearning'))); ?></span>
                         </div>
                         <div class="intro-feature">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
-                            <span><?php _e('محتوى تعليمي شامل', 'fiqhlearning'); ?></span>
+                            <span><?php echo esc_html(get_theme_mod('about_intro_feature_3', __('محتوى تعليمي شامل', 'fiqhlearning'))); ?></span>
                         </div>
                         <div class="intro-feature">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
-                            <span><?php _e('شهادات معتمدة', 'fiqhlearning'); ?></span>
+                            <span><?php echo esc_html(get_theme_mod('about_intro_feature_4', __('شهادات معتمدة', 'fiqhlearning'))); ?></span>
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@ get_header();
     <!-- رؤيتنا وقيمنا -->
     <section class="about-values">
         <div class="container">
-            <h2 class="section-title"><?php _e('قيمنا ورؤيتنا', 'fiqhlearning'); ?></h2>
+            <h2 class="section-title"><?php echo esc_html(get_theme_mod('about_values_section_title', __('قيمنا ورؤيتنا', 'fiqhlearning'))); ?></h2>
             <div class="values-grid">
                 <div class="value-card card">
                     <div class="value-icon">
@@ -188,8 +188,8 @@ get_header();
                             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                         </svg>
                     </div>
-                    <h3><?php _e('الأصالة العلمية', 'fiqhlearning'); ?></h3>
-                    <p><?php _e('الالتزام بالمنهج العلمي الأصيل في تدريس الفقه المالكي', 'fiqhlearning'); ?></p>
+                    <h3><?php echo esc_html(get_theme_mod('about_value_1_title', __('الأصالة العلمية', 'fiqhlearning'))); ?></h3>
+                    <p><?php echo esc_html(get_theme_mod('about_value_1_desc', __('الالتزام بالمنهج العلمي الأصيل في تدريس الفقه المالكي', 'fiqhlearning'))); ?></p>
                 </div>
 
                 <div class="value-card card">
@@ -201,8 +201,8 @@ get_header();
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg>
                     </div>
-                    <h3><?php _e('التميز التعليمي', 'fiqhlearning'); ?></h3>
-                    <p><?php _e('تقديم محتوى تعليمي عالي الجودة بأساليب عصرية ومبتكرة', 'fiqhlearning'); ?></p>
+                    <h3><?php echo esc_html(get_theme_mod('about_value_2_title', __('التميز التعليمي', 'fiqhlearning'))); ?></h3>
+                    <p><?php echo esc_html(get_theme_mod('about_value_2_desc', __('تقديم محتوى تعليمي عالي الجودة بأساليب عصرية ومبتكرة', 'fiqhlearning'))); ?></p>
                 </div>
 
                 <div class="value-card card">
@@ -211,8 +211,8 @@ get_header();
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                         </svg>
                     </div>
-                    <h3><?php _e('الجودة والإتقان', 'fiqhlearning'); ?></h3>
-                    <p><?php _e('الحرص على إتقان العمل وتقديم أفضل الخدمات التعليمية', 'fiqhlearning'); ?></p>
+                    <h3><?php echo esc_html(get_theme_mod('about_value_3_title', __('الجودة والإتقان', 'fiqhlearning'))); ?></h3>
+                    <p><?php echo esc_html(get_theme_mod('about_value_3_desc', __('الحرص على إتقان العمل وتقديم أفضل الخدمات التعليمية', 'fiqhlearning'))); ?></p>
                 </div>
 
                 <div class="value-card card">
@@ -222,8 +222,8 @@ get_header();
                             <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                         </svg>
                     </div>
-                    <h3><?php _e('التطوير المستمر', 'fiqhlearning'); ?></h3>
-                    <p><?php _e('السعي الدائم لتطوير المحتوى والخدمات التعليمية', 'fiqhlearning'); ?></p>
+                    <h3><?php echo esc_html(get_theme_mod('about_value_4_title', __('التطوير المستمر', 'fiqhlearning'))); ?></h3>
+                    <p><?php echo esc_html(get_theme_mod('about_value_4_desc', __('السعي الدائم لتطوير المحتوى والخدمات التعليمية', 'fiqhlearning'))); ?></p>
                 </div>
             </div>
         </div>
@@ -232,7 +232,7 @@ get_header();
     <!-- الفريق -->
     <section class="about-team">
         <div class="container">
-            <h2 class="section-title"><?php _e('فريق العمل', 'fiqhlearning'); ?></h2>
+            <h2 class="section-title"><?php echo esc_html(get_theme_mod('about_team_section_title', __('فريق العمل', 'fiqhlearning'))); ?></h2>
             <div class="team-grid">
                 <?php
                 // يمكن إضافة أعضاء الفريق من Customizer
@@ -281,18 +281,18 @@ get_header();
                     <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                     <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                 </svg>
-                <h2><?php _e('انضم إلى رحلتنا التعليمية', 'fiqhlearning'); ?></h2>
-                <p><?php _e('ابدأ رحلتك في تعلم الفقه المالكي والعلوم الشرعية مع مدرسة الريحان', 'fiqhlearning'); ?></p>
+                <h2><?php echo esc_html(get_theme_mod('about_cta_title', __('انضم إلى رحلتنا التعليمية', 'fiqhlearning'))); ?></h2>
+                <p><?php echo esc_html(get_theme_mod('about_cta_description', __('ابدأ رحلتك في تعلم الفقه المالكي والعلوم الشرعية مع مدرسة الريحان', 'fiqhlearning'))); ?></p>
                 <div class="cta-buttons">
                     <a href="<?php echo get_post_type_archive_link('fiqh_course'); ?>" class="btn btn-primary btn-lg">
-                        <?php _e('تصفح المقررات', 'fiqhlearning'); ?>
+                        <?php echo esc_html(get_theme_mod('about_cta_button_1', __('تصفح المقررات', 'fiqhlearning'))); ?>
                     </a>
                     <?php
                     $contact_page = get_page_by_path('contact');
                     if ($contact_page) :
                     ?>
                         <a href="<?php echo get_permalink($contact_page); ?>" class="btn btn-secondary btn-lg">
-                            <?php _e('اتصل بنا', 'fiqhlearning'); ?>
+                            <?php echo esc_html(get_theme_mod('about_cta_button_2', __('اتصل بنا', 'fiqhlearning'))); ?>
                         </a>
                     <?php endif; ?>
                 </div>
