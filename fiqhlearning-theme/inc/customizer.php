@@ -1572,6 +1572,36 @@ function fiqhlearning_customize_register($wp_customize) {
         ));
     }
 
+    // القيم الفعلية لمعلومات الاتصال
+
+    // العنوان
+    $wp_customize->add_setting('contact_address', array(
+        'default'           => 'المملكة المغربية - الرباط',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_address', array(
+        'label'       => __('العنوان الفعلي', 'fiqhlearning'),
+        'description' => __('عنوان المدرسة أو المعهد', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'textarea',
+    ));
+
+    // رقم الهاتف
+    $wp_customize->add_setting('contact_phone', array(
+        'default'           => '+212 661 234 567',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_phone', array(
+        'label'       => __('رقم الهاتف', 'fiqhlearning'),
+        'description' => __('يمكن إضافة أكثر من رقم (كل رقم في سطر)', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'textarea',
+    ));
+
     // البريد الإلكتروني الرئيسي
     $wp_customize->add_setting('contact_email_primary', array(
         'default'           => 'rayhaneschool@gmail.com',
@@ -1583,6 +1613,33 @@ function fiqhlearning_customize_register($wp_customize) {
         'label'       => __('البريد الإلكتروني الرئيسي', 'fiqhlearning'),
         'section'     => 'fiqh_contact_page_section',
         'type'        => 'email',
+    ));
+
+    // البريد الإلكتروني الثانوي
+    $wp_customize->add_setting('contact_email_secondary', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_email',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_email_secondary', array(
+        'label'       => __('البريد الإلكتروني الثانوي (اختياري)', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'email',
+    ));
+
+    // أوقات العمل
+    $wp_customize->add_setting('contact_work_hours', array(
+        'default'           => 'من الأحد إلى الخميس' . "\n" . '9:00 صباحاً - 5:00 مساءً',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_work_hours', array(
+        'label'       => __('أوقات العمل', 'fiqhlearning'),
+        'description' => __('يمكن استخدام أكثر من سطر', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'textarea',
     ));
 
     // عنوان قسم وسائل التواصل
@@ -1610,6 +1667,54 @@ function fiqhlearning_customize_register($wp_customize) {
         'section'     => 'fiqh_contact_page_section',
         'type'        => 'text',
     ));
+
+    // ==========================================================================
+    // قسم صفحة تسجيل الدخول (Login Page)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_login_page_section', array(
+        'title'       => __('صفحة تسجيل الدخول', 'fiqhlearning'),
+        'description' => __('تخصيص نصوص صفحة تسجيل الدخول', 'fiqhlearning'),
+        'priority'    => 43,
+    ));
+
+    // نصوص صفحة تسجيل الدخول
+    $login_texts = array(
+        'login_page_title' => array('label' => 'عنوان الصفحة', 'default' => 'تسجيل الدخول'),
+        'login_page_subtitle' => array('label' => 'العنوان الفرعي', 'default' => 'مرحباً بك في منصة تعلم الفقه'),
+        'login_username_label' => array('label' => 'تسمية اسم المستخدم', 'default' => 'اسم المستخدم أو البريد الإلكتروني'),
+        'login_username_placeholder' => array('label' => 'نص مربع اسم المستخدم', 'default' => 'أدخل اسم المستخدم'),
+        'login_password_label' => array('label' => 'تسمية كلمة المرور', 'default' => 'كلمة المرور'),
+        'login_password_placeholder' => array('label' => 'نص مربع كلمة المرور', 'default' => 'أدخل كلمة المرور'),
+        'login_remember_me_text' => array('label' => 'نص "تذكرني"', 'default' => 'تذكرني'),
+        'login_forgot_password_text' => array('label' => 'نص "نسيت كلمة المرور"', 'default' => 'نسيت كلمة المرور؟'),
+        'login_button_text' => array('label' => 'نص زر تسجيل الدخول', 'default' => 'تسجيل الدخول'),
+        'login_no_account_text' => array('label' => 'نص "ليس لديك حساب"', 'default' => 'ليس لديك حساب؟'),
+        'login_contact_admin_text' => array('label' => 'نص "تواصل مع الإدارة"', 'default' => 'تواصل مع الإدارة'),
+        'login_info_1_title' => array('label' => 'المعلومة 1 - العنوان', 'default' => 'تعلم الفقه بسهولة'),
+        'login_info_1_desc' => array('label' => 'المعلومة 1 - الوصف', 'default' => 'منصة تعليمية متكاملة لدراسة الفقه الإسلامي بأسلوب عصري وميسر'),
+        'login_info_2_title' => array('label' => 'المعلومة 2 - العنوان', 'default' => 'معلمون متخصصون'),
+        'login_info_2_desc' => array('label' => 'المعلومة 2 - الوصف', 'default' => 'نخبة من المعلمين المتخصصين في الفقه والعلوم الشرعية'),
+        'login_info_3_title' => array('label' => 'المعلومة 3 - العنوان', 'default' => 'تعلم بالسرعة المناسبة'),
+        'login_info_3_desc' => array('label' => 'المعلومة 3 - الوصف', 'default' => 'ادرس في أي وقت ومن أي مكان بالسرعة التي تناسبك'),
+    );
+
+    foreach ($login_texts as $key => $data) {
+        $sanitize_callback = (strpos($key, '_desc') !== false) ? 'sanitize_textarea_field' : 'sanitize_text_field';
+        $control_type = (strpos($key, '_desc') !== false) ? 'textarea' : 'text';
+
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => $sanitize_callback,
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_login_page_section',
+            'type'    => $control_type,
+        ));
+    }
 
     // ==========================================================================
     // لوحة تخصيص النصوص (Text Customization Panel)

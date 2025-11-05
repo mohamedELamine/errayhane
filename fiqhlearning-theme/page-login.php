@@ -45,8 +45,8 @@ switch ($login_error) {
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                     </svg>
                 </div>
-                <h1 class="login-title"><?php _e('تسجيل الدخول', 'fiqhlearning'); ?></h1>
-                <p class="login-subtitle"><?php _e('مرحباً بك في منصة تعلم الفقه', 'fiqhlearning'); ?></p>
+                <h1 class="login-title"><?php echo esc_html(get_theme_mod('login_page_title', __('تسجيل الدخول', 'fiqhlearning'))); ?></h1>
+                <p class="login-subtitle"><?php echo esc_html(get_theme_mod('login_page_subtitle', __('مرحباً بك في منصة تعلم الفقه', 'fiqhlearning'))); ?></p>
             </div>
 
             <!-- رسائل الخطأ والنجاح -->
@@ -76,7 +76,7 @@ switch ($login_error) {
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        <?php _e('اسم المستخدم أو البريد الإلكتروني', 'fiqhlearning'); ?>
+                        <?php echo esc_html(get_theme_mod('login_username_label', __('اسم المستخدم أو البريد الإلكتروني', 'fiqhlearning'))); ?>
                     </label>
                     <input
                         type="text"
@@ -85,7 +85,7 @@ switch ($login_error) {
                         class="form-control"
                         required
                         autocomplete="username"
-                        placeholder="<?php _e('أدخل اسم المستخدم', 'fiqhlearning'); ?>"
+                        placeholder="<?php echo esc_attr(get_theme_mod('login_username_placeholder', __('أدخل اسم المستخدم', 'fiqhlearning'))); ?>"
                     >
                 </div>
 
@@ -95,7 +95,7 @@ switch ($login_error) {
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
-                        <?php _e('كلمة المرور', 'fiqhlearning'); ?>
+                        <?php echo esc_html(get_theme_mod('login_password_label', __('كلمة المرور', 'fiqhlearning'))); ?>
                     </label>
                     <input
                         type="password"
@@ -104,17 +104,17 @@ switch ($login_error) {
                         class="form-control"
                         required
                         autocomplete="current-password"
-                        placeholder="<?php _e('أدخل كلمة المرور', 'fiqhlearning'); ?>"
+                        placeholder="<?php echo esc_attr(get_theme_mod('login_password_placeholder', __('أدخل كلمة المرور', 'fiqhlearning'))); ?>"
                     >
                 </div>
 
                 <div class="form-group-inline">
                     <label class="checkbox-label">
                         <input type="checkbox" name="rememberme" value="forever">
-                        <span><?php _e('تذكرني', 'fiqhlearning'); ?></span>
+                        <span><?php echo esc_html(get_theme_mod('login_remember_me_text', __('تذكرني', 'fiqhlearning'))); ?></span>
                     </label>
-                    <a href="<?php echo wp_lostpassword_url(); ?>" class="forgot-link">
-                        <?php _e('نسيت كلمة المرور؟', 'fiqhlearning'); ?>
+                    <a href="<?php echo home_url('/forgot-password'); ?>" class="forgot-link">
+                        <?php echo esc_html(get_theme_mod('login_forgot_password_text', __('نسيت كلمة المرور؟', 'fiqhlearning'))); ?>
                     </a>
                 </div>
 
@@ -126,16 +126,16 @@ switch ($login_error) {
                         <polyline points="10 17 15 12 10 7"></polyline>
                         <line x1="15" y1="12" x2="3" y2="12"></line>
                     </svg>
-                    <?php _e('تسجيل الدخول', 'fiqhlearning'); ?>
+                    <?php echo esc_html(get_theme_mod('login_button_text', __('تسجيل الدخول', 'fiqhlearning'))); ?>
                 </button>
             </form>
 
             <!-- روابط إضافية -->
             <div class="login-footer">
                 <p>
-                    <?php _e('ليس لديك حساب؟', 'fiqhlearning'); ?>
+                    <?php echo esc_html(get_theme_mod('login_no_account_text', __('ليس لديك حساب؟', 'fiqhlearning'))); ?>
                     <a href="<?php echo home_url('/'); ?>" class="register-link">
-                        <?php _e('تواصل مع الإدارة', 'fiqhlearning'); ?>
+                        <?php echo esc_html(get_theme_mod('login_contact_admin_text', __('تواصل مع الإدارة', 'fiqhlearning'))); ?>
                     </a>
                 </p>
             </div>
@@ -150,8 +150,8 @@ switch ($login_error) {
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                     </svg>
                 </div>
-                <h3><?php _e('تعلم الفقه بسهولة', 'fiqhlearning'); ?></h3>
-                <p><?php _e('منصة تعليمية متكاملة لدراسة الفقه الإسلامي بأسلوب عصري وميسر', 'fiqhlearning'); ?></p>
+                <h3><?php echo esc_html(get_theme_mod('login_info_1_title', __('تعلم الفقه بسهولة', 'fiqhlearning'))); ?></h3>
+                <p><?php echo esc_html(get_theme_mod('login_info_1_desc', __('منصة تعليمية متكاملة لدراسة الفقه الإسلامي بأسلوب عصري وميسر', 'fiqhlearning'))); ?></p>
             </div>
 
             <div class="info-card card">
@@ -163,8 +163,8 @@ switch ($login_error) {
                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
                 </div>
-                <h3><?php _e('معلمون متخصصون', 'fiqhlearning'); ?></h3>
-                <p><?php _e('نخبة من المعلمين المتخصصين في الفقه والعلوم الشرعية', 'fiqhlearning'); ?></p>
+                <h3><?php echo esc_html(get_theme_mod('login_info_2_title', __('معلمون متخصصون', 'fiqhlearning'))); ?></h3>
+                <p><?php echo esc_html(get_theme_mod('login_info_2_desc', __('نخبة من المعلمين المتخصصين في الفقه والعلوم الشرعية', 'fiqhlearning'))); ?></p>
             </div>
 
             <div class="info-card card">
@@ -174,8 +174,8 @@ switch ($login_error) {
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
                 </div>
-                <h3><?php _e('تعلم بالسرعة المناسبة', 'fiqhlearning'); ?></h3>
-                <p><?php _e('ادرس في أي وقت ومن أي مكان بالسرعة التي تناسبك', 'fiqhlearning'); ?></p>
+                <h3><?php echo esc_html(get_theme_mod('login_info_3_title', __('تعلم بالسرعة المناسبة', 'fiqhlearning'))); ?></h3>
+                <p><?php echo esc_html(get_theme_mod('login_info_3_desc', __('ادرس في أي وقت ومن أي مكان بالسرعة التي تناسبك', 'fiqhlearning'))); ?></p>
             </div>
         </div>
     </div>
