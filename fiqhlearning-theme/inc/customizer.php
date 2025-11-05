@@ -103,7 +103,7 @@ function fiqhlearning_customize_register($wp_customize) {
 
     $wp_customize->add_section('fiqh_homepage_section', array(
         'title'       => __('الصفحة الرئيسية', 'fiqhlearning'),
-        'description' => __('تخصيص محتوى الصفحة الرئيسية', 'fiqhlearning'),
+        'description' => __('تخصيص جميع محتويات ونصوص الصفحة الرئيسية', 'fiqhlearning'),
         'priority'    => 40,
     ));
 
@@ -1711,17 +1711,10 @@ function fiqhlearning_customize_register($wp_customize) {
     }
 
     // ==========================================================================
-    // قسم نصوص الصفحة الرئيسية (Front Page Texts Section)
+    // نصوص إضافية للصفحة الرئيسية (تم دمجها في قسم الصفحة الرئيسية)
     // ==========================================================================
 
-    $wp_customize->add_section('fiqh_frontpage_texts', array(
-        'title'       => __('نصوص الصفحة الرئيسية', 'fiqhlearning'),
-        'description' => __('تخصيص جميع النصوص في الصفحة الرئيسية (front-page.php)', 'fiqhlearning'),
-        'panel'       => 'fiqh_texts_panel',
-        'priority'    => 40,
-    ));
-
-    // نصوص الصفحة الرئيسية
+    // نصوص الصفحة الرئيسية (دمجها في fiqh_homepage_section)
     $frontpage_texts = array(
         // قسم Hero
         'hero_browse_courses_text' => array(
@@ -1840,7 +1833,7 @@ function fiqhlearning_customize_register($wp_customize) {
 
         $control_args = array(
             'label'   => __($data['label'], 'fiqhlearning'),
-            'section' => 'fiqh_frontpage_texts',
+            'section' => 'fiqh_homepage_section',
             'type'    => $control_type,
         );
 
