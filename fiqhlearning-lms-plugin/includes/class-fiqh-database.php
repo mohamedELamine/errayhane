@@ -279,6 +279,52 @@ class FiqhLearning_Database {
         ) $charset_collate;";
         dbDelta($sql_notes);
 
+        // جدول الاشتراكات الشهرية (Student Subscriptions)
+        $table_subscriptions = $wpdb->prefix . 'fiqh_subscriptions';
+        $sql_subscriptions = "CREATE TABLE IF NOT EXISTS $table_subscriptions (
+            id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            user_id bigint(20) UNSIGNED NOT NULL,
+            batch_id bigint(20) UNSIGNED,
+            monthly_amount decimal(10,2) NOT NULL DEFAULT 0,
+            subscription_type varchar(50) DEFAULT 'monthly',
+            status varchar(20) DEFAULT 'active',
+            start_date date NOT NULL,
+            end_date date,
+            notes text,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY user_id (user_id),
+            KEY batch_id (batch_id),
+            KEY status (status),
+            KEY start_date (start_date)
+        ) $charset_collate;";
+        dbDelta($sql_subscriptions);
+
+        // جدول دفعات الاشتراك (Subscription Payments)
+        $table_payments = $wpdb->prefix . 'fiqh_subscription_payments';
+        $sql_payments = "CREATE TABLE IF NOT EXISTS $table_payments (
+            id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            subscription_id bigint(20) UNSIGNED NOT NULL,
+            user_id bigint(20) UNSIGNED NOT NULL,
+            amount decimal(10,2) NOT NULL,
+            payment_month varchar(7) NOT NULL,
+            payment_date date NOT NULL,
+            payment_method varchar(50) DEFAULT 'cash',
+            status varchar(20) DEFAULT 'paid',
+            notes text,
+            created_by bigint(20) UNSIGNED,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY subscription_id (subscription_id),
+            KEY user_id (user_id),
+            KEY payment_month (payment_month),
+            KEY status (status),
+            KEY payment_date (payment_date)
+        ) $charset_collate;";
+        dbDelta($sql_payments);
+
         // تحديث رقم إصدار قاعدة البيانات
         update_option('fiqh_lms_db_version', '1.0.0');
     }

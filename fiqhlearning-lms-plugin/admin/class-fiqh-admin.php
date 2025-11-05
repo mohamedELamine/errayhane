@@ -81,32 +81,6 @@ class FiqhLearning_Admin {
                 <input type="text" id="fiqh_course_duration" name="fiqh_course_duration" value="<?php echo esc_attr($duration); ?>" class="regular-text">
                 <span class="description"><?php _e('مثال: 12 أسبوع', 'fiqh-lms'); ?></span>
             </p>
-
-            <hr style="margin: 20px 0;">
-
-            <h3><?php _e('الطلاب المسجلون', 'fiqh-lms'); ?></h3>
-            <p class="description"><?php _e('قم بتسجيل الطلاب في هذا المقرر من صفحة المقررات > التسجيل', 'fiqh-lms'); ?></p>
-
-            <?php
-            // عرض الطلاب المسجلين
-            if ($post->ID) {
-                $enrolled_students = FiqhLearning_Enrollments::get_course_students($post->ID);
-                if ($enrolled_students) {
-                    echo '<table class="wp-list-table widefat striped" style="margin-top: 15px;">';
-                    echo '<thead><tr><th>' . __('الطالب', 'fiqh-lms') . '</th><th>' . __('تاريخ التسجيل', 'fiqh-lms') . '</th></tr></thead>';
-                    echo '<tbody>';
-                    foreach ($enrolled_students as $enrollment) {
-                        $user = get_userdata($enrollment->user_id);
-                        if ($user) {
-                            echo '<tr><td>' . esc_html($user->display_name) . '</td><td>' . esc_html($enrollment->enrolled_at) . '</td></tr>';
-                        }
-                    }
-                    echo '</tbody></table>';
-                } else {
-                    echo '<p>' . __('لا يوجد طلاب مسجلون في هذا المقرر بعد', 'fiqh-lms') . '</p>';
-                }
-            }
-            ?>
         </div>
         <?php
     }

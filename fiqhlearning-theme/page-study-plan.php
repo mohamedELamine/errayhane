@@ -16,7 +16,7 @@ get_header();
         <div class="container">
             <div class="page-hero-content">
                 <div class="breadcrumb">
-                    <a href="<?php echo home_url(); ?>"><?php _e('الرئيسية', 'fiqhlearning'); ?></a>
+                    <a href="<?php echo home_url(); ?>"><?php echo get_theme_mod('study_plan_breadcrumb_home', __('الرئيسية', 'fiqhlearning')); ?></a>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>

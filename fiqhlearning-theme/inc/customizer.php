@@ -96,5 +96,2189 @@ function fiqhlearning_customize_register($wp_customize) {
         'section' => 'fiqh_social_links',
         'type' => 'url',
     ));
+
+    // ==========================================================================
+    // قسم الصفحة الرئيسية (Homepage)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_homepage_section', array(
+        'title'       => __('الصفحة الرئيسية', 'fiqhlearning'),
+        'description' => __('تخصيص جميع محتويات ونصوص الصفحة الرئيسية', 'fiqhlearning'),
+        'priority'    => 40,
+    ));
+
+    // عنوان Hero الرئيسي
+    $wp_customize->add_setting('hero_title', array(
+        'default'           => 'مدرسة الريحان للعلوم الشرعية',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_title', array(
+        'label'       => __('العنوان الرئيسي', 'fiqhlearning'),
+        'description' => __('العنوان الكبير في أعلى الصفحة الرئيسية', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    // وصف Hero
+    $wp_customize->add_setting('hero_description', array(
+        'default'           => 'منصة تعليمية متخصصة في الفقه المالكي والعلوم الشرعية - تعلم على يد نخبة من المشايخ والأساتذة المتخصصين',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_description', array(
+        'label'       => __('الوصف', 'fiqhlearning'),
+        'description' => __('النص التوضيحي تحت العنوان الرئيسي', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'textarea',
+    ));
+
+    // شارة Hero
+    $wp_customize->add_setting('hero_badge', array(
+        'default'           => 'منصة تعلم الفقه المالكي',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_badge', array(
+        'label'       => __('نص الشارة', 'fiqhlearning'),
+        'description' => __('النص الصغير فوق العنوان', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    // مميزات Hero (3 مميزات)
+    $wp_customize->add_setting('hero_feature_1', array(
+        'default'           => 'دروس شاملة ومتنوعة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_feature_1', array(
+        'label'       => __('الميزة الأولى', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('hero_feature_2', array(
+        'default'           => 'شهادات معتمدة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_feature_2', array(
+        'label'       => __('الميزة الثانية', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('hero_feature_3', array(
+        'default'           => 'مدرسون متخصصون',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_feature_3', array(
+        'label'       => __('الميزة الثالثة', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    // خصائص قسم عن المدرسة
+    $wp_customize->add_setting('about_feature_1_title', array(
+        'default'           => 'منهج شامل',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_1_title', array(
+        'label'       => __('عنوان الخاصية الأولى', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_1_desc', array(
+        'default'           => 'دروس متكاملة في الفقه المالكي',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_1_desc', array(
+        'label'       => __('وصف الخاصية الأولى', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_2_title', array(
+        'default'           => 'أساتذة متخصصون',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_2_title', array(
+        'label'       => __('عنوان الخاصية الثانية', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_2_desc', array(
+        'default'           => 'نخبة من العلماء والمشايخ',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_2_desc', array(
+        'label'       => __('وصف الخاصية الثانية', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_3_title', array(
+        'default'           => 'شهادات معتمدة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_3_title', array(
+        'label'       => __('عنوان الخاصية الثالثة', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_feature_3_desc', array(
+        'default'           => 'شهادات إتمام للمقررات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_feature_3_desc', array(
+        'label'       => __('وصف الخاصية الثالثة', 'fiqhlearning'),
+        'section'     => 'fiqh_homepage_section',
+        'type'        => 'text',
+    ));
+
+    // ==========================================================================
+    // قسم صفحة عن المعهد (About Page)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_about_section', array(
+        'title'       => __('صفحة عن المعهد', 'fiqhlearning'),
+        'description' => __('تخصيص محتوى صفحة عن المعهد', 'fiqhlearning'),
+        'priority'    => 41,
+    ));
+
+    // عنوان الصفحة
+    $wp_customize->add_setting('about_page_title', array(
+        'default'           => 'مدرسة الريحان للعلوم الشرعية',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_page_title', array(
+        'label'       => __('عنوان الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    // وصف الصفحة
+    $wp_customize->add_setting('about_page_description', array(
+        'default'           => 'منصة تعليمية متخصصة في تعليم الفقه المالكي والعلوم الشرعية منذ تأسيسها',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_page_description', array(
+        'label'       => __('وصف الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'textarea',
+    ));
+
+    // صورة المقدمة
+    $wp_customize->add_setting('about_intro_image', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'about_intro_image', array(
+        'label'       => __('صورة المقدمة', 'fiqhlearning'),
+        'description' => __('صورة توضيحية في قسم المقدمة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+    )));
+
+    // شارة Hero
+    $wp_customize->add_setting('about_hero_badge', array(
+        'default'           => 'عن المدرسة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_hero_badge', array(
+        'label'       => __('نص الشارة', 'fiqhlearning'),
+        'description' => __('الشارة في أعلى صفحة عن المعهد', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان المقدمة
+    $wp_customize->add_setting('about_intro_title', array(
+        'default'           => 'رسالتنا',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_intro_title', array(
+        'label'       => __('عنوان المقدمة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    // نص المقدمة
+    $wp_customize->add_setting('about_intro_content', array(
+        'default'           => 'مدرسة الريحان للعلوم الشرعية هي منصة تعليمية رائدة في مجال تعليم الفقه المالكي والعلوم الشرعية. نسعى لتقديم تعليم شرعي متميز يجمع بين الأصالة والمعاصرة، على يد نخبة من المشايخ والأساتذة المتخصصين.',
+        'sanitize_callback' => 'wp_kses_post',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_intro_content', array(
+        'label'       => __('نص المقدمة', 'fiqhlearning'),
+        'description' => __('يمكنك استخدام HTML البسيط', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'textarea',
+    ));
+
+    // نص المقدمة البديل (about_intro_text)
+    $wp_customize->add_setting('about_intro_text', array(
+        'default'           => 'نسعى في مدرسة الريحان إلى نشر العلم الشرعي الأصيل وتعليم الفقه المالكي بطريقة عصرية ومبسطة، مع المحافظة على الأصالة والمنهجية العلمية الصحيحة.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_intro_text', array(
+        'label'       => __('نص المقدمة (الفقرة)', 'fiqhlearning'),
+        'description' => __('النص في قسم المقدمة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'textarea',
+    ));
+
+    // مميزات المقدمة (4 مميزات)
+    $intro_features = array(
+        'about_intro_feature_1' => array('label' => 'الميزة 1', 'default' => 'منهج أصيل ومعتمد'),
+        'about_intro_feature_2' => array('label' => 'الميزة 2', 'default' => 'أساتذة متخصصون'),
+        'about_intro_feature_3' => array('label' => 'الميزة 3', 'default' => 'محتوى تعليمي شامل'),
+        'about_intro_feature_4' => array('label' => 'الميزة 4', 'default' => 'شهادات معتمدة'),
+    );
+
+    foreach ($intro_features as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_about_section',
+            'type'    => 'text',
+        ));
+    }
+
+    // الرؤية
+    $wp_customize->add_setting('about_vision_title', array(
+        'default'           => 'رؤيتنا',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_vision_title', array(
+        'label'       => __('عنوان الرؤية', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_vision', array(
+        'default'           => 'أن نكون المرجع الأول في تعليم الفقه المالكي والعلوم الشرعية عبر الإنترنت في العالم العربي والإسلامي.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_vision', array(
+        'label'       => __('نص الرؤية', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'textarea',
+    ));
+
+    // الرسالة
+    $wp_customize->add_setting('about_mission_title', array(
+        'default'           => 'رسالتنا',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_mission_title', array(
+        'label'       => __('عنوان الرسالة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_mission', array(
+        'default'           => 'تقديم تعليم شرعي متميز ومتكامل يجمع بين الأصالة والمعاصرة، ونشر العلم الشرعي الصحيح بطريقة ميسرة وواضحة.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_mission', array(
+        'label'       => __('نص الرسالة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'textarea',
+    ));
+
+    // القيم
+    $wp_customize->add_setting('about_values_title', array(
+        'default'           => 'قيمنا',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_values_title', array(
+        'label'       => __('عنوان القيم', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('about_values', array(
+        'default'           => 'الأصالة في المنهج، الجودة في التعليم، التيسير على المتعلمين، الالتزام بالمنهج المالكي، التطوير المستمر.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_values', array(
+        'label'       => __('نص القيم', 'fiqhlearning'),
+        'description' => __('يمكن الفصل بينها بفاصلة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'textarea',
+    ));
+
+    // نصوص الميزات الأربعة
+    $about_features = array(
+        array('key' => 'feature1_title', 'label' => 'الميزة 1 - العنوان', 'default' => 'منهج أصيل ومعتمد'),
+        array('key' => 'feature1_desc', 'label' => 'الميزة 1 - الوصف', 'default' => 'منهج دراسي معتمد'),
+        array('key' => 'feature2_title', 'label' => 'الميزة 2 - العنوان', 'default' => 'أساتذة متخصصون'),
+        array('key' => 'feature2_desc', 'label' => 'الميزة 2 - الوصف', 'default' => 'نخبة من المعلمين المتخصصين'),
+        array('key' => 'feature3_title', 'label' => 'الميزة 3 - العنوان', 'default' => 'محتوى تعليمي شامل'),
+        array('key' => 'feature3_desc', 'label' => 'الميزة 3 - الوصف', 'default' => 'دروس ومحتوى غني'),
+        array('key' => 'feature4_title', 'label' => 'الميزة 4 - العنوان', 'default' => 'شهادات معتمدة'),
+        array('key' => 'feature4_desc', 'label' => 'الميزة 4 - الوصف', 'default' => 'شهادات رسمية معتمدة'),
+    );
+
+    foreach ($about_features as $feature) {
+        $wp_customize->add_setting("about_{$feature['key']}", array(
+            'default'           => $feature['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("about_{$feature['key']}", array(
+            'label'   => $feature['label'],
+            'section' => 'fiqh_about_section',
+            'type'    => 'text',
+        ));
+    }
+
+    // قسم القيم والرؤية - العناوين والنصوص
+    $about_values_items = array(
+        array('key' => 'value1_title', 'label' => 'القيمة 1 - العنوان', 'default' => 'الأصالة العلمية'),
+        array('key' => 'value1_desc', 'label' => 'القيمة 1 - الوصف', 'default' => 'الالتزام بالمنهج العلمي الأصيل في تدريس الفقه المالكي'),
+        array('key' => 'value2_title', 'label' => 'القيمة 2 - العنوان', 'default' => 'التميز التعليمي'),
+        array('key' => 'value2_desc', 'label' => 'القيمة 2 - الوصف', 'default' => 'تقديم محتوى تعليمي عالي الجودة بأساليب عصرية ومبتكرة'),
+        array('key' => 'value3_title', 'label' => 'القيمة 3 - العنوان', 'default' => 'الجودة والإتقان'),
+        array('key' => 'value3_desc', 'label' => 'القيمة 3 - الوصف', 'default' => 'الحرص على إتقان العمل وتقديم أفضل الخدمات التعليمية'),
+        array('key' => 'value4_title', 'label' => 'القيمة 4 - العنوان', 'default' => 'التطوير المستمر'),
+        array('key' => 'value4_desc', 'label' => 'القيمة 4 - الوصف', 'default' => 'السعي الدائم لتطوير المحتوى والخدمات التعليمية'),
+    );
+
+    foreach ($about_values_items as $value) {
+        $wp_customize->add_setting("about_{$value['key']}", array(
+            'default'           => $value['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("about_{$value['key']}", array(
+            'label'   => $value['label'],
+            'section' => 'fiqh_about_section',
+            'type'    => strpos($value['key'], 'desc') !== false ? 'textarea' : 'text',
+        ));
+    }
+
+    // عنوان قسم القيم
+    $wp_customize->add_setting('about_values_section_title', array(
+        'default'           => 'قيمنا ورؤيتنا',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_values_section_title', array(
+        'label'       => __('عنوان قسم القيم', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    // بطاقات القيم (4 بطاقات)
+    $values_cards = array(
+        array('key' => 'value_1_title', 'label' => 'القيمة 1 - العنوان', 'default' => 'الأصالة العلمية'),
+        array('key' => 'value_1_desc', 'label' => 'القيمة 1 - الوصف', 'default' => 'الالتزام بالمنهج العلمي الأصيل في تدريس الفقه المالكي'),
+        array('key' => 'value_2_title', 'label' => 'القيمة 2 - العنوان', 'default' => 'التميز التعليمي'),
+        array('key' => 'value_2_desc', 'label' => 'القيمة 2 - الوصف', 'default' => 'تقديم محتوى تعليمي عالي الجودة بأساليب عصرية ومبتكرة'),
+        array('key' => 'value_3_title', 'label' => 'القيمة 3 - العنوان', 'default' => 'الجودة والإتقان'),
+        array('key' => 'value_3_desc', 'label' => 'القيمة 3 - الوصف', 'default' => 'الحرص على إتقان العمل وتقديم أفضل الخدمات التعليمية'),
+        array('key' => 'value_4_title', 'label' => 'القيمة 4 - العنوان', 'default' => 'التطوير المستمر'),
+        array('key' => 'value_4_desc', 'label' => 'القيمة 4 - الوصف', 'default' => 'السعي الدائم لتطوير المحتوى والخدمات التعليمية'),
+    );
+
+    foreach ($values_cards as $value) {
+        $wp_customize->add_setting("about_{$value['key']}", array(
+            'default'           => $value['default'],
+            'sanitize_callback' => strpos($value['key'], 'desc') !== false ? 'sanitize_textarea_field' : 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("about_{$value['key']}", array(
+            'label'   => $value['label'],
+            'section' => 'fiqh_about_section',
+            'type'    => strpos($value['key'], 'desc') !== false ? 'textarea' : 'text',
+        ));
+    }
+
+    // عنوان قسم فريق العمل
+    $wp_customize->add_setting('about_team_section_title', array(
+        'default'           => 'فريق العمل',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_team_section_title', array(
+        'label'       => __('عنوان قسم فريق العمل', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    // قسم فريق العمل
+    $about_team_labels = array(
+        'team_title' => array('label' => 'عنوان "فريق العمل"', 'default' => 'فريق العمل'),
+        'team_member1_name' => array('label' => 'العضو 1 - الاسم', 'default' => 'د. أحمد المالكي'),
+        'team_member1_role' => array('label' => 'العضو 1 - الدور', 'default' => 'المشرف العام'),
+        'team_member2_name' => array('label' => 'العضو 2 - الاسم', 'default' => 'د. محمد الفقيه'),
+        'team_member2_role' => array('label' => 'العضو 2 - الدور', 'default' => 'أستاذ الفقه المالكي'),
+    );
+
+    foreach ($about_team_labels as $key => $data) {
+        $wp_customize->add_setting("about_{$key}", array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("about_{$key}", array(
+            'label'   => $data['label'],
+            'section' => 'fiqh_about_section',
+            'type'    => 'text',
+        ));
+    }
+
+    // القسم الأخير (CTA)
+    $about_cta_labels = array(
+        'cta_title' => array('label' => 'CTA - العنوان', 'default' => 'انضم إلى رحلتنا التعليمية'),
+        'cta_description' => array('label' => 'CTA - الوصف', 'default' => 'ابدأ رحلتك في تعلم الفقه المالكي والعلوم الشرعية مع مدرسة الريحان'),
+        'cta_desc' => array('label' => 'CTA - الوصف (القديم)', 'default' => 'ابدأ رحلتك في تعلم الفقه المالكي والعلوم الشرعية مع مدرسة الريحان'),
+        'cta_button' => array('label' => 'CTA - نص الزر', 'default' => 'تواصل معنا'),
+        'cta_button_1' => array('label' => 'CTA - زر 1 (تصفح المقررات)', 'default' => 'تصفح المقررات'),
+        'cta_button_2' => array('label' => 'CTA - زر 2 (اتصل بنا)', 'default' => 'اتصل بنا'),
+    );
+
+    foreach ($about_cta_labels as $key => $data) {
+        $wp_customize->add_setting("about_{$key}", array(
+            'default'           => $data['default'],
+            'sanitize_callback' => (strpos($key, 'desc') !== false || $key === 'cta_description') ? 'sanitize_textarea_field' : 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("about_{$key}", array(
+            'label'   => $data['label'],
+            'section' => 'fiqh_about_section',
+            'type'    => (strpos($key, 'desc') !== false || $key === 'cta_description') ? 'textarea' : 'text',
+        ));
+    }
+
+    // Timeline section title
+    $wp_customize->add_setting('about_timeline_title', array(
+        'default'           => 'مسيرة المدرسة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_timeline_title', array(
+        'label'       => __('عنوان مسيرة المدرسة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    // Timeline section description
+    $wp_customize->add_setting('about_timeline_description', array(
+        'default'           => 'رحلتنا منذ التأسيس حتى اليوم',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('about_timeline_description', array(
+        'label'       => __('وصف مسيرة المدرسة', 'fiqhlearning'),
+        'section'     => 'fiqh_about_section',
+        'type'        => 'text',
+    ));
+
+    // Timeline events - Create settings for 6 events
+    for ($i = 1; $i <= 6; $i++) {
+        // Event year
+        $wp_customize->add_setting("about_timeline_event_{$i}_year", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("about_timeline_event_{$i}_year", array(
+            'label'       => sprintf(__('الحدث %d - السنة', 'fiqhlearning'), $i),
+            'section'     => 'fiqh_about_section',
+            'type'        => 'text',
+        ));
+
+        // Event title
+        $wp_customize->add_setting("about_timeline_event_{$i}_title", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("about_timeline_event_{$i}_title", array(
+            'label'       => sprintf(__('الحدث %d - العنوان', 'fiqhlearning'), $i),
+            'section'     => 'fiqh_about_section',
+            'type'        => 'text',
+        ));
+
+        // Event description
+        $wp_customize->add_setting("about_timeline_event_{$i}_description", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("about_timeline_event_{$i}_description", array(
+            'label'       => sprintf(__('الحدث %d - الوصف', 'fiqhlearning'), $i),
+            'section'     => 'fiqh_about_section',
+            'type'        => 'textarea',
+        ));
+    }
+
+    // ==========================================================================
+    // قسم صفحة خطة الدراسة (Study Plan)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_study_plan_section', array(
+        'title'       => __('صفحة خطة الدراسة', 'fiqhlearning'),
+        'description' => __('تخصيص محتوى صفحة خطة الدراسة', 'fiqhlearning'),
+        'priority'    => 42,
+    ));
+
+    // عنوان الصفحة
+    $wp_customize->add_setting('study_plan_title', array(
+        'default'           => 'خطة الدراسة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('study_plan_title', array(
+        'label'       => __('عنوان الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_study_plan_section',
+        'type'        => 'text',
+    ));
+
+    // وصف الصفحة
+    $wp_customize->add_setting('study_plan_description', array(
+        'default'           => 'منهج دراسي متكامل للعلوم الشرعية على مدار عدة مستويات',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('study_plan_description', array(
+        'label'       => __('وصف الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_study_plan_section',
+        'type'        => 'textarea',
+    ));
+
+    // نص المقدمة
+    $wp_customize->add_setting('study_plan_intro', array(
+        'default'           => 'تم تقسيم الخطة الدراسية إلى عدة مستويات متدرجة، بحيث يبدأ الطالب من المستوى الأول ويتقدم تدريجياً نحو المستويات المتقدمة. كل مستوى يحتوي على مجموعة من المقررات الدراسية المتخصصة.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('study_plan_intro', array(
+        'label'       => __('نص المقدمة', 'fiqhlearning'),
+        'description' => __('نص توضيحي عن نظام المستويات', 'fiqhlearning'),
+        'section'     => 'fiqh_study_plan_section',
+        'type'        => 'textarea',
+    ));
+
+    // نصوص إضافية لصفحة خطة الدراسة
+    $study_plan_labels = array(
+        'breadcrumb_home' => array('label' => 'Breadcrumb: الرئيسية', 'default' => 'الرئيسية'),
+        'breadcrumb_study_plan' => array('label' => 'Breadcrumb: خطة الدراسة', 'default' => 'خطة الدراسة'),
+        'levels_system_title' => array('label' => 'عنوان نظام المستويات', 'default' => 'نظام المستويات الدراسية'),
+        'level_label' => array('label' => 'تسمية "المستوى"', 'default' => 'المستوى'),
+        'start_date_label' => array('label' => 'تسمية "البداية:"', 'default' => 'البداية:'),
+        'end_date_label' => array('label' => 'تسمية "النهاية:"', 'default' => 'النهاية:'),
+        'courses_title' => array('label' => 'عنوان "المقررات الدراسية"', 'default' => 'المقررات الدراسية'),
+        'lesson_label' => array('label' => 'تسمية "درس"', 'default' => 'درس'),
+        'no_levels_title' => array('label' => 'عنوان "لم يتم إضافة مستويات"', 'default' => 'لم يتم إضافة مستويات دراسية بعد'),
+        'no_levels_desc' => array('label' => 'وصف "لم يتم إضافة مستويات"', 'default' => 'سيتم إضافة الخطة الدراسية قريباً'),
+        'browse_courses_btn' => array('label' => 'زر "تصفح المقررات"', 'default' => 'تصفح المقررات'),
+        'cta_title' => array('label' => 'CTA: العنوان', 'default' => 'مستعد للبدء؟'),
+        'cta_desc' => array('label' => 'CTA: الوصف', 'default' => 'ابدأ رحلتك التعليمية الآن وانضم إلى مدرسة الريحان'),
+        'cta_button_courses' => array('label' => 'CTA: زر المقررات', 'default' => 'تصفح المقررات'),
+        'cta_button_about' => array('label' => 'CTA: زر عن المدرسة', 'default' => 'عن المدرسة'),
+    );
+
+    foreach ($study_plan_labels as $key => $data) {
+        $wp_customize->add_setting("study_plan_{$key}", array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("study_plan_{$key}", array(
+            'label'   => $data['label'],
+            'section' => 'fiqh_study_plan_section',
+            'type'    => 'text',
+        ));
+    }
+
+    // ==========================================================================
+    // قسم صفحة دليل اللوائح (Regulations)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_regulations_section', array(
+        'title'       => __('صفحة دليل اللوائح', 'fiqhlearning'),
+        'description' => __('تخصيص محتوى صفحة دليل اللوائح والأنظمة', 'fiqhlearning'),
+        'priority'    => 43,
+    ));
+
+    // عنوان الصفحة
+    $wp_customize->add_setting('regulations_title', array(
+        'default'           => 'دليل اللوائح والأنظمة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('regulations_title', array(
+        'label'       => __('عنوان الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_regulations_section',
+        'type'        => 'text',
+    ));
+
+    // وصف الصفحة
+    $wp_customize->add_setting('regulations_description', array(
+        'default'           => 'اللوائح والأنظمة المنظمة للدراسة في مدرسة الريحان للعلوم الشرعية',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('regulations_description', array(
+        'label'       => __('وصف الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_regulations_section',
+        'type'        => 'textarea',
+    ));
+
+    // نصوص إضافية لصفحة دليل اللوائح
+    $regulations_labels = array(
+        'breadcrumb_home' => array('label' => 'Breadcrumb: الرئيسية', 'default' => 'الرئيسية'),
+        'breadcrumb_regulations' => array('label' => 'Breadcrumb: دليل اللوائح', 'default' => 'دليل اللوائح'),
+        'sections_title' => array('label' => 'عنوان "الأقسام"', 'default' => 'الأقسام'),
+        'admission_title' => array('label' => 'عنوان "شروط القبول"', 'default' => 'شروط القبول'),
+        'enrollment_title' => array('label' => 'عنوان "نظام التسجيل"', 'default' => 'نظام التسجيل'),
+        'attendance_title' => array('label' => 'عنوان "الحضور والغياب"', 'default' => 'الحضور والغياب'),
+        'exams_title' => array('label' => 'عنوان "الاختبارات"', 'default' => 'الاختبارات'),
+        'grades_title' => array('label' => 'عنوان "نظام الدرجات"', 'default' => 'نظام الدرجات'),
+        'behavior_title' => array('label' => 'عنوان "السلوك والانضباط"', 'default' => 'السلوك والانضباط'),
+        'certificates_title' => array('label' => 'عنوان "الشهادات"', 'default' => 'الشهادات'),
+        'rights_title' => array('label' => 'عنوان "الحقوق والواجبات"', 'default' => 'الحقوق والواجبات'),
+    );
+
+    foreach ($regulations_labels as $key => $data) {
+        $wp_customize->add_setting("regulations_{$key}", array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("regulations_{$key}", array(
+            'label'   => $data['label'],
+            'section' => 'fiqh_regulations_section',
+            'type'    => 'text',
+        ));
+    }
+
+    // محتوى أقسام اللوائح
+    $regulations_contents = array(
+        'admission' => 'شروط القبول',
+        'enrollment' => 'نظام التسجيل',
+        'attendance' => 'الحضور والغياب',
+        'exams' => 'الاختبارات',
+        'grades' => 'نظام الدرجات',
+        'behavior' => 'السلوك والانضباط',
+        'certificates' => 'الشهادات',
+        'rights' => 'الحقوق والواجبات',
+    );
+
+    foreach ($regulations_contents as $key => $label) {
+        $wp_customize->add_setting("regulations_{$key}", array(
+            'default'           => '',
+            'sanitize_callback' => 'wp_kses_post',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("regulations_{$key}", array(
+            'label'       => sprintf(__('محتوى %s', 'fiqhlearning'), $label),
+            'description' => __('يمكن استخدام HTML البسيط', 'fiqhlearning'),
+            'section'     => 'fiqh_regulations_section',
+            'type'        => 'textarea',
+        ));
+    }
+
+    // ==========================================================================
+    // قسم صفحة الأسئلة (Questions)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_questions_section', array(
+        'title'       => __('صفحة الأسئلة', 'fiqhlearning'),
+        'description' => __('تخصيص محتوى صفحة الأسئلة والإجابات', 'fiqhlearning'),
+        'priority'    => 44,
+    ));
+
+    // عنوان الصفحة
+    $wp_customize->add_setting('questions_page_title', array(
+        'default'           => 'الأسئلة والإجابات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('questions_page_title', array(
+        'label'       => __('عنوان الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_questions_section',
+        'type'        => 'text',
+    ));
+
+    // وصف الصفحة
+    $wp_customize->add_setting('questions_page_description', array(
+        'default'           => 'اطرح أسئلتك واستفسر عن ما يشكل عليك في المقررات الدراسية',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('questions_page_description', array(
+        'label'       => __('وصف الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_questions_section',
+        'type'        => 'textarea',
+    ));
+
+    // ==========================================================================
+    // قسم صفحة المقالات (Blog)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_blog_section', array(
+        'title'       => __('صفحة المقالات', 'fiqhlearning'),
+        'description' => __('تخصيص محتوى صفحة المقالات والأرشيف', 'fiqhlearning'),
+        'priority'    => 45,
+    ));
+
+    // شارة المقالات
+    $wp_customize->add_setting('blog_badge', array(
+        'default'           => 'مدونة المعهد',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_badge', array(
+        'label'       => __('شارة المقالات', 'fiqhlearning'),
+        'description' => __('النص الذي يظهر فوق عنوان المقالات', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان صفحة المقالات
+    $wp_customize->add_setting('blog_title', array(
+        'default'           => 'آخر المقالات والمستجدات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_title', array(
+        'label'       => __('عنوان صفحة المقالات', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // وصف صفحة المقالات
+    $wp_customize->add_setting('blog_description', array(
+        'default'           => 'تابع آخر المقالات والأخبار والمستجدات في الفقه المالكي والعلوم الشرعية',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_description', array(
+        'label'       => __('وصف صفحة المقالات', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'textarea',
+    ));
+
+    // نص زر البحث
+    $wp_customize->add_setting('blog_search_button', array(
+        'default'           => 'بحث',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_search_button', array(
+        'label'       => __('نص زر البحث', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص "جميع التصنيفات"
+    $wp_customize->add_setting('blog_all_categories', array(
+        'default'           => 'جميع التصنيفات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_all_categories', array(
+        'label'       => __('نص "جميع التصنيفات"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص placeholder للبحث
+    $wp_customize->add_setting('blog_search_placeholder', array(
+        'default'           => 'ابحث في المقالات...',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_search_placeholder', array(
+        'label'       => __('نص البحث (Placeholder)', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص نتائج البحث
+    $wp_customize->add_setting('blog_search_results_text', array(
+        'default'           => 'نتائج البحث عن: <strong>%s</strong>',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_search_results_text', array(
+        'label'       => __('نص نتائج البحث', 'fiqhlearning'),
+        'description' => __('استخدم %s للكلمة المبحوثة', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص عدد المقالات (واحد)
+    $wp_customize->add_setting('blog_results_count_single', array(
+        'default'           => 'عُثر على مقالة واحدة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_results_count_single', array(
+        'label'       => __('نص عدد المقالات (واحد)', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص عدد المقالات (متعدد)
+    $wp_customize->add_setting('blog_results_count_multiple', array(
+        'default'           => 'عُثر على %s مقالة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_results_count_multiple', array(
+        'label'       => __('نص عدد المقالات (متعدد)', 'fiqhlearning'),
+        'description' => __('استخدم %s للعدد', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص "اقرأ المزيد"
+    $wp_customize->add_setting('blog_read_more_text', array(
+        'default'           => 'اقرأ المزيد',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_read_more_text', array(
+        'label'       => __('نص "اقرأ المزيد"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص زر السابق في الترقيم
+    $wp_customize->add_setting('blog_pagination_prev', array(
+        'default'           => 'السابق',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_pagination_prev', array(
+        'label'       => __('نص زر السابق (Pagination)', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نص زر التالي في الترقيم
+    $wp_customize->add_setting('blog_pagination_next', array(
+        'default'           => 'التالي',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_pagination_next', array(
+        'label'       => __('نص زر التالي (Pagination)', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // نصوص "No posts found"
+    $wp_customize->add_setting('blog_no_posts_title', array(
+        'default'           => 'لم يتم العثور على مقالات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_no_posts_title', array(
+        'label'       => __('عنوان "لا توجد مقالات"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    $wp_customize->add_setting('blog_no_posts_description', array(
+        'default'           => 'جرب البحث بكلمات مختلفة أو تصفح جميع التصنيفات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_no_posts_description', array(
+        'label'       => __('وصف "لا توجد مقالات"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'textarea',
+    ));
+
+    $wp_customize->add_setting('blog_no_posts_button', array(
+        'default'           => 'عرض جميع المقالات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('blog_no_posts_button', array(
+        'label'       => __('نص زر "عرض جميع المقالات"', 'fiqhlearning'),
+        'section'     => 'fiqh_blog_section',
+        'type'        => 'text',
+    ));
+
+    // ==========================================================================
+    // قسم صفحة المقال الفردي (Single Post)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_single_post_section', array(
+        'title'       => __('صفحة المقال الفردي', 'fiqhlearning'),
+        'description' => __('تخصيص نصوص صفحة المقال الفردي', 'fiqhlearning'),
+        'priority'    => 46,
+    ));
+
+    // تسمية الكاتب
+    $wp_customize->add_setting('single_post_author_label', array(
+        'default'           => 'الكاتب',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_author_label', array(
+        'label'       => __('تسمية الكاتب', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // صيغة وقت القراءة
+    $wp_customize->add_setting('single_post_reading_time_format', array(
+        'default'           => '%d دقائق قراءة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_reading_time_format', array(
+        'label'       => __('صيغة وقت القراءة', 'fiqhlearning'),
+        'description' => __('استخدم %d لرقم الدقائق', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "لا توجد تعليقات"
+    $wp_customize->add_setting('single_post_no_comments', array(
+        'default'           => 'لا توجد تعليقات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_no_comments', array(
+        'label'       => __('نص "لا توجد تعليقات"', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // صيغة عدد التعليقات
+    $wp_customize->add_setting('single_post_comments_format', array(
+        'default'           => '%d تعليق',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_comments_format', array(
+        'label'       => __('صيغة عدد التعليقات', 'fiqhlearning'),
+        'description' => __('استخدم %d للعدد', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // تسمية الوسوم
+    $wp_customize->add_setting('single_post_tags_label', array(
+        'default'           => 'الوسوم:',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_tags_label', array(
+        'label'       => __('تسمية الوسوم', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان قسم المشاركة
+    $wp_customize->add_setting('single_post_share_title', array(
+        'default'           => 'شارك المقال',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_share_title', array(
+        'label'       => __('عنوان قسم المشاركة', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نصوص أزرار المشاركة
+    $share_buttons = array(
+        'facebook' => 'فيسبوك',
+        'twitter' => 'تويتر',
+        'whatsapp' => 'واتساب',
+        'telegram' => 'تيليجرام',
+    );
+
+    foreach ($share_buttons as $platform => $label) {
+        $wp_customize->add_setting("single_post_share_{$platform}_text", array(
+            'default'           => $label,
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("single_post_share_{$platform}_text", array(
+            'label'       => sprintf(__('نص زر %s', 'fiqhlearning'), $label),
+            'section'     => 'fiqh_single_post_section',
+            'type'        => 'text',
+        ));
+
+        $wp_customize->add_setting("single_post_share_{$platform}", array(
+            'default'           => sprintf('شارك على %s', $label),
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control("single_post_share_{$platform}", array(
+            'label'       => sprintf(__('نص aria-label لـ %s', 'fiqhlearning'), $label),
+            'section'     => 'fiqh_single_post_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // عنوان قسم المؤلف
+    $wp_customize->add_setting('single_post_author_bio_title', array(
+        'default'           => 'عن المؤلف',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_author_bio_title', array(
+        'label'       => __('عنوان قسم المؤلف', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص رابط مقالات المؤلف
+    $wp_customize->add_setting('single_post_author_posts_link', array(
+        'default'           => 'جميع مقالات المؤلف',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_author_posts_link', array(
+        'label'       => __('نص رابط مقالات المؤلف', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان قسم التعليقات (بدون تعليقات)
+    $wp_customize->add_setting('single_post_comments_section_title_zero', array(
+        'default'           => 'التعليقات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_comments_section_title_zero', array(
+        'label'       => __('عنوان قسم التعليقات (بدون تعليقات)', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان قسم التعليقات (مع العدد)
+    $wp_customize->add_setting('single_post_comments_section_title', array(
+        'default'           => 'التعليقات (%d)',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_comments_section_title', array(
+        'label'       => __('عنوان قسم التعليقات (مع العدد)', 'fiqhlearning'),
+        'description' => __('استخدم %d للعدد', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان المقالات ذات الصلة
+    $wp_customize->add_setting('single_post_related_posts_title', array(
+        'default'           => 'مقالات ذات صلة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_related_posts_title', array(
+        'label'       => __('عنوان المقالات ذات الصلة', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "اقرأ المزيد"
+    $wp_customize->add_setting('single_post_read_more', array(
+        'default'           => 'اقرأ المزيد',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_read_more', array(
+        'label'       => __('نص "اقرأ المزيد"', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص وقت القراءة (الصيغة الكاملة)
+    $wp_customize->add_setting('single_post_reading_time_text', array(
+        'default'           => '%d دقائق قراءة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_reading_time_text', array(
+        'label'       => __('نص وقت القراءة', 'fiqhlearning'),
+        'description' => __('استخدم %d لعدد الدقائق', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "الصفحات:"
+    $wp_customize->add_setting('single_post_pages_label', array(
+        'default'           => 'الصفحات:',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_pages_label', array(
+        'label'       => __('نص "الصفحات:"', 'fiqhlearning'),
+        'description' => __('يظهر عند تقسيم المقال لعدة صفحات', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص السيرة الذاتية الافتراضية
+    $wp_customize->add_setting('single_post_default_author_bio', array(
+        'default'           => 'كاتب في منصة FiqhLearning',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_default_author_bio', array(
+        'label'       => __('نص السيرة الافتراضية للكاتب', 'fiqhlearning'),
+        'description' => __('يظهر عندما لا تكون للكاتب سيرة مخصصة', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "عرض جميع المقالات"
+    $wp_customize->add_setting('single_post_view_all_posts', array(
+        'default'           => 'عرض جميع المقالات',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_view_all_posts', array(
+        'label'       => __('نص "عرض جميع المقالات"', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "مقالات ذات صلة"
+    $wp_customize->add_setting('single_post_related_title', array(
+        'default'           => 'مقالات ذات صلة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_related_title', array(
+        'label'       => __('عنوان "مقالات ذات صلة"', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "المقال السابق"
+    $wp_customize->add_setting('single_post_prev_text', array(
+        'default'           => 'المقال السابق',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_prev_text', array(
+        'label'       => __('نص "المقال السابق"', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // نص "المقال التالي"
+    $wp_customize->add_setting('single_post_next_text', array(
+        'default'           => 'المقال التالي',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('single_post_next_text', array(
+        'label'       => __('نص "المقال التالي"', 'fiqhlearning'),
+        'section'     => 'fiqh_single_post_section',
+        'type'        => 'text',
+    ));
+
+    // ==========================================================================
+    // صفحة اتصل بنا (Contact Page)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_contact_page_section', array(
+        'title'       => __('صفحة اتصل بنا', 'fiqhlearning'),
+        'description' => __('تخصيص جميع عناصر صفحة اتصل بنا', 'fiqhlearning'),
+        'priority'    => 175,
+    ));
+
+    // رأس الصفحة - العنوان
+    $wp_customize->add_setting('contact_page_title', array(
+        'default'           => 'اتصل بنا',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_page_title', array(
+        'label'       => __('عنوان الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // رأس الصفحة - الوصف
+    $wp_customize->add_setting('contact_page_description', array(
+        'default'           => 'نسعد بتواصلكم واستفساراتكم',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_page_description', array(
+        'label'       => __('وصف الصفحة', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // قسم النموذج - العنوان
+    $wp_customize->add_setting('contact_form_title', array(
+        'default'           => 'إرسال رسالة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_form_title', array(
+        'label'       => __('عنوان قسم النموذج', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // تسميات الحقول
+    $contact_labels = array(
+        'contact_label_name'    => array('label' => 'تسمية حقل الاسم', 'default' => 'الاسم الكامل'),
+        'contact_label_email'   => array('label' => 'تسمية حقل البريد', 'default' => 'البريد الإلكتروني'),
+        'contact_label_phone'   => array('label' => 'تسمية حقل الهاتف', 'default' => 'رقم الهاتف'),
+        'contact_label_subject' => array('label' => 'تسمية حقل الموضوع', 'default' => 'الموضوع'),
+        'contact_label_message' => array('label' => 'تسمية حقل الرسالة', 'default' => 'الرسالة'),
+    );
+
+    foreach ($contact_labels as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_contact_page_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // خيارات الموضوع
+    $wp_customize->add_setting('contact_subject_placeholder', array(
+        'default'           => 'اختر الموضوع',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_subject_placeholder', array(
+        'label'       => __('نص "اختر الموضوع"', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    $subject_options = array(
+        'contact_subject_enrollment' => array('label' => 'خيار "استفسار عن التسجيل"', 'default' => 'استفسار عن التسجيل'),
+        'contact_subject_courses'    => array('label' => 'خيار "استفسار عن المقررات"', 'default' => 'استفسار عن المقررات'),
+        'contact_subject_technical'  => array('label' => 'خيار "مشكلة تقنية"', 'default' => 'مشكلة تقنية'),
+        'contact_subject_complaint'  => array('label' => 'خيار "شكوى"', 'default' => 'شكوى'),
+        'contact_subject_suggestion' => array('label' => 'خيار "اقتراح"', 'default' => 'اقتراح'),
+        'contact_subject_other'      => array('label' => 'خيار "أخرى"', 'default' => 'أخرى'),
+    );
+
+    foreach ($subject_options as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_contact_page_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // نص اتفاقية الخصوصية
+    $wp_customize->add_setting('contact_privacy_text', array(
+        'default'           => 'أوافق على سياسة الخصوصية',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_privacy_text', array(
+        'label'       => __('نص اتفاقية الخصوصية', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // نص زر الإرسال
+    $wp_customize->add_setting('contact_button_submit', array(
+        'default'           => 'إرسال الرسالة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_button_submit', array(
+        'label'       => __('نص زر الإرسال', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // رسائل النموذج
+    $contact_messages = array(
+        'contact_msg_sending'          => array('label' => 'رسالة "جاري الإرسال..."', 'default' => 'جاري الإرسال...'),
+        'contact_msg_success'          => array('label' => 'رسالة النجاح', 'default' => 'تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.'),
+        'contact_msg_error'            => array('label' => 'رسالة الخطأ', 'default' => 'حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.'),
+        'contact_msg_connection_error' => array('label' => 'رسالة خطأ الاتصال', 'default' => 'حدث خطأ في الاتصال. يرجى المحاولة لاحقاً.'),
+    );
+
+    foreach ($contact_messages as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_contact_page_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // تسميات بطاقات المعلومات
+    $info_labels = array(
+        'contact_label_address'     => array('label' => 'تسمية "العنوان"', 'default' => 'العنوان'),
+        'contact_label_phone_info'  => array('label' => 'تسمية "الهاتف"', 'default' => 'الهاتف'),
+        'contact_label_email_info'  => array('label' => 'تسمية "البريد الإلكتروني"', 'default' => 'البريد الإلكتروني'),
+        'contact_label_work_hours'  => array('label' => 'تسمية "أوقات العمل"', 'default' => 'أوقات العمل'),
+    );
+
+    foreach ($info_labels as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_contact_page_section',
+            'type'        => 'text',
+        ));
+    }
+
+    // القيم الفعلية لمعلومات الاتصال
+
+    // العنوان
+    $wp_customize->add_setting('contact_address', array(
+        'default'           => 'المملكة المغربية - الرباط',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_address', array(
+        'label'       => __('العنوان الفعلي', 'fiqhlearning'),
+        'description' => __('عنوان المدرسة أو المعهد', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'textarea',
+    ));
+
+    // رقم الهاتف
+    $wp_customize->add_setting('contact_phone', array(
+        'default'           => '+212 661 234 567',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_phone', array(
+        'label'       => __('رقم الهاتف', 'fiqhlearning'),
+        'description' => __('يمكن إضافة أكثر من رقم (كل رقم في سطر)', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'textarea',
+    ));
+
+    // البريد الإلكتروني الرئيسي
+    $wp_customize->add_setting('contact_email_primary', array(
+        'default'           => 'rayhaneschool@gmail.com',
+        'sanitize_callback' => 'sanitize_email',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_email_primary', array(
+        'label'       => __('البريد الإلكتروني الرئيسي', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'email',
+    ));
+
+    // البريد الإلكتروني الثانوي
+    $wp_customize->add_setting('contact_email_secondary', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_email',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_email_secondary', array(
+        'label'       => __('البريد الإلكتروني الثانوي (اختياري)', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'email',
+    ));
+
+    // أوقات العمل
+    $wp_customize->add_setting('contact_work_hours', array(
+        'default'           => 'من الأحد إلى الخميس' . "\n" . '9:00 صباحاً - 5:00 مساءً',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_work_hours', array(
+        'label'       => __('أوقات العمل', 'fiqhlearning'),
+        'description' => __('يمكن استخدام أكثر من سطر', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'textarea',
+    ));
+
+    // عنوان قسم وسائل التواصل
+    $wp_customize->add_setting('contact_social_title', array(
+        'default'           => 'تابعنا على',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_social_title', array(
+        'label'       => __('عنوان قسم وسائل التواصل', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // عنوان قسم الخريطة
+    $wp_customize->add_setting('contact_map_title', array(
+        'default'           => 'موقعنا على الخريطة',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_map_title', array(
+        'label'       => __('عنوان قسم الخريطة', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'text',
+    ));
+
+    // رابط الخريطة (Google Maps Embed URL)
+    $wp_customize->add_setting('contact_map_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_map_url', array(
+        'label'       => __('رابط الخريطة (Google Maps)', 'fiqhlearning'),
+        'description' => __('اذهب إلى Google Maps، ابحث عن موقعك، اضغط "مشاركة" ← "تضمين خريطة" ← انسخ رابط src من الكود', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'url',
+    ));
+
+    // إظهار/إخفاء الخريطة
+    $wp_customize->add_setting('contact_map_enabled', array(
+        'default'           => true,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('contact_map_enabled', array(
+        'label'       => __('إظهار الخريطة', 'fiqhlearning'),
+        'section'     => 'fiqh_contact_page_section',
+        'type'        => 'checkbox',
+    ));
+
+    // ==========================================================================
+    // قسم صفحة تسجيل الدخول (Login Page)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_login_page_section', array(
+        'title'       => __('صفحة تسجيل الدخول', 'fiqhlearning'),
+        'description' => __('تخصيص نصوص صفحة تسجيل الدخول', 'fiqhlearning'),
+        'priority'    => 43,
+    ));
+
+    // نصوص صفحة تسجيل الدخول
+    $login_texts = array(
+        'login_page_title' => array('label' => 'عنوان الصفحة', 'default' => 'تسجيل الدخول'),
+        'login_page_subtitle' => array('label' => 'العنوان الفرعي', 'default' => 'مرحباً بك في منصة تعلم الفقه'),
+        'login_username_label' => array('label' => 'تسمية اسم المستخدم', 'default' => 'اسم المستخدم أو البريد الإلكتروني'),
+        'login_username_placeholder' => array('label' => 'نص مربع اسم المستخدم', 'default' => 'أدخل اسم المستخدم'),
+        'login_password_label' => array('label' => 'تسمية كلمة المرور', 'default' => 'كلمة المرور'),
+        'login_password_placeholder' => array('label' => 'نص مربع كلمة المرور', 'default' => 'أدخل كلمة المرور'),
+        'login_remember_me_text' => array('label' => 'نص "تذكرني"', 'default' => 'تذكرني'),
+        'login_forgot_password_text' => array('label' => 'نص "نسيت كلمة المرور"', 'default' => 'نسيت كلمة المرور؟'),
+        'login_button_text' => array('label' => 'نص زر تسجيل الدخول', 'default' => 'تسجيل الدخول'),
+        'login_no_account_text' => array('label' => 'نص "ليس لديك حساب"', 'default' => 'ليس لديك حساب؟'),
+        'login_contact_admin_text' => array('label' => 'نص "تواصل مع الإدارة"', 'default' => 'تواصل مع الإدارة'),
+        'login_info_1_title' => array('label' => 'المعلومة 1 - العنوان', 'default' => 'تعلم الفقه بسهولة'),
+        'login_info_1_desc' => array('label' => 'المعلومة 1 - الوصف', 'default' => 'منصة تعليمية متكاملة لدراسة الفقه الإسلامي بأسلوب عصري وميسر'),
+        'login_info_2_title' => array('label' => 'المعلومة 2 - العنوان', 'default' => 'معلمون متخصصون'),
+        'login_info_2_desc' => array('label' => 'المعلومة 2 - الوصف', 'default' => 'نخبة من المعلمين المتخصصين في الفقه والعلوم الشرعية'),
+        'login_info_3_title' => array('label' => 'المعلومة 3 - العنوان', 'default' => 'تعلم بالسرعة المناسبة'),
+        'login_info_3_desc' => array('label' => 'المعلومة 3 - الوصف', 'default' => 'ادرس في أي وقت ومن أي مكان بالسرعة التي تناسبك'),
+    );
+
+    foreach ($login_texts as $key => $data) {
+        $sanitize_callback = (strpos($key, '_desc') !== false) ? 'sanitize_textarea_field' : 'sanitize_text_field';
+        $control_type = (strpos($key, '_desc') !== false) ? 'textarea' : 'text';
+
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => $sanitize_callback,
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_login_page_section',
+            'type'    => $control_type,
+        ));
+    }
+
+    // ==========================================================================
+    // لوحة تخصيص النصوص (Text Customization Panel)
+    // ==========================================================================
+
+    $wp_customize->add_panel('fiqh_texts_panel', array(
+        'title'       => __('تخصيص النصوص', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص الظاهرة في الموقع بدون الحاجة لتعديل الكود', 'fiqhlearning'),
+        'priority'    => 25,
+    ));
+
+    // ==========================================================================
+    // قسم نصوص الهيدر (Header Texts Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_header_texts', array(
+        'title'       => __('نصوص الهيدر', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص الظاهرة في رأس الموقع (Header)', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 10,
+    ));
+
+    // نصوص الهيدر - 12 نص
+    $header_texts = array(
+        'header_telegram_text' => array(
+            'label'   => 'نص قناة التليجرام',
+            'default' => 'قناة التليجرام',
+        ),
+        'header_whatsapp_text' => array(
+            'label'   => 'نص واتساب',
+            'default' => 'واتساب',
+        ),
+        'header_menu_text' => array(
+            'label'   => 'نص القائمة',
+            'default' => 'القائمة',
+        ),
+        'header_search_label' => array(
+            'label'   => 'تسمية البحث',
+            'default' => 'بحث',
+        ),
+        'header_dark_mode_label' => array(
+            'label'   => 'تسمية تبديل الوضع الليلي',
+            'default' => 'تبديل الوضع الليلي',
+        ),
+        'header_my_account_label' => array(
+            'label'   => 'تسمية حسابي',
+            'default' => 'حسابي',
+        ),
+        'header_dashboard_text' => array(
+            'label'   => 'نص لوحة التحكم',
+            'default' => 'لوحة التحكم',
+        ),
+        'header_profile_text' => array(
+            'label'   => 'نص الملف الشخصي',
+            'default' => 'الملف الشخصي',
+        ),
+        'header_logout_text' => array(
+            'label'   => 'نص تسجيل الخروج',
+            'default' => 'تسجيل الخروج',
+        ),
+        'header_login_text' => array(
+            'label'   => 'نص تسجيل الدخول',
+            'default' => 'تسجيل الدخول',
+        ),
+        'header_close_label' => array(
+            'label'   => 'تسمية إغلاق',
+            'default' => 'إغلاق',
+        ),
+        'header_search_placeholder' => array(
+            'label'   => 'نص البحث (Placeholder)',
+            'default' => 'ابحث عن مقررات، دروس، مقالات...',
+        ),
+    );
+
+    foreach ($header_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_header_texts',
+            'type'        => 'text',
+        ));
+    }
+
+    // ==========================================================================
+    // قسم نصوص الفوتر (Footer Texts Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_footer_texts', array(
+        'title'       => __('نصوص الفوتر', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص الظاهرة في تذييل الموقع (Footer)', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 20,
+    ));
+
+    // نصوص الفوتر - 6 نصوص
+    $footer_texts = array(
+        'footer_copyright_text' => array(
+            'label'       => 'نص حقوق النشر',
+            'default'     => '&copy; %1$s %2$s. جميع الحقوق محفوظة.',
+            'description' => 'استخدم %1$s للسنة و %2$s لاسم الموقع',
+        ),
+        'footer_telegram_label' => array(
+            'label'   => 'تسمية تليجرام (Aria Label)',
+            'default' => 'تليجرام',
+        ),
+        'footer_whatsapp_label' => array(
+            'label'   => 'تسمية واتساب (Aria Label)',
+            'default' => 'واتساب',
+        ),
+        'footer_facebook_label' => array(
+            'label'   => 'تسمية فيسبوك (Aria Label)',
+            'default' => 'فيسبوك',
+        ),
+        'footer_twitter_label' => array(
+            'label'   => 'تسمية تويتر (Aria Label)',
+            'default' => 'تويتر',
+        ),
+        'footer_back_to_top_label' => array(
+            'label'   => 'تسمية زر العودة للأعلى',
+            'default' => 'العودة للأعلى',
+        ),
+    );
+
+    foreach ($footer_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $control_args = array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_footer_texts',
+            'type'    => 'text',
+        );
+
+        // إضافة وصف إذا كان موجوداً
+        if (isset($data['description'])) {
+            $control_args['description'] = __($data['description'], 'fiqhlearning');
+        }
+
+        $wp_customize->add_control($key, $control_args);
+    }
+
+    // ==========================================================================
+    // قسم نصوص الإحصائيات (Statistics Texts Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_stats_texts', array(
+        'title'       => __('نصوص الإحصائيات', 'fiqhlearning'),
+        'description' => __('تخصيص نصوص قسم الإحصائيات في الصفحة الرئيسية', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 30,
+    ));
+
+    // نصوص الإحصائيات - 4 نصوص
+    $stats_texts = array(
+        'stat_student_label' => array(
+            'label'       => 'تسمية الطلاب',
+            'default'     => 'طالب',
+            'description' => 'النص الذي يظهر تحت عدد الطلاب',
+        ),
+        'stat_course_label' => array(
+            'label'       => 'تسمية المقررات',
+            'default'     => 'مقرر',
+            'description' => 'النص الذي يظهر تحت عدد المقررات',
+        ),
+        'stat_lesson_label' => array(
+            'label'       => 'تسمية الدروس',
+            'default'     => 'درس',
+            'description' => 'النص الذي يظهر تحت عدد الدروس',
+        ),
+        'stat_science_label' => array(
+            'label'       => 'تسمية العلوم',
+            'default'     => 'علم',
+            'description' => 'النص الذي يظهر تحت عدد العلوم',
+        ),
+    );
+
+    foreach ($stats_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $control_args = array(
+            'label'       => __($data['label'], 'fiqhlearning'),
+            'section'     => 'fiqh_stats_texts',
+            'type'        => 'text',
+        );
+
+        // إضافة وصف إذا كان موجوداً
+        if (isset($data['description'])) {
+            $control_args['description'] = __($data['description'], 'fiqhlearning');
+        }
+
+        $wp_customize->add_control($key, $control_args);
+    }
+
+    // ==========================================================================
+    // نصوص إضافية للصفحة الرئيسية (تم دمجها في قسم الصفحة الرئيسية)
+    // ==========================================================================
+
+    // نصوص الصفحة الرئيسية (دمجها في fiqh_homepage_section)
+    $frontpage_texts = array(
+        // قسم Hero
+        'hero_browse_courses_text' => array(
+            'label'       => 'نص زر "تصفح المقررات" (Hero)',
+            'default'     => 'تصفح المقررات',
+            'description' => 'زر تصفح المقررات في قسم Hero',
+        ),
+        'hero_login_text' => array(
+            'label'       => 'نص زر "تسجيل الدخول" (Hero)',
+            'default'     => 'تسجيل الدخول',
+            'description' => 'زر تسجيل الدخول في قسم Hero',
+        ),
+        // قسم عن المدرسة
+        'about_section_badge' => array(
+            'label'       => 'شارة قسم "عن المدرسة"',
+            'default'     => 'عن المدرسة',
+            'description' => 'النص في شارة قسم عن المدرسة',
+        ),
+        'about_title' => array(
+            'label'       => 'عنوان قسم "عن المدرسة"',
+            'default'     => 'مدرسة الريحان للعلوم الشرعية',
+            'description' => 'العنوان الرئيسي (h2) في قسم عن المدرسة',
+        ),
+        'about_description' => array(
+            'label'       => 'وصف قسم "عن المدرسة"',
+            'default'     => 'مدرسة الريحان منصة تعليمية متخصصة في تعليم الفقه المالكي والعلوم الشرعية. نسعى لتقديم تعليم عالي الجودة يجمع بين الأصالة والمعاصرة، من خلال دروس مرئية ومسموعة ومواد تعليمية متنوعة.',
+            'description' => 'الفقرة التوضيحية في قسم عن المدرسة',
+        ),
+        'about_learn_more_text' => array(
+            'label'       => 'نص زر "اعرف المزيد"',
+            'default'     => 'اعرف المزيد',
+            'description' => 'زر اعرف المزيد في قسم عن المدرسة',
+        ),
+        // قسم الأحداث
+        'events_section_title' => array(
+            'label'       => 'عنوان قسم الأحداث',
+            'default'     => 'الأحداث والفعاليات',
+            'description' => 'العنوان الرئيسي لقسم الأحداث',
+        ),
+        'events_button_text' => array(
+            'label'       => 'نص زر "جميع الأحداث"',
+            'default'     => 'جميع الأحداث',
+            'description' => 'زر عرض جميع الأحداث',
+        ),
+        'event_read_more_text' => array(
+            'label'       => 'نص "معرفة المزيد" (الأحداث)',
+            'default'     => 'معرفة المزيد',
+            'description' => 'رابط معرفة المزيد في بطاقة الحدث',
+        ),
+        // قسم العلوم
+        'sciences_section_title' => array(
+            'label'       => 'عنوان قسم العلوم',
+            'default'     => 'العلوم الشرعية',
+            'description' => 'العنوان الرئيسي لقسم العلوم الشرعية',
+        ),
+        'sciences_view_all_text' => array(
+            'label'       => 'نص زر "عرض الكل" (العلوم)',
+            'default'     => 'عرض الكل',
+            'description' => 'زر عرض جميع العلوم',
+        ),
+        'science_course_label' => array(
+            'label'       => 'تسمية "مقرر" في بطاقة العلم',
+            'default'     => 'مقرر',
+            'description' => 'النص الذي يظهر بعد عدد المقررات في بطاقة العلم',
+        ),
+        // قسم المقالات
+        'blog_section_title' => array(
+            'label'       => 'عنوان قسم المقالات',
+            'default'     => 'آخر المقالات',
+            'description' => 'العنوان الرئيسي لقسم المقالات',
+        ),
+        'blog_view_all_text' => array(
+            'label'       => 'نص زر "جميع المقالات"',
+            'default'     => 'جميع المقالات',
+            'description' => 'زر عرض جميع المقالات',
+        ),
+        'blog_read_more_text' => array(
+            'label'       => 'نص "اقرأ المزيد" (المقالات)',
+            'default'     => 'اقرأ المزيد',
+            'description' => 'رابط اقرأ المزيد في بطاقة المقال',
+        ),
+        // قسم CTA
+        'cta_title' => array(
+            'label'       => 'عنوان قسم الدعوة للعمل (CTA)',
+            'default'     => 'ابدأ رحلتك التعليمية اليوم',
+            'description' => 'العنوان الرئيسي في قسم CTA',
+        ),
+        'cta_description' => array(
+            'label'       => 'وصف قسم الدعوة للعمل (CTA)',
+            'default'     => 'انضم إلى آلاف الطلاب واحصل على تعليم فقهي متميز في الفقه المالكي',
+            'description' => 'الوصف في قسم CTA',
+        ),
+        'cta_button_text' => array(
+            'label'       => 'نص زر "ابدأ الآن"',
+            'default'     => 'ابدأ الآن',
+            'description' => 'زر الدعوة للعمل في قسم CTA',
+        ),
+    );
+
+    foreach ($frontpage_texts as $key => $data) {
+        // استخدام sanitize_textarea_field للنصوص الطويلة
+        $sanitize_callback = ($key === 'about_description' || $key === 'cta_description')
+            ? 'sanitize_textarea_field'
+            : 'sanitize_text_field';
+
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => $sanitize_callback,
+            'transport'         => 'refresh',
+        ));
+
+        // استخدام textarea للنصوص الطويلة
+        $control_type = ($key === 'about_description' || $key === 'cta_description')
+            ? 'textarea'
+            : 'text';
+
+        $control_args = array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_homepage_section',
+            'type'    => $control_type,
+        );
+
+        // إضافة وصف إذا كان موجوداً
+        if (isset($data['description'])) {
+            $control_args['description'] = __($data['description'], 'fiqhlearning');
+        }
+
+        $wp_customize->add_control($key, $control_args);
+    }
+
+    // ==========================================================================
+    // قسم صفحة لوحة التحكم (Dashboard Page Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_dashboard_texts', array(
+        'title'       => __('صفحة لوحة التحكم', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص الظاهرة في لوحة تحكم الطالب', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 90,
+    ));
+
+    $dashboard_texts = array(
+        // نصوص تبويب التقدم الدراسي
+        'dashboard_progress_title' => array(
+            'label'   => 'عنوان تبويب التقدم الدراسي',
+            'default' => 'التقدم الدراسي',
+        ),
+        'dashboard_progress_subtitle' => array(
+            'label'   => 'وصف تبويب التقدم الدراسي',
+            'default' => 'تتبع تقدمك الأكاديمي وإحصائياتك',
+        ),
+        'dashboard_current_batch_label' => array(
+            'label'   => 'تسمية المستوى الدراسي الحالي',
+            'default' => 'المستوى الدراسي الحالي',
+        ),
+        'dashboard_batch_status_active' => array(
+            'label'   => 'نص حالة المستوى النشط',
+            'default' => 'نشط',
+        ),
+        'dashboard_batch_start_date' => array(
+            'label'   => 'تسمية تاريخ البداية',
+            'default' => 'تاريخ البداية',
+        ),
+        'dashboard_batch_end_date' => array(
+            'label'   => 'تسمية تاريخ النهاية',
+            'default' => 'تاريخ النهاية',
+        ),
+        'dashboard_overall_progress_label' => array(
+            'label'   => 'تسمية التقدم الإجمالي',
+            'default' => 'التقدم الإجمالي',
+        ),
+        'dashboard_progress_of' => array(
+            'label'   => 'كلمة "من" في التقدم',
+            'default' => 'من',
+        ),
+        'dashboard_progress_lessons' => array(
+            'label'   => 'كلمة "درس"',
+            'default' => 'درس',
+        ),
+        'dashboard_no_batch_title' => array(
+            'label'   => 'عنوان عدم التسجيل في مستوى',
+            'default' => 'لم تسجل في أي مستوى دراسي بعد',
+        ),
+        'dashboard_no_batch_message' => array(
+            'label'   => 'رسالة عدم التسجيل في مستوى',
+            'default' => 'يرجى التواصل مع الإدارة للتسجيل في مستوى دراسي',
+        ),
+        'dashboard_my_stats_title' => array(
+            'label'   => 'عنوان قسم الإحصائيات',
+            'default' => 'إحصائياتي',
+        ),
+        'dashboard_stat_enrolled_courses' => array(
+            'label'   => 'تسمية المقررات المسجلة',
+            'default' => 'المقررات المسجلة',
+        ),
+        'dashboard_stat_completed_lessons' => array(
+            'label'   => 'تسمية الدروس المكتملة',
+            'default' => 'الدروس المكتملة',
+        ),
+        'dashboard_stat_questions_asked' => array(
+            'label'   => 'تسمية الأسئلة المطروحة',
+            'default' => 'الأسئلة المطروحة',
+        ),
+        'dashboard_stat_notes_count' => array(
+            'label'   => 'تسمية الملاحظات',
+            'default' => 'الملاحظات',
+        ),
+        'dashboard_courses_progress_title' => array(
+            'label'   => 'عنوان تقدم المقررات',
+            'default' => 'تقدمك في المقررات',
+        ),
+
+        // نصوص تبويب الإعدادات
+        'dashboard_settings_title' => array(
+            'label'   => 'عنوان تبويب الإعدادات',
+            'default' => 'الإعدادات',
+        ),
+        'dashboard_settings_subtitle' => array(
+            'label'   => 'وصف تبويب الإعدادات',
+            'default' => 'إدارة معلوماتك الشخصية وتفضيلات حسابك',
+        ),
+        'dashboard_profile_section_title' => array(
+            'label'   => 'عنوان قسم المعلومات الشخصية',
+            'default' => 'المعلومات الشخصية',
+        ),
+        'dashboard_label_display_name' => array(
+            'label'   => 'تسمية الاسم الكامل',
+            'default' => 'الاسم الكامل',
+        ),
+        'dashboard_label_email' => array(
+            'label'   => 'تسمية البريد الإلكتروني',
+            'default' => 'البريد الإلكتروني',
+        ),
+        'dashboard_label_username' => array(
+            'label'   => 'تسمية اسم المستخدم',
+            'default' => 'اسم المستخدم',
+        ),
+        'dashboard_save_profile_btn' => array(
+            'label'   => 'نص زر حفظ التغييرات',
+            'default' => 'حفظ التغييرات',
+        ),
+        'dashboard_password_section_title' => array(
+            'label'   => 'عنوان قسم تغيير كلمة المرور',
+            'default' => 'تغيير كلمة المرور',
+        ),
+        'dashboard_label_current_password' => array(
+            'label'   => 'تسمية كلمة المرور الحالية',
+            'default' => 'كلمة المرور الحالية',
+        ),
+        'dashboard_label_new_password' => array(
+            'label'   => 'تسمية كلمة المرور الجديدة',
+            'default' => 'كلمة المرور الجديدة',
+        ),
+        'dashboard_label_confirm_password' => array(
+            'label'   => 'تسمية تأكيد كلمة المرور',
+            'default' => 'تأكيد كلمة المرور',
+        ),
+        'dashboard_change_password_btn' => array(
+            'label'   => 'نص زر تغيير كلمة المرور',
+            'default' => 'تغيير كلمة المرور',
+        ),
+        'dashboard_notifications_section_title' => array(
+            'label'   => 'عنوان قسم الإشعارات',
+            'default' => 'إعدادات الإشعارات',
+        ),
+        'dashboard_notif_new_lessons' => array(
+            'label'   => 'عنوان إشعارات الدروس الجديدة',
+            'default' => 'دروس جديدة',
+        ),
+        'dashboard_notif_new_lessons_desc' => array(
+            'label'   => 'وصف إشعارات الدروس الجديدة',
+            'default' => 'تلقي إشعار عند إضافة دروس جديدة في مقرراتك',
+        ),
+        'dashboard_notif_answers' => array(
+            'label'   => 'عنوان إشعارات الإجابات',
+            'default' => 'إجابات الأسئلة',
+        ),
+        'dashboard_notif_answers_desc' => array(
+            'label'   => 'وصف إشعارات الإجابات',
+            'default' => 'تلقي إشعار عند الرد على أسئلتك',
+        ),
+        'dashboard_notif_announcements' => array(
+            'label'   => 'عنوان إشعارات الإعلانات',
+            'default' => 'الإعلانات المهمة',
+        ),
+        'dashboard_notif_announcements_desc' => array(
+            'label'   => 'وصف إشعارات الإعلانات',
+            'default' => 'تلقي إشعار عند نشر إعلانات أو أحداث جديدة',
+        ),
+        'dashboard_save_notifications_btn' => array(
+            'label'   => 'نص زر حفظ الإعدادات',
+            'default' => 'حفظ الإعدادات',
+        ),
+        'dashboard_account_info_title' => array(
+            'label'   => 'عنوان قسم معلومات الحساب',
+            'default' => 'معلومات الحساب',
+        ),
+        'dashboard_account_status' => array(
+            'label'   => 'تسمية حالة الحساب',
+            'default' => 'حالة الحساب',
+        ),
+        'dashboard_account_type' => array(
+            'label'   => 'تسمية نوع الحساب',
+            'default' => 'نوع الحساب',
+        ),
+        'dashboard_account_status_active' => array(
+            'label'   => 'نص حالة الحساب النشط',
+            'default' => 'نشط',
+        ),
+        'dashboard_account_type_student' => array(
+            'label'   => 'نص نوع حساب الطالب',
+            'default' => 'طالب',
+        ),
+    );
+
+    foreach ($dashboard_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $wp_customize->add_control($key, array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_dashboard_texts',
+            'type'    => 'text',
+        ));
+    }
 }
 add_action('customize_register', 'fiqhlearning_customize_register');

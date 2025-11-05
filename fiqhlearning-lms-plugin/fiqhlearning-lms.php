@@ -100,12 +100,43 @@ class FiqhLearning_LMS {
         FiqhLearning_Post_Types::register_post_types();
         FiqhLearning_Taxonomies::register_taxonomies();
 
+        // إنشاء دور الطالب مع الصلاحيات
+        $this->create_student_role();
+
         // تحديث Rewrite Rules
         flush_rewrite_rules();
 
         // إضافة خيارات افتراضية
         add_option('fiqh_lms_version', FIQH_LMS_VERSION);
         add_option('fiqh_lms_db_version', '1.0.0');
+    }
+
+    /**
+     * إنشاء دور الطالب مع الصلاحيات المناسبة
+     */
+    private function create_student_role() {
+        // حذف الدور إذا كان موجوداً (لإعادة إنشائه بصلاحيات جديدة)
+        remove_role('student');
+
+        // إنشاء دور الطالب مع الصلاحيات
+        add_role(
+            'student',
+            __('طالب', 'fiqh-lms'),
+            array(
+                'read' => true, // القراءة الأساسية
+                'edit_posts' => false, // لا يمكن تحرير المقالات
+                'delete_posts' => false, // لا يمكن حذف المقالات
+                'publish_posts' => false, // لا يمكن نشر المقالات
+                'upload_files' => false, // لا يمكن رفع الملفات (أمان)
+
+                // صلاحيات مخصصة للمنصة
+                'view_courses' => true, // عرض المقررات
+                'view_lessons' => true, // عرض الدروس
+                'submit_questions' => true, // إرسال الأسئلة
+                'take_notes' => true, // كتابة الملاحظات
+                'track_progress' => true, // تتبع التقدم
+            )
+        );
     }
 
     /**

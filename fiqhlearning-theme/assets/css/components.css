@@ -148,3 +148,80 @@
 .tab-content.active {
     display: block;
 }
+
+/* ==========================================================================
+   Spacing Fixes
+   ========================================================================== */
+
+/* المسافة بين عنوان الصفحة والنافبار - لجميع الصفحات */
+.site-main {
+    padding-top: var(--spacing-3xl);
+}
+
+.page-header {
+    margin-top: var(--spacing-2xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+/* بطاقة المقرر - المسافة بين الوصف والزر */
+.course-card .course-excerpt,
+.course-card .course-description {
+    margin-bottom: var(--spacing-lg);
+}
+
+.course-card .btn,
+.course-card .course-button {
+    margin-top: auto;
+}
+
+/* زر ابدأ الآن في الصفحة الرئيسية - تقليل المسافات */
+.cta-box .btn-primary,
+.cta-buttons .btn-primary {
+    padding: var(--spacing-md) var(--spacing-2xl);
+    margin: var(--spacing-sm) var(--spacing-xs);
+}
+
+.cta-box,
+.cta-section {
+    padding: var(--spacing-3xl) var(--spacing-xl);
+}
+
+.cta-box h2,
+.cta-section h2 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.cta-box p,
+.cta-section p {
+    margin-bottom: var(--spacing-xl);
+}
+
+/* صفحة الأسئلة - المسافة بين العنوان والزر ومربع البحث */
+.page-template-page-questions .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--color-light-gray);
+}
+
+.page-template-page-questions .page-title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.page-template-page-questions .questions-container {
+    margin-top: var(--spacing-xl);
+}
+
+.page-template-page-questions .questions-filters {
+    margin-top: 0;
+}
+
+.page-template-page-questions .filter-group:first-child {
+    margin-top: 0;
+}
