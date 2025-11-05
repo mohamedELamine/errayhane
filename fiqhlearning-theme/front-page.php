@@ -32,7 +32,7 @@ get_header();
                             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                         </svg>
-                        <?php _e('تصفح المقررات', 'fiqhlearning'); ?>
+                        <?php echo esc_html(get_theme_mod('hero_browse_courses_text', __('تصفح المقررات', 'fiqhlearning'))); ?>
                     </a>
                     <?php if (!is_user_logged_in()) : ?>
                         <a href="<?php echo wp_login_url(); ?>" class="btn btn-secondary btn-lg">
@@ -41,7 +41,7 @@ get_header();
                                 <polyline points="10 17 15 12 10 7"></polyline>
                                 <line x1="15" y1="12" x2="3" y2="12"></line>
                             </svg>
-                            <?php _e('تسجيل الدخول', 'fiqhlearning'); ?>
+                            <?php echo esc_html(get_theme_mod('hero_login_text', __('تسجيل الدخول', 'fiqhlearning'))); ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -92,7 +92,7 @@ get_header();
             <div class="about-content-wrapper">
                 <div class="about-image">
                     <?php if (get_theme_mod('about_image')) : ?>
-                        <img src="<?php echo esc_url(get_theme_mod('about_image')); ?>" alt="<?php _e('عن المدرسة', 'fiqhlearning'); ?>">
+                        <img src="<?php echo esc_url(get_theme_mod('about_image')); ?>" alt="<?php echo esc_attr(get_theme_mod('about_section_badge', __('عن المدرسة', 'fiqhlearning'))); ?>">
                     <?php else : ?>
                         <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
                             <!-- مسجد -->
@@ -110,7 +110,7 @@ get_header();
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                         </svg>
-                        <?php _e('عن المدرسة', 'fiqhlearning'); ?>
+                        <?php echo esc_html(get_theme_mod('about_section_badge', __('عن المدرسة', 'fiqhlearning'))); ?>
                     </div>
                     <h2><?php echo get_theme_mod('about_title', __('مدرسة الريحان للعلوم الشرعية', 'fiqhlearning')); ?></h2>
                     <p><?php echo get_theme_mod('about_description', __('مدرسة الريحان منصة تعليمية متخصصة في تعليم الفقه المالكي والعلوم الشرعية. نسعى لتقديم تعليم عالي الجودة يجمع بين الأصالة والمعاصرة، من خلال دروس مرئية ومسموعة ومواد تعليمية متنوعة.', 'fiqhlearning')); ?></p>
@@ -158,7 +158,7 @@ get_header();
                     if ($about_page) :
                     ?>
                         <a href="<?php echo get_permalink($about_page); ?>" class="btn btn-primary">
-                            <?php _e('اعرف المزيد', 'fiqhlearning'); ?>
+                            <?php echo esc_html(get_theme_mod('about_learn_more_text', __('اعرف المزيد', 'fiqhlearning'))); ?>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>

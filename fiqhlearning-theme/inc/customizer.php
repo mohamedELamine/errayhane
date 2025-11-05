@@ -1709,5 +1709,127 @@ function fiqhlearning_customize_register($wp_customize) {
 
         $wp_customize->add_control($key, $control_args);
     }
+
+    // ==========================================================================
+    // قسم نصوص الصفحة الرئيسية (Front Page Texts Section)
+    // ==========================================================================
+
+    $wp_customize->add_section('fiqh_frontpage_texts', array(
+        'title'       => __('نصوص الصفحة الرئيسية', 'fiqhlearning'),
+        'description' => __('تخصيص جميع النصوص في الصفحة الرئيسية (front-page.php)', 'fiqhlearning'),
+        'panel'       => 'fiqh_texts_panel',
+        'priority'    => 40,
+    ));
+
+    // نصوص الصفحة الرئيسية
+    $frontpage_texts = array(
+        // قسم Hero
+        'hero_browse_courses_text' => array(
+            'label'       => 'نص زر "تصفح المقررات" (Hero)',
+            'default'     => 'تصفح المقررات',
+            'description' => 'زر تصفح المقررات في قسم Hero',
+        ),
+        'hero_login_text' => array(
+            'label'       => 'نص زر "تسجيل الدخول" (Hero)',
+            'default'     => 'تسجيل الدخول',
+            'description' => 'زر تسجيل الدخول في قسم Hero',
+        ),
+        // قسم عن المدرسة
+        'about_section_badge' => array(
+            'label'       => 'شارة قسم "عن المدرسة"',
+            'default'     => 'عن المدرسة',
+            'description' => 'النص في شارة قسم عن المدرسة',
+        ),
+        'about_learn_more_text' => array(
+            'label'       => 'نص زر "اعرف المزيد"',
+            'default'     => 'اعرف المزيد',
+            'description' => 'زر اعرف المزيد في قسم عن المدرسة',
+        ),
+        // قسم الأحداث
+        'events_section_title' => array(
+            'label'       => 'عنوان قسم الأحداث',
+            'default'     => 'الأحداث والفعاليات',
+            'description' => 'العنوان الرئيسي لقسم الأحداث',
+        ),
+        'events_button_text' => array(
+            'label'       => 'نص زر "جميع الأحداث"',
+            'default'     => 'جميع الأحداث',
+            'description' => 'زر عرض جميع الأحداث',
+        ),
+        'event_read_more_text' => array(
+            'label'       => 'نص "معرفة المزيد" (الأحداث)',
+            'default'     => 'معرفة المزيد',
+            'description' => 'رابط معرفة المزيد في بطاقة الحدث',
+        ),
+        // قسم العلوم
+        'sciences_section_title' => array(
+            'label'       => 'عنوان قسم العلوم',
+            'default'     => 'العلوم الشرعية',
+            'description' => 'العنوان الرئيسي لقسم العلوم الشرعية',
+        ),
+        'sciences_view_all_text' => array(
+            'label'       => 'نص زر "عرض الكل" (العلوم)',
+            'default'     => 'عرض الكل',
+            'description' => 'زر عرض جميع العلوم',
+        ),
+        'science_course_label' => array(
+            'label'       => 'تسمية "مقرر" في بطاقة العلم',
+            'default'     => 'مقرر',
+            'description' => 'النص الذي يظهر بعد عدد المقررات في بطاقة العلم',
+        ),
+        // قسم المقالات
+        'blog_section_title' => array(
+            'label'       => 'عنوان قسم المقالات',
+            'default'     => 'آخر المقالات',
+            'description' => 'العنوان الرئيسي لقسم المقالات',
+        ),
+        'blog_view_all_text' => array(
+            'label'       => 'نص زر "جميع المقالات"',
+            'default'     => 'جميع المقالات',
+            'description' => 'زر عرض جميع المقالات',
+        ),
+        'blog_read_more_text' => array(
+            'label'       => 'نص "اقرأ المزيد" (المقالات)',
+            'default'     => 'اقرأ المزيد',
+            'description' => 'رابط اقرأ المزيد في بطاقة المقال',
+        ),
+        // قسم CTA
+        'cta_title' => array(
+            'label'       => 'عنوان قسم الدعوة للعمل (CTA)',
+            'default'     => 'ابدأ رحلتك التعليمية اليوم',
+            'description' => 'العنوان الرئيسي في قسم CTA',
+        ),
+        'cta_description' => array(
+            'label'       => 'وصف قسم الدعوة للعمل (CTA)',
+            'default'     => 'انضم إلى آلاف الطلاب واحصل على تعليم فقهي متميز في الفقه المالكي',
+            'description' => 'الوصف في قسم CTA',
+        ),
+        'cta_button_text' => array(
+            'label'       => 'نص زر "ابدأ الآن"',
+            'default'     => 'ابدأ الآن',
+            'description' => 'زر الدعوة للعمل في قسم CTA',
+        ),
+    );
+
+    foreach ($frontpage_texts as $key => $data) {
+        $wp_customize->add_setting($key, array(
+            'default'           => $data['default'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'refresh',
+        ));
+
+        $control_args = array(
+            'label'   => __($data['label'], 'fiqhlearning'),
+            'section' => 'fiqh_frontpage_texts',
+            'type'    => 'text',
+        );
+
+        // إضافة وصف إذا كان موجوداً
+        if (isset($data['description'])) {
+            $control_args['description'] = __($data['description'], 'fiqhlearning');
+        }
+
+        $wp_customize->add_control($key, $control_args);
+    }
 }
 add_action('customize_register', 'fiqhlearning_customize_register');
