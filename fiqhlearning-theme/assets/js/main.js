@@ -215,6 +215,88 @@
      * نموذج الأسئلة
      */
     function initQuestionForm() {
+        // نموذج إضافة سؤال في الدرس
+        $('#add-lesson-question-form').on('submit', function(e) {
+            e.preventDefault();
+
+            const form = $(this);
+            const submitBtn = form.find('button[type="submit"]');
+            const lessonId = $('.single-lesson-page').data('lesson-id');
+            const questionContent = form.find('#question-content').val();
+
+            // تعطيل الزر أثناء الإرسال
+            submitBtn.prop('disabled', true).text('جاري الإرسال...');
+
+            $.ajax({
+                url: fiqhData.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'fiqh_add_lesson_question',
+                    nonce: fiqhData.nonce,
+                    lesson_id: lessonId,
+                    question: questionContent
+                },
+                success: function(response) {
+                    if (response.success) {
+                        showNotification('success', response.data.message);
+                        form[0].reset();
+                        // إعادة تحميل الصفحة لعرض السؤال الجديد
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        showNotification('error', response.data || 'حدث خطأ أثناء إرسال السؤال');
+                        submitBtn.prop('disabled', false).html('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> إرسال السؤال');
+                    }
+                },
+                error: function() {
+                    showNotification('error', 'حدث خطأ في الاتصال');
+                    submitBtn.prop('disabled', false).html('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> إرسال السؤال');
+                }
+            });
+        });
+
+        // نموذج الإجابة على سؤال
+        $(document).on('submit', '.add-answer-form', function(e) {
+            e.preventDefault();
+
+            const form = $(this);
+            const questionId = form.data('question-id');
+            const answerContent = form.find('textarea[name="answer_content"]').val();
+            const submitBtn = form.find('button[type="submit"]');
+
+            // تعطيل الزر أثناء الإرسال
+            submitBtn.prop('disabled', true).text('جاري الإرسال...');
+
+            $.ajax({
+                url: fiqhData.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'fiqh_add_lesson_answer',
+                    nonce: fiqhData.nonce,
+                    question_id: questionId,
+                    answer: answerContent
+                },
+                success: function(response) {
+                    if (response.success) {
+                        showNotification('success', response.data.message);
+                        // إعادة تحميل الصفحة لعرض الإجابة
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        showNotification('error', response.data || 'حدث خطأ أثناء إرسال الإجابة');
+                        submitBtn.prop('disabled', false).text('إرسال الإجابة');
+                    }
+                },
+                error: function() {
+                    showNotification('error', 'حدث خطأ في الاتصال');
+                    submitBtn.prop('disabled', false).text('إرسال الإجابة');
+                }
+            });
+        });
+
+        // نموذج الأسئلة القديم (للصفحات الأخرى)
         $('#add-question-form').on('submit', function(e) {
             e.preventDefault();
 
@@ -229,27 +311,6 @@
                         showNotification('success', response.data.message);
                         $('#add-question-form')[0].reset();
                         $('#add-question-modal').fadeOut();
-                    } else {
-                        showNotification('error', response.data.message);
-                    }
-                }
-            });
-        });
-
-        // نموذج الإجابة
-        $('.answer-form').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = $(this).serialize();
-
-            $.ajax({
-                url: fiqhData.ajaxUrl,
-                type: 'POST',
-                data: formData + '&action=fiqh_add_answer&nonce=' + fiqhData.nonce,
-                success: function(response) {
-                    if (response.success) {
-                        showNotification('success', response.data.message);
-                        location.reload();
                     } else {
                         showNotification('error', response.data.message);
                     }
