@@ -20,7 +20,7 @@ get_header();
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
-                    <span><?php _e('خطة الدراسة', 'fiqhlearning'); ?></span>
+                    <span><?php echo get_theme_mod('study_plan_breadcrumb_current', __('خطة الدراسة', 'fiqhlearning')); ?></span>
                 </div>
                 <h1 class="page-title">
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -52,37 +52,35 @@ get_header();
             if ($batches) :
             ?>
                 <div class="study-plan-intro card">
-                    <h2><?php _e('نظام المستويات الدراسية', 'fiqhlearning'); ?></h2>
+                    <h2><?php echo get_theme_mod('study_plan_levels_title', __('نظام المستويات الدراسية', 'fiqhlearning')); ?></h2>
                     <p><?php echo get_theme_mod('study_plan_intro', __('تم تقسيم الخطة الدراسية إلى عدة مستويات متدرجة، بحيث يبدأ الطالب من المستوى الأول ويتقدم تدريجياً نحو المستويات المتقدمة.', 'fiqhlearning')); ?></p>
                 </div>
 
                 <div class="study-levels">
                     <?php
                     foreach ($batches as $index => $batch) :
-                        // جلب المقررات التابعة لهذا المستوى
-                        $courses = $wpdb->get_results($wpdb->prepare(
-                            "SELECT DISTINCT p.* FROM {$wpdb->posts} p
-                            INNER JOIN {$wpdb->prefix}fiqh_enrollments e ON p.ID = e.course_id
-                            WHERE e.batch_id = %d AND p.post_type = 'fiqh_course' AND p.post_status = 'publish'
-                            ORDER BY p.post_title ASC
-                            LIMIT 10",
-                            $batch->id
+                        // جلب المقررات التابعة لهذا المستوى من meta field
+                        $all_courses = get_posts(array(
+                            'post_type' => 'fiqh_course',
+                            'posts_per_page' => -1,
+                            'post_status' => 'publish',
+                            'orderby' => 'title',
+                            'order' => 'ASC'
                         ));
 
-                        // إذا لم توجد مقررات مربوطة، جلب بعض المقررات كمثال
-                        if (empty($courses)) {
-                            $courses = get_posts(array(
-                                'post_type' => 'fiqh_course',
-                                'posts_per_page' => 6,
-                                'orderby' => 'date',
-                                'order' => 'DESC'
-                            ));
+                        $courses = array();
+                        foreach ($all_courses as $course) {
+                            $course_levels = get_post_meta($course->ID, '_fiqh_course_levels', true);
+
+                            if (is_array($course_levels) && in_array($batch->id, $course_levels)) {
+                                $courses[] = $course;
+                            }
                         }
                     ?>
                         <div class="study-level-card card">
                             <div class="level-header">
                                 <div class="level-badge">
-                                    <?php _e('المستوى', 'fiqhlearning'); ?> <?php echo $batch->level_order; ?>
+                                    <?php echo get_theme_mod('study_plan_level_label', __('المستوى', 'fiqhlearning')); ?> <?php echo $batch->level_order; ?>
                                 </div>
                                 <h3 class="level-name"><?php echo esc_html($batch->name); ?></h3>
                                 <?php if ($batch->description) : ?>
@@ -99,7 +97,7 @@ get_header();
                                                     <line x1="8" y1="2" x2="8" y2="6"></line>
                                                     <line x1="3" y1="10" x2="21" y2="10"></line>
                                                 </svg>
-                                                <?php _e('البداية:', 'fiqhlearning'); ?> <?php echo date_i18n('Y/m/d', strtotime($batch->start_date)); ?>
+                                                <?php echo get_theme_mod('study_plan_start_date_label', __('البداية:', 'fiqhlearning')); ?> <?php echo date_i18n('Y/m/d', strtotime($batch->start_date)); ?>
                                             </span>
                                         <?php endif; ?>
                                         <?php if ($batch->end_date) : ?>
@@ -110,7 +108,7 @@ get_header();
                                                     <line x1="8" y1="2" x2="8" y2="6"></line>
                                                     <line x1="3" y1="10" x2="21" y2="10"></line>
                                                 </svg>
-                                                <?php _e('النهاية:', 'fiqhlearning'); ?> <?php echo date_i18n('Y/m/d', strtotime($batch->end_date)); ?>
+                                                <?php echo get_theme_mod('study_plan_end_date_label', __('النهاية:', 'fiqhlearning')); ?> <?php echo date_i18n('Y/m/d', strtotime($batch->end_date)); ?>
                                             </span>
                                         <?php endif; ?>
                                     </div>
@@ -124,7 +122,7 @@ get_header();
                                             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                                             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                                         </svg>
-                                        <?php _e('المقررات الدراسية', 'fiqhlearning'); ?>
+                                        <?php echo get_theme_mod('study_plan_courses_title', __('المقررات الدراسية', 'fiqhlearning')); ?>
                                     </h4>
                                     <div class="courses-list">
                                         <?php foreach ($courses as $course) :
@@ -155,7 +153,7 @@ get_header();
                                                             </span>
                                                         <?php endif; ?>
                                                         <span class="course-lessons-count">
-                                                            <?php echo count($lessons_count); ?> <?php _e('درس', 'fiqhlearning'); ?>
+                                                            <?php echo count($lessons_count); ?> <?php echo get_theme_mod('study_plan_lesson_label', __('درس', 'fiqhlearning')); ?>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -171,7 +169,7 @@ get_header();
             <?php else : ?>
                 <!-- محتوى افتراضي عند عدم وجود مستويات -->
                 <div class="study-plan-intro card">
-                    <h2><?php _e('نظام المستويات الدراسية', 'fiqhlearning'); ?></h2>
+                    <h2><?php echo get_theme_mod('study_plan_levels_title', __('نظام المستويات الدراسية', 'fiqhlearning')); ?></h2>
                     <p><?php echo get_theme_mod('study_plan_intro', __('تم تقسيم الخطة الدراسية إلى عدة مستويات متدرجة، بحيث يبدأ الطالب من المستوى الأول ويتقدم تدريجياً نحو المستويات المتقدمة.', 'fiqhlearning')); ?></p>
                 </div>
 
@@ -180,10 +178,10 @@ get_header();
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                         <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                     </svg>
-                    <h3><?php _e('لم يتم إضافة مستويات دراسية بعد', 'fiqhlearning'); ?></h3>
-                    <p><?php _e('سيتم إضافة الخطة الدراسية قريباً', 'fiqhlearning'); ?></p>
+                    <h3><?php echo get_theme_mod('study_plan_no_levels_title', __('لم يتم إضافة مستويات دراسية بعد', 'fiqhlearning')); ?></h3>
+                    <p><?php echo get_theme_mod('study_plan_no_levels_desc', __('سيتم إضافة الخطة الدراسية قريباً', 'fiqhlearning')); ?></p>
                     <a href="<?php echo get_post_type_archive_link('fiqh_course'); ?>" class="btn btn-primary">
-                        <?php _e('تصفح المقررات', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('study_plan_browse_courses_btn', __('تصفح المقررات', 'fiqhlearning')); ?>
                     </a>
                 </div>
             <?php endif; ?>
@@ -195,18 +193,18 @@ get_header();
     <section class="section cta-section-secondary">
         <div class="container">
             <div class="cta-box">
-                <h2><?php _e('مستعد للبدء؟', 'fiqhlearning'); ?></h2>
-                <p><?php _e('ابدأ رحلتك التعليمية الآن وانضم إلى مدرسة الريحان', 'fiqhlearning'); ?></p>
+                <h2><?php echo get_theme_mod('study_plan_cta_title', __('مستعد للبدء؟', 'fiqhlearning')); ?></h2>
+                <p><?php echo get_theme_mod('study_plan_cta_desc', __('ابدأ رحلتك التعليمية الآن وانضم إلى مدرسة الريحان', 'fiqhlearning')); ?></p>
                 <div class="cta-actions">
                     <a href="<?php echo get_post_type_archive_link('fiqh_course'); ?>" class="btn btn-primary btn-lg">
-                        <?php _e('تصفح المقررات', 'fiqhlearning'); ?>
+                        <?php echo get_theme_mod('study_plan_cta_courses_btn', __('تصفح المقررات', 'fiqhlearning')); ?>
                     </a>
                     <?php
                     $about_page = get_page_by_path('about');
                     if ($about_page) :
                     ?>
                         <a href="<?php echo get_permalink($about_page); ?>" class="btn btn-outline btn-lg">
-                            <?php _e('عن المدرسة', 'fiqhlearning'); ?>
+                            <?php echo get_theme_mod('study_plan_cta_about_btn', __('عن المدرسة', 'fiqhlearning')); ?>
                         </a>
                     <?php endif; ?>
                 </div>

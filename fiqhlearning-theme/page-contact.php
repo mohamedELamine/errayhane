@@ -65,7 +65,7 @@ get_header();
                         <div class="privacy-notice">
                             <input type="checkbox" id="privacy-agreement" name="privacy" required>
                             <label for="privacy-agreement">
-                                <?php echo get_theme_mod('contact_privacy_text', __('أوافق على', 'fiqhlearning')); ?> <a href="<?php echo home_url('/privacy-policy'); ?>"><?php _e('سياسة الخصوصية', 'fiqhlearning'); ?></a>
+                                <?php echo get_theme_mod('contact_privacy_text', __('أوافق على', 'fiqhlearning')); ?> <a href="<?php echo home_url('/privacy-policy'); ?>"><?php echo get_theme_mod('contact_privacy_link_text', __('سياسة الخصوصية', 'fiqhlearning')); ?></a>
                             </label>
                         </div>
                     </div>
