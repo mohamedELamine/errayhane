@@ -93,7 +93,7 @@ function fiqhlearning_enqueue_scripts() {
     // تحميل أنماط إضافية
     wp_enqueue_style('fiqh-main', FIQH_THEME_URI . '/assets/css/main.css', array('fiqh-style'), FIQH_THEME_VERSION);
     wp_enqueue_style('fiqh-components', FIQH_THEME_URI . '/assets/css/components.css', array('fiqh-main'), FIQH_THEME_VERSION);
-    wp_enqueue_style('fiqh-responsive', FIQH_THEME_URI . '/assets/css/responsive.css', array('fiqh-main'), FIQH_THEME_VERSION);
+    wp_enqueue_style('fiqh-responsive', FIQH_THEME_URI . '/assets/css/responsive.css', array('fiqh-main'), FIQH_THEME_VERSION, 'all');
 
     // تحميل أنماط صفحة البحث
     if (is_search()) {
@@ -156,6 +156,126 @@ function fiqhlearning_enqueue_scripts() {
     }
 }
 add_action('wp_enqueue_scripts', 'fiqhlearning_enqueue_scripts');
+
+/**
+ * تحسين الأداء - Preconnect للخطوط
+ */
+function fiqhlearning_preconnect_fonts() {
+    ?>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <?php
+}
+add_action('wp_head', 'fiqhlearning_preconnect_fonts', 1);
+
+/**
+ * إضافة defer/async للسكريبتات لتحسين الأداء
+ */
+function fiqhlearning_defer_scripts($tag, $handle) {
+    // قائمة السكريبتات التي يجب تأجيل تحميلها
+    $defer_scripts = array(
+        'fiqh-main',
+        'pdfjs',
+        'jquery-migrate'
+    );
+
+    // إذا كان السكريبت في القائمة، أضف defer
+    if (in_array($handle, $defer_scripts)) {
+        return str_replace(' src', ' defer src', $tag);
+    }
+
+    return $tag;
+}
+add_filter('script_loader_tag', 'fiqhlearning_defer_scripts', 10, 2);
+
+/**
+ * إضافة lazy loading للصور
+ */
+function fiqhlearning_add_lazy_loading($attr) {
+    // إضافة loading="lazy" لجميع الصور ما عدا الصور الأولى
+    if (!isset($attr['loading'])) {
+        $attr['loading'] = 'lazy';
+    }
+    return $attr;
+}
+add_filter('wp_get_attachment_image_attributes', 'fiqhlearning_add_lazy_loading');
+
+/**
+ * إضافة fetchpriority="high" للصور المميزة الأولى
+ */
+function fiqhlearning_priority_image($attr, $attachment, $size) {
+    // إضافة fetchpriority للصور الرئيسية
+    if (is_singular() && $size === 'full') {
+        $attr['fetchpriority'] = 'high';
+        $attr['loading'] = 'eager';
+    }
+    return $attr;
+}
+add_filter('wp_get_attachment_image_attributes', 'fiqhlearning_priority_image', 10, 3);
+
+/**
+ * PWA Support - إضافة دعم تطبيق الويب التقدمي
+ */
+function fiqhlearning_pwa_meta_tags() {
+    ?>
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2C5F2D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="<?php echo esc_attr(get_bloginfo('name')); ?>">
+
+    <!-- Manifest -->
+    <link rel="manifest" href="<?php echo esc_url(get_template_directory_uri() . '/manifest.json'); ?>">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-72x72.png'); ?>">
+    <link rel="apple-touch-icon" sizes="96x96" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-96x96.png'); ?>">
+    <link rel="apple-touch-icon" sizes="128x128" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-128x128.png'); ?>">
+    <link rel="apple-touch-icon" sizes="144x144" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-144x144.png'); ?>">
+    <link rel="apple-touch-icon" sizes="152x152" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-152x152.png'); ?>">
+    <link rel="apple-touch-icon" sizes="192x192" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-192x192.png'); ?>">
+    <link rel="apple-touch-icon" sizes="384x384" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-384x384.png'); ?>">
+    <link rel="apple-touch-icon" sizes="512x512" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-512x512.png'); ?>">
+
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#2C5F2D">
+    <meta name="msapplication-TileImage" content="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-144x144.png'); ?>">
+    <?php
+}
+add_action('wp_head', 'fiqhlearning_pwa_meta_tags');
+
+/**
+ * Service Worker Registration
+ */
+function fiqhlearning_register_service_worker() {
+    ?>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('<?php echo esc_url(get_template_directory_uri() . '/service-worker.js'); ?>')
+                .then(function(registration) {
+                    console.log('Service Worker registered successfully:', registration.scope);
+
+                    // تحديث Service Worker عند وجود نسخة جديدة
+                    registration.addEventListener('updatefound', function() {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', function() {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // يوجد service worker جديد، يمكن إخبار المستخدم
+                                console.log('Service Worker updated');
+                            }
+                        });
+                    });
+                })
+                .catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+        });
+    }
+    </script>
+    <?php
+}
+add_action('wp_footer', 'fiqhlearning_register_service_worker');
 
 /**
  * تسجيل مناطق الودجات
