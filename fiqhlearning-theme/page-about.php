@@ -229,50 +229,6 @@ get_header();
         </div>
     </section>
 
-    <!-- الفريق -->
-    <section class="about-team">
-        <div class="container">
-            <h2 class="section-title"><?php echo esc_html(get_theme_mod('about_team_section_title', __('فريق العمل', 'fiqhlearning'))); ?></h2>
-            <div class="team-grid">
-                <?php
-                // يمكن إضافة أعضاء الفريق من Customizer
-                $team_members = get_theme_mod('about_team_members', array());
-
-                if (empty($team_members)) {
-                    // أعضاء افتراضيون كمثال
-                    $team_members = array(
-                        array('name' => 'د. أحمد المالكي', 'role' => 'المشرف العام', 'image' => ''),
-                        array('name' => 'د. محمد الفقيه', 'role' => 'أستاذ الفقه المالكي', 'image' => ''),
-                        array('name' => 'د. فاطمة العالمة', 'role' => 'أستاذة العقيدة', 'image' => ''),
-                    );
-                }
-
-                foreach ($team_members as $member) :
-                    $name = isset($member['name']) ? $member['name'] : '';
-                    $role = isset($member['role']) ? $member['role'] : '';
-                    $image = isset($member['image']) ? $member['image'] : '';
-                    ?>
-                    <div class="team-member card">
-                        <div class="member-avatar">
-                            <?php if ($image) : ?>
-                                <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($name); ?>">
-                            <?php else : ?>
-                                <div class="avatar-placeholder">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        <h3 class="member-name"><?php echo esc_html($name); ?></h3>
-                        <p class="member-role"><?php echo esc_html($role); ?></p>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-
     <!-- دعوة للانضمام -->
     <section class="about-cta">
         <div class="container">

@@ -279,7 +279,7 @@ class FiqhLearning_Levels_Admin {
      */
     private function render_edit_level_form($level_id) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'fiqh_levels';
+        $table_name = $wpdb->prefix . 'fiqh_batches';
         $level = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $level_id));
 
         if (!$level) {
