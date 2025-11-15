@@ -99,10 +99,12 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                         if (strpos($video_id, '&') !== false) {
                             $video_id = substr($video_id, 0, strpos($video_id, '&'));
                         }
-                        $embed_url = 'https://www.youtube.com/embed/' . $video_id;
+                        // إضافة معاملات لمنع المشاركة وإخفاء الفيديوهات المقترحة
+                        $embed_url = 'https://www.youtube.com/embed/' . $video_id . '?rel=0&modestbranding=1&showinfo=0';
                     } elseif (strpos($video_url, 'youtu.be/') !== false) {
                         $video_id = substr($video_url, strpos($video_url, 'youtu.be/') + 9);
-                        $embed_url = 'https://www.youtube.com/embed/' . $video_id;
+                        // إضافة معاملات لمنع المشاركة وإخفاء الفيديوهات المقترحة
+                        $embed_url = 'https://www.youtube.com/embed/' . $video_id . '?rel=0&modestbranding=1&showinfo=0';
                     }
                     ?>
                     <iframe
