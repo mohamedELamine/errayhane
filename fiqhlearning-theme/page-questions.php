@@ -19,7 +19,7 @@ if (!is_user_logged_in()) {
                 </svg>
                 <h2><?php _e('يجب تسجيل الدخول', 'fiqhlearning'); ?></h2>
                 <p><?php _e('يرجى تسجيل الدخول لعرض الأسئلة والإجابات', 'fiqhlearning'); ?></p>
-                <a href="<?php echo wp_login_url(get_permalink()); ?>" class="btn btn-primary btn-lg">
+                <a href="https://arraihane.com/login/" class="btn btn-primary btn-lg">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                         <polyline points="10 17 15 12 10 7"></polyline>

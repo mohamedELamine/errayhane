@@ -148,7 +148,7 @@
                                 </div>
                             </div>
                         <?php else : ?>
-                            <a href="<?php echo esc_url(wp_login_url()); ?>" class="btn btn-primary btn-login">
+                            <a href="https://arraihane.com/login/" class="btn btn-primary btn-login">
                                 <?php echo esc_html(get_theme_mod('header_login_text', __('تسجيل الدخول', 'fiqhlearning'))); ?>
                             </a>
                         <?php endif; ?>

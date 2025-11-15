@@ -35,7 +35,7 @@ get_header();
                         <?php echo esc_html(get_theme_mod('hero_browse_courses_text', __('تصفح المقررات', 'fiqhlearning'))); ?>
                     </a>
                     <?php if (!is_user_logged_in()) : ?>
-                        <a href="<?php echo wp_login_url(); ?>" class="btn btn-secondary btn-lg">
+                        <a href="https://arraihane.com/login/" class="btn btn-secondary btn-lg">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                                 <polyline points="10 17 15 12 10 7"></polyline>
