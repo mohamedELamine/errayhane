@@ -154,10 +154,12 @@ $can_access = is_user_logged_in() && (
                     $lessons = get_posts(array(
                         'post_type' => 'fiqh_lesson',
                         'posts_per_page' => -1,
+                        'post_status' => 'publish',
                         'meta_query' => array(
                             array(
                                 'key' => '_fiqh_lesson_course_id',
                                 'value' => get_the_ID(),
+                                'compare' => '='
                             )
                         ),
                         'meta_key' => '_fiqh_lesson_order',

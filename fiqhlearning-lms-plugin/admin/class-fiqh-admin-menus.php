@@ -1250,15 +1250,11 @@ class FiqhLearning_Admin_Menus {
                     font-size: 12px;
                     font-weight: 600;
                 }
-                .status-active {
+                .status-paid {
                     background: #d4edda;
                     color: #155724;
                 }
-                .status-suspended {
-                    background: #fff3cd;
-                    color: #856404;
-                }
-                .status-expired {
+                .status-unpaid {
                     background: #f8d7da;
                     color: #721c24;
                 }
@@ -1330,11 +1326,11 @@ class FiqhLearning_Admin_Menus {
                             <td><strong><?php echo number_format($sub->monthly_amount, 2); ?></strong> <?php _e('د.ج', 'fiqh-lms'); ?></td>
                             <td>
                                 <?php if ($paid_for_month): ?>
-                                    <span class="status-badge status-active">
-                                        ✓ <?php _e('مدفوع', 'fiqh-lms'); ?> (<?php echo number_format($paid_for_month, 2); ?> د.ج)
+                                    <span class="status-badge status-paid">
+                                        ✓ <?php _e('دفع', 'fiqh-lms'); ?> (<?php echo number_format($paid_for_month, 2); ?> د.ج)
                                     </span>
                                 <?php else: ?>
-                                    <span class="status-badge status-expired">
+                                    <span class="status-badge status-unpaid">
                                         ✗ <?php _e('لم يدفع', 'fiqh-lms'); ?>
                                     </span>
                                 <?php endif; ?>
