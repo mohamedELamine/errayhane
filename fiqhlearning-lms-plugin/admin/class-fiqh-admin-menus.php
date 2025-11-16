@@ -1033,20 +1033,80 @@ class FiqhLearning_Admin_Menus {
         if (isset($_POST['delete_subscription']) && check_admin_referer('delete_subscription_action', 'delete_subscription_nonce')) {
             $subscription_id = intval($_POST['subscription_id']);
 
-            $wpdb->delete(
-                $wpdb->prefix . 'fiqh_subscriptions',
-                array('id' => $subscription_id),
-                array('%d')
-            );
-
-            // حذف الدفعات المرتبطة
+            // حذف الدفعات المرتبطة أولاً
             $wpdb->delete(
                 $wpdb->prefix . 'fiqh_subscription_payments',
                 array('subscription_id' => $subscription_id),
                 array('%d')
             );
 
-            echo '<div class="notice notice-success is-dismissible"><p>' . __('تم حذف الاشتراك بنجاح', 'fiqh-lms') . '</p></div>';
+            // حذف الاشتراك
+            $wpdb->delete(
+                $wpdb->prefix . 'fiqh_subscriptions',
+                array('id' => $subscription_id),
+                array('%d')
+            );
+
+            echo '<div class="notice notice-success is-dismissible"><p>' . __('تم حذف الاشتراك وجميع دفعاته بنجاح', 'fiqh-lms') . '</p></div>';
+        }
+
+        // معالجة تغيير حالة الدفع (دفع/لم يدفع)
+        if (isset($_POST['toggle_payment_status']) && check_admin_referer('toggle_payment_action', 'toggle_payment_nonce')) {
+            $subscription_id = intval($_POST['subscription_id']);
+            $payment_month = sanitize_text_field($_POST['payment_month']);
+            $action = sanitize_text_field($_POST['payment_action']); // 'mark_paid' أو 'mark_unpaid'
+
+            // الحصول على تفاصيل الاشتراك
+            $subscription = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}fiqh_subscriptions WHERE id = %d",
+                $subscription_id
+            ));
+
+            if ($subscription) {
+                if ($action === 'mark_paid') {
+                    // التحقق من عدم وجود دفعة مسبقة لنفس الشهر
+                    $existing = $wpdb->get_var($wpdb->prepare(
+                        "SELECT id FROM {$wpdb->prefix}fiqh_subscription_payments
+                        WHERE subscription_id = %d AND payment_month = %s",
+                        $subscription_id, $payment_month
+                    ));
+
+                    if (!$existing) {
+                        // إضافة دفعة جديدة
+                        $wpdb->insert(
+                            $wpdb->prefix . 'fiqh_subscription_payments',
+                            array(
+                                'subscription_id' => $subscription_id,
+                                'user_id' => $subscription->user_id,
+                                'amount' => $subscription->monthly_amount,
+                                'payment_month' => $payment_month,
+                                'payment_date' => current_time('mysql'),
+                                'payment_method' => 'manual',
+                                'status' => 'paid',
+                                'notes' => 'تم التسجيل يدوياً من لوحة التحكم',
+                                'created_by' => get_current_user_id()
+                            ),
+                            array('%d', '%d', '%f', '%s', '%s', '%s', '%s', '%s', '%d')
+                        );
+
+                        if ($wpdb->insert_id) {
+                            echo '<div class="notice notice-success is-dismissible"><p>' . __('تم تسجيل الدفعة بنجاح', 'fiqh-lms') . '</p></div>';
+                        }
+                    }
+                } elseif ($action === 'mark_unpaid') {
+                    // حذف الدفعة
+                    $wpdb->delete(
+                        $wpdb->prefix . 'fiqh_subscription_payments',
+                        array(
+                            'subscription_id' => $subscription_id,
+                            'payment_month' => $payment_month
+                        ),
+                        array('%d', '%s')
+                    );
+
+                    echo '<div class="notice notice-success is-dismissible"><p>' . __('تم إلغاء تسجيل الدفعة بنجاح', 'fiqh-lms') . '</p></div>';
+                }
+            }
         }
 
         // معالجة تعديل اشتراك
@@ -1258,6 +1318,16 @@ class FiqhLearning_Admin_Menus {
                     background: #f8d7da;
                     color: #721c24;
                 }
+                .payment-toggle-form {
+                    display: inline-block;
+                    margin-right: 8px;
+                }
+                .payment-toggle-form .button {
+                    padding: 2px 8px;
+                    height: auto;
+                    line-height: 1.5;
+                    font-size: 12px;
+                }
             </style>
 
             <!-- إحصائيات سريعة -->
@@ -1329,16 +1399,33 @@ class FiqhLearning_Admin_Menus {
                                     <span class="status-badge status-paid">
                                         ✓ <?php _e('دفع', 'fiqh-lms'); ?> (<?php echo number_format($paid_for_month, 2); ?> د.ج)
                                     </span>
+                                    <form method="post" class="payment-toggle-form">
+                                        <?php wp_nonce_field('toggle_payment_action', 'toggle_payment_nonce'); ?>
+                                        <input type="hidden" name="toggle_payment_status" value="1">
+                                        <input type="hidden" name="subscription_id" value="<?php echo $sub->id; ?>">
+                                        <input type="hidden" name="payment_month" value="<?php echo esc_attr($selected_month); ?>">
+                                        <input type="hidden" name="payment_action" value="mark_unpaid">
+                                        <button type="submit" class="button button-small" onclick="return confirm('هل تريد إلغاء تسجيل هذه الدفعة؟ سيؤثر ذلك على الإيرادات والإحصائيات.');">
+                                            <?php _e('إلغاء', 'fiqh-lms'); ?>
+                                        </button>
+                                    </form>
                                 <?php else: ?>
                                     <span class="status-badge status-unpaid">
                                         ✗ <?php _e('لم يدفع', 'fiqh-lms'); ?>
                                     </span>
+                                    <form method="post" class="payment-toggle-form">
+                                        <?php wp_nonce_field('toggle_payment_action', 'toggle_payment_nonce'); ?>
+                                        <input type="hidden" name="toggle_payment_status" value="1">
+                                        <input type="hidden" name="subscription_id" value="<?php echo $sub->id; ?>">
+                                        <input type="hidden" name="payment_month" value="<?php echo esc_attr($selected_month); ?>">
+                                        <input type="hidden" name="payment_action" value="mark_paid">
+                                        <button type="submit" class="button button-small button-primary">
+                                            <?php _e('تسجيل دفع', 'fiqh-lms'); ?>
+                                        </button>
+                                    </form>
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <button type="button" class="button button-small add-payment-btn" data-subscription-id="<?php echo $sub->id; ?>" data-student-name="<?php echo esc_attr($sub->student_name); ?>" data-amount="<?php echo $sub->monthly_amount; ?>">
-                                    <?php _e('تسجيل دفعة', 'fiqh-lms'); ?>
-                                </button>
                                 <button type="button" class="button button-small edit-subscription-btn" data-subscription-id="<?php echo $sub->id; ?>" data-amount="<?php echo $sub->monthly_amount; ?>" data-notes="<?php echo esc_attr($sub->notes); ?>">
                                     <?php _e('تعديل', 'fiqh-lms'); ?>
                                 </button>
