@@ -245,7 +245,8 @@
                             location.reload();
                         }, 1000);
                     } else {
-                        showNotification('error', response.data || 'حدث خطأ أثناء إرسال السؤال');
+                        var errorMsg = (response.data && response.data.message) ? response.data.message : 'حدث خطأ أثناء إرسال السؤال';
+                        showNotification('error', errorMsg);
                         submitBtn.prop('disabled', false).html('<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> إرسال السؤال');
                     }
                 },
@@ -285,7 +286,8 @@
                             location.reload();
                         }, 1000);
                     } else {
-                        showNotification('error', response.data || 'حدث خطأ أثناء إرسال الإجابة');
+                        var errorMsg = (response.data && response.data.message) ? response.data.message : 'حدث خطأ أثناء إرسال الإجابة';
+                        showNotification('error', errorMsg);
                         submitBtn.prop('disabled', false).text('إرسال الإجابة');
                     }
                 },

@@ -70,10 +70,15 @@ add_action('wp_ajax_nopriv_fiqh_get_course_lessons', 'fiqh_get_course_lessons_aj
  * إضافة سؤال جديد في الدرس
  */
 function fiqh_add_lesson_question() {
-    check_ajax_referer('fiqh-ajax-nonce', 'nonce');
+    // التحقق من nonce
+    if (!check_ajax_referer('fiqh-ajax-nonce', 'nonce', false)) {
+        wp_send_json_error(array('message' => __('خطأ في التحقق الأمني', 'fiqhlearning')));
+        return;
+    }
 
     if (!is_user_logged_in()) {
-        wp_send_json_error(__('يجب تسجيل الدخول', 'fiqhlearning'));
+        wp_send_json_error(array('message' => __('يجب تسجيل الدخول', 'fiqhlearning')));
+        return;
     }
 
     $user_id = get_current_user_id();
@@ -81,19 +86,40 @@ function fiqh_add_lesson_question() {
     $question = isset($_POST['question']) ? sanitize_textarea_field($_POST['question']) : '';
 
     if (!$lesson_id || empty($question)) {
-        wp_send_json_error(__('جميع الحقول مطلوبة', 'fiqhlearning'));
+        wp_send_json_error(array('message' => __('جميع الحقول مطلوبة', 'fiqhlearning')));
+        return;
     }
 
-    // التحقق من إمكانية الوصول للدرس
-    if (!fiqh_can_access_lesson($lesson_id, $user_id)) {
-        wp_send_json_error(__('ليس لديك صلاحية للوصول', 'fiqhlearning'));
+    // التحقق من إمكانية الوصول للدرس (السماح للطلاب المسجلين في المقرر)
+    $user = get_userdata($user_id);
+    $is_admin_or_teacher = in_array('administrator', $user->roles) || in_array('teacher', $user->roles);
+
+    if (!$is_admin_or_teacher) {
+        $course_id = get_post_meta($lesson_id, '_fiqh_lesson_course_id', true);
+        if (!$course_id) {
+            wp_send_json_error(array('message' => __('الدرس غير مرتبط بمقرر', 'fiqhlearning')));
+            return;
+        }
+
+        // التحقق من التسجيل في المقرر
+        global $wpdb;
+        $enrolled = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_enrollments
+            WHERE user_id = %d AND course_id = %d AND status = 'active'",
+            $user_id,
+            $course_id
+        ));
+
+        if (!$enrolled) {
+            wp_send_json_error(array('message' => __('يجب التسجيل في المقرر أولاً', 'fiqhlearning')));
+            return;
+        }
+    } else {
+        $course_id = get_post_meta($lesson_id, '_fiqh_lesson_course_id', true);
     }
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'fiqh_questions';
-
-    // الحصول على course_id من الدرس
-    $course_id = get_post_meta($lesson_id, '_fiqh_lesson_course_id', true);
 
     $result = $wpdb->insert(
         $table_name,
@@ -114,7 +140,10 @@ function fiqh_add_lesson_question() {
             'question_id' => $wpdb->insert_id
         ));
     } else {
-        wp_send_json_error(__('حدث خطأ أثناء إرسال السؤال', 'fiqhlearning'));
+        wp_send_json_error(array(
+            'message' => __('حدث خطأ أثناء إرسال السؤال', 'fiqhlearning'),
+            'error' => $wpdb->last_error
+        ));
     }
 }
 add_action('wp_ajax_fiqh_add_lesson_question', 'fiqh_add_lesson_question');
