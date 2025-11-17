@@ -92,8 +92,10 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
             <?php if ($video_url) : ?>
                 <div class="video-container">
                     <?php
-                    // تحويل رابط YouTube إلى embed
+                    // تحويل رابط الفيديو إلى embed
                     $embed_url = $video_url;
+
+                    // دعم YouTube
                     if (strpos($video_url, 'youtube.com/watch?v=') !== false) {
                         $video_id = substr($video_url, strpos($video_url, 'v=') + 2);
                         if (strpos($video_id, '&') !== false) {
@@ -105,6 +107,22 @@ if (!$progress && !current_user_can('administrator') && !current_user_can('teach
                         $video_id = substr($video_url, strpos($video_url, 'youtu.be/') + 9);
                         // إضافة معاملات لمنع المشاركة وإخفاء الفيديوهات المقترحة
                         $embed_url = 'https://www.youtube.com/embed/' . $video_id . '?rel=0&modestbranding=1&showinfo=0';
+                    }
+                    // دعم Odysee
+                    elseif (strpos($video_url, 'odysee.com/') !== false) {
+                        // إذا كان رابط embed بالفعل
+                        if (strpos($video_url, '/$/embed/') !== false) {
+                            $embed_url = $video_url;
+                        } else {
+                            // تحويل رابط عادي إلى embed
+                            // من: https://odysee.com/@channel:id/video-title:id
+                            // إلى: https://odysee.com/$/embed/@channel:id/video-title:id
+                            $embed_url = str_replace('odysee.com/', 'odysee.com/$/embed/', $video_url);
+                        }
+                    }
+                    // دعم LBRY (نفس Odysee)
+                    elseif (strpos($video_url, 'lbry.tv/') !== false) {
+                        $embed_url = str_replace('lbry.tv/', 'odysee.com/$/embed/', $video_url);
                     }
                     ?>
                     <iframe

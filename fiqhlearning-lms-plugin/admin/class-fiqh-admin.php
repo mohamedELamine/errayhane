@@ -115,9 +115,9 @@ class FiqhLearning_Admin {
             </p>
 
             <p>
-                <label for="fiqh_lesson_video_url"><strong><?php _e('رابط الفيديو (YouTube)', 'fiqh-lms'); ?></strong></label><br>
+                <label for="fiqh_lesson_video_url"><strong><?php _e('رابط الفيديو', 'fiqh-lms'); ?></strong></label><br>
                 <input type="url" id="fiqh_lesson_video_url" name="fiqh_lesson_video_url" value="<?php echo esc_attr($video_url); ?>" class="regular-text">
-                <span class="description"><?php _e('رابط فيديو YouTube', 'fiqh-lms'); ?></span>
+                <span class="description"><?php _e('رابط من YouTube أو Odysee أو LBRY', 'fiqh-lms'); ?></span>
             </p>
 
             <p>
