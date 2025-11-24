@@ -1,0 +1,43 @@
+name: fiqh_learning_app
+description: تطبيق التعليم الفقهي - تطبيق أندرويد متصل بموقع التعليم الفقهي
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI & Navigation
+  cupertino_icons: ^1.0.6
+
+  # State Management
+  provider: ^6.1.1
+
+  # HTTP & API
+  http: ^1.1.2
+
+  # Storage
+  shared_preferences: ^2.2.2
+
+  # Video Player
+  youtube_player_flutter: ^8.1.2
+  video_player: ^2.8.1
+
+  # Utils
+  intl: ^0.19.0
+  cached_network_image: ^3.3.1
+  flutter_html: ^3.0.0-beta.2
+  url_launcher: ^6.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

@@ -29,17 +29,43 @@ class FiqhLearning_REST_API {
      * تسجيل Routes
      */
     public function register_routes() {
+        // Authentication
+        register_rest_route($this->namespace, '/auth/login', array(
+            'methods' => 'POST',
+            'callback' => array($this, 'login'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route($this->namespace, '/auth/validate', array(
+            'methods' => 'GET',
+            'callback' => array($this, 'validate_token'),
+            'permission_callback' => array($this, 'check_auth'),
+        ));
+
+        register_rest_route($this->namespace, '/auth/user', array(
+            'methods' => 'GET',
+            'callback' => array($this, 'get_current_user'),
+            'permission_callback' => array($this, 'check_auth'),
+        ));
+
+        // Sciences (Taxonomies)
+        register_rest_route($this->namespace, '/sciences', array(
+            'methods' => 'GET',
+            'callback' => array($this, 'get_sciences'),
+            'permission_callback' => array($this, 'check_auth'),
+        ));
+
         // Courses
         register_rest_route($this->namespace, '/courses', array(
             'methods' => 'GET',
             'callback' => array($this, 'get_courses'),
-            'permission_callback' => array($this, 'check_read_permission'),
+            'permission_callback' => array($this, 'check_auth'),
         ));
 
         register_rest_route($this->namespace, '/courses/(?P<id>\d+)', array(
             'methods' => 'GET',
             'callback' => array($this, 'get_course'),
-            'permission_callback' => array($this, 'check_read_permission'),
+            'permission_callback' => array($this, 'check_auth'),
         ));
 
         // Lessons
@@ -106,6 +132,155 @@ class FiqhLearning_REST_API {
             'callback' => array($this, 'get_dashboard_stats'),
             'permission_callback' => array($this, 'check_auth'),
         ));
+    }
+
+    /**
+     * تسجيل الدخول
+     */
+    public function login($request) {
+        $username = $request->get_param('username');
+        $password = $request->get_param('password');
+
+        if (empty($username) || empty($password)) {
+            return new WP_Error('missing_credentials', 'اسم المستخدم وكلمة المرور مطلوبان', array('status' => 400));
+        }
+
+        $user = wp_authenticate($username, $password);
+
+        if (is_wp_error($user)) {
+            return new WP_Error('invalid_credentials', 'بيانات الدخول غير صحيحة', array('status' => 401));
+        }
+
+        // إنشاء token بسيط (في الإنتاج يجب استخدام JWT)
+        $token = base64_encode($username . ':' . wp_hash_password($password));
+
+        // حفظ token في user meta
+        update_user_meta($user->ID, '_app_auth_token', $token);
+
+        return new WP_REST_Response(array(
+            'success' => true,
+            'data' => array(
+                'user_id' => $user->ID,
+                'username' => $user->user_login,
+                'display_name' => $user->display_name,
+                'email' => $user->user_email,
+                'token' => $token,
+                'roles' => $user->roles,
+                'level' => get_user_meta($user->ID, '_fiqh_user_level', true),
+            ),
+        ), 200);
+    }
+
+    /**
+     * التحقق من صحة token
+     */
+    public function validate_token($request) {
+        $user_id = get_current_user_id();
+
+        return new WP_REST_Response(array(
+            'success' => true,
+            'valid' => true,
+            'user_id' => $user_id,
+        ), 200);
+    }
+
+    /**
+     * الحصول على بيانات المستخدم الحالي
+     */
+    public function get_current_user($request) {
+        $user_id = get_current_user_id();
+        $user = get_userdata($user_id);
+
+        if (!$user) {
+            return new WP_Error('user_not_found', 'المستخدم غير موجود', array('status' => 404));
+        }
+
+        return new WP_REST_Response(array(
+            'success' => true,
+            'data' => array(
+                'id' => $user->ID,
+                'username' => $user->user_login,
+                'display_name' => $user->display_name,
+                'email' => $user->user_email,
+                'roles' => $user->roles,
+                'level' => get_user_meta($user_id, '_fiqh_user_level', true),
+                'avatar_url' => get_avatar_url($user_id),
+            ),
+        ), 200);
+    }
+
+    /**
+     * الحصول على العلوم
+     */
+    public function get_sciences($request) {
+        $user_id = get_current_user_id();
+        $user_level = get_user_meta($user_id, '_fiqh_user_level', true);
+
+        $args = array(
+            'taxonomy' => 'fiqh_course_science',
+            'hide_empty' => false,
+        );
+
+        $sciences = get_terms($args);
+        $formatted_sciences = array();
+
+        foreach ($sciences as $science) {
+            // الحصول على المقررات المرتبطة بهذا العلم
+            $courses_query = new WP_Query(array(
+                'post_type' => 'fiqh_course',
+                'posts_per_page' => -1,
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'fiqh_course_science',
+                        'field' => 'term_id',
+                        'terms' => $science->term_id,
+                    ),
+                ),
+            ));
+
+            $courses = array();
+            foreach ($courses_query->posts as $course) {
+                $course_level = get_post_meta($course->ID, '_fiqh_course_level', true);
+
+                // تصفية المقررات حسب مستوى الطالب
+                if (!empty($user_level) && !empty($course_level) && intval($course_level) > intval($user_level)) {
+                    continue;
+                }
+
+                // التحقق من التسجيل
+                global $wpdb;
+                $is_enrolled = $wpdb->get_var($wpdb->prepare(
+                    "SELECT COUNT(*) FROM {$wpdb->prefix}fiqh_enrollments
+                    WHERE user_id = %d AND course_id = %d AND status = 'active'",
+                    $user_id, $course->ID
+                ));
+
+                $courses[] = array(
+                    'id' => $course->ID,
+                    'title' => $course->post_title,
+                    'excerpt' => $course->post_excerpt,
+                    'thumbnail' => get_the_post_thumbnail_url($course->ID, 'medium'),
+                    'level' => $course_level,
+                    'is_enrolled' => (bool)$is_enrolled,
+                );
+            }
+
+            if (!empty($courses)) {
+                $formatted_sciences[] = array(
+                    'id' => $science->term_id,
+                    'name' => $science->name,
+                    'slug' => $science->slug,
+                    'description' => $science->description,
+                    'courses_count' => count($courses),
+                    'courses' => $courses,
+                );
+            }
+        }
+
+        return new WP_REST_Response(array(
+            'success' => true,
+            'data' => $formatted_sciences,
+        ), 200);
     }
 
     /**
