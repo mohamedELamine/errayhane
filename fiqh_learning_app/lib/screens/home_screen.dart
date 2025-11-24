@@ -69,9 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.refresh),
             onPressed: _loadSciences,
           ),
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
+          PopupMenuButton<String>(
+            itemBuilder: (context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                enabled: false,
                 child: ListTile(
                   leading: const Icon(Icons.person),
                   title: Text(user?.displayName ?? 'المستخدم'),
@@ -79,14 +80,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const PopupMenuDivider(),
-              PopupMenuItem(
+              PopupMenuItem<String>(
+                value: 'logout',
                 child: const ListTile(
                   leading: Icon(Icons.logout),
                   title: Text('تسجيل الخروج'),
                 ),
-                onTap: _logout,
               ),
             ],
+            onSelected: (value) {
+              if (value == 'logout') {
+                _logout();
+              }
+            },
           ),
         ],
       ),
